@@ -1,0 +1,12 @@
+{
+  "domain": "owr_care",
+  "name": "owr care",
+  "codeowners": [
+    "@zomco"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/zomco/owr-care-ha",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/zomco/owr-care-ha/issues",
+  "version": "0.0.0"
+}
