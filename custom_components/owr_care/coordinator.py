@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from datetime import timedelta
-from owrcare import OWRCare, OWRCareConnectionClosedError, OWRCareError
+from owrcare import OWRCare, Device as OWRCareDevice, OWRCareConnectionClosedError, OWRCareError
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, EVENT_HOMEASSISTANT_STOP
@@ -83,9 +83,17 @@ class OWRCareDataUpdateCoordinator(DataUpdateCoordinator):
             self.hass, listen(), "owrcare-listen"
         )
 
-    async def _async_update_data(self) -> None:
+    async def _async_update_data(self) -> OWRCareDevice:
         """Fetch data from OWRCare."""
         # If the device supports a WebSocket, try activating it.
-        if (not self.owrcare.connected and not self.unsub):
+        try:
+            device = await self.owrcare.update(full_update=not self.last_update_success)
+        except OWRCareError as error:
+            raise UpdateFailed(f"Invalid response from API: {error}") from error
+
+        # If the device supports a WebSocket, try activating it.
+        if (not self.wled.connected and not self.unsub):
             self._use_websocket()
+
+        return device
 

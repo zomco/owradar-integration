@@ -9,3 +9,7 @@ NAME = "owr care"
 DOMAIN = "owr_care"
 VERSION = "0.0.231107"
 ATTRIBUTION = "Data provided by http://jsonplaceholder.typicode.com/"
+
+# Options
+CONF_REALTIME_MODE = "realtime_mode"
+DEFAULT_REALTIME_MODE = False

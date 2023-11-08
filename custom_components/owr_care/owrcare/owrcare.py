@@ -23,7 +23,7 @@ from .exceptions import (
     OWRCareError,
     OWRCareUpgradeError,
 )
-from .models import Report
+from .models import Device, Report
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
@@ -42,6 +42,7 @@ class OWRCare:
 
     _client: aiohttp.ClientWebSocketResponse | None = None
     _close_session: bool = False
+    _device: Device | None = None
 
     @property
     def connected(self) -> bool:
@@ -67,7 +68,10 @@ class OWRCare:
         if self.connected:
             return
 
-        if not self.session is None:
+        if not self._device:
+            await self.update()
+
+        if not self.session or not self._device:
             msg = "The OWRCare device at {self.host} does not support WebSockets"
             raise OWRCareError(msg)
 
@@ -102,7 +106,7 @@ class OWRCare:
             OWRCareConnectionClosedError: The WebSocket connection to the remote OWRCare
                 has been closed.
         """
-        if not self._client or not self.connected:
+        if not self._client or not self.connected or not self._device:
             msg = "Not connected to a OWRCare WebSocket"
             raise OWRCareError(msg)
 
@@ -114,7 +118,7 @@ class OWRCare:
 
             if message.type == aiohttp.WSMsgType.TEXT:
                 message_data = message.json()
-                callback(message_data)
+                callback(message_data[0])
 
             if message.type in (
                 aiohttp.WSMsgType.CLOSE,
@@ -130,6 +134,121 @@ class OWRCare:
             return
 
         await self._client.close()
+
+    @backoff.on_exception(backoff.expo, OWRCareConnectionError, max_tries=3, logger=None)
+    async def request(
+        self,
+        uri: str = "",
+        method: str = "GET",
+        data: dict[str, Any] | None = None,
+    ) -> Any:
+        """Handle a request to a OWRCare device.
+
+        A generic method for sending/handling HTTP requests done gainst
+        the OWRCare device.
+
+        Args:
+        ----
+            uri: Request URI, for example `/api/device`.
+            method: HTTP method to use for the request.E.g., "GET" or "POST".
+            data: Dictionary of data to send to the OWRCare device.
+
+        Returns:
+        -------
+            A Python dictionary (JSON decoded) with the response from the
+            OWRCare device.
+
+        Raises:
+        ------
+            OWRCareConnectionError: An error occurred while communication with
+                the OWRCare device.
+            OWRCareConnectionTimeoutError: A timeout occurred while communicating
+                with the OWRCare device.
+            OWRCareError: Received an unexpected response from the OWRCare device.
+        """
+        url = URL.build(scheme="http", host=self.host, port=80, path=uri)
+
+        headers = {
+            "Accept": "application/json, text/plain, */*",
+        }
+
+        if self.session is None:
+            self.session = aiohttp.ClientSession()
+            self._close_session = True
+
+        try:
+            async with async_timeout.timeout(self.request_timeout):
+                response = await self.session.request(
+                    method,
+                    url,
+                    json=data,
+                    headers=headers,
+                )
+
+            content_type = response.headers.get("Content-Type", "")
+            if response.status // 100 in [4, 5]:
+                contents = await response.read()
+                response.close()
+
+                if content_type == "application/json":
+                    raise OWRCareError(  # noqa: TRY301
+                        response.status,
+                        json.loads(contents.decode("utf8")),
+                    )
+                raise OWRCareError(  # noqa: TRY301
+                    response.status,
+                    {"message": contents.decode("utf8")},
+                )
+
+            if "application/json" in content_type:
+                response_data = await response.json()
+            else:
+                response_data = await response.text()
+
+        except asyncio.TimeoutError as exception:
+            msg = f"Timeout occurred while connecting to OWRCare device at {self.host}"
+            raise OWRCareConnectionTimeoutError(msg) from exception
+        except (aiohttp.ClientError, socket.gaierror) as exception:
+            msg = f"Error occurred while communicating with OWRCare device at {self.host}"
+            raise OWRCareConnectionError(msg) from exception
+
+        return response_data
+
+    @backoff.on_exception(
+        backoff.expo,
+        OWRCareEmptyResponseError,
+        max_tries=3,
+        logger=None,
+    )
+    async def update(self, *, full_update: bool = False) -> Device:  # noqa: PLR0912
+        """Get all information about the device in a single call.
+
+        This method updates all OWRCare information available with a single API
+        call.
+
+        Args:
+        ----
+            full_update: Force a full update from the OWRCare Device.
+
+        Returns:
+        -------
+            OWRCare Device data.
+
+        Raises:
+        ------
+            OWRCareEmptyResponseError: The OWRCare device returned an empty response.
+        """
+        if self._device is None or full_update:
+            if not (data := await self.request("/api/device")):
+                msg = (
+                    f"OWRCare device at {self.host} returned an empty API"
+                    " response on full update",
+                )
+                raise OWRCareEmptyResponseError(msg)
+            self._device = Device(data)
+            return self._device
+
+        return self._device
 
     async def close(self) -> None:
         """Close open client (WebSocket) session."""

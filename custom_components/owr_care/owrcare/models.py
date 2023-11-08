@@ -398,98 +398,6 @@ class Sleep:
 
 
 @dataclass
-class Product:
-    """Object holding product infomation from OWRCare."""
-
-    model: str
-    id: str
-    hardware: str
-    firmware: str
-
-    @staticmethod
-    def from_dict(data: dict[str, Any]) -> Product:
-        """Return Product object from OWRCare API response.
-
-        Args:
-        ----
-            data: The data from the OWRCare device API.
-
-        Returns:
-        -------
-            A Product object.
-        """
-        product = data.get("product")
-        if product is None:
-            return None
-
-        return Product(
-            model=product.get("model", None),
-            id=product.get("id", None),
-            hardware=product.get("hardware", None),
-            firmware=product.get("firmware", None),
-        )
-
-
-class StatusSwitch(IntEnum):
-    """Enumeration representing body range from OWRCare."""
-
-    OFF = 0
-    ON = 1
-
-@dataclass
-class Status:
-    """Object holding Status information from OWRCare.
-
-    Args:
-    ----
-        data: The data from the OWRCare device API.
-
-    Returns:
-    -------
-        A Status object.
-    """
-
-    init: StatusSwitch
-    body: StatusSwitch
-    heart: StatusSwitch
-    breath: StatusSwitch
-    sleep: StatusSwitch
-    mode: StatusSwitch
-    nobody: StatusSwitch
-    nobody_duration: int
-    struggle: StatusSwitch
-    stop_duration: int
-
-    @staticmethod
-    def from_dict(data: dict[str, Any]) -> Status:
-        """Return Status object form OWRCare API response.
-
-        Args:
-        ----
-            data: The response from the OWRCare API.
-
-        Returns:
-        -------
-            An Status object.
-        """
-        status = data.get("status")
-        if status is None:
-            return None
-        return Status(
-            init=status.get("init", None),
-            body=status.get("body", None),
-            heart=status.get("heart", None),
-            breath=status.get("breath", None),
-            sleep=status.get("sleep", None),
-            mode=status.get("mode", None),
-            nobody=status.get("nobody", None),
-            nobody_duration=status.get("nobody_duration", None),
-            struggle=status.get("struggle", None),
-            stop_duration=status.get("stop_duration", None),
-        )
-
-
-@dataclass
 class Report:
     """Object holding Report Infomation from OWRCare.
 
@@ -503,8 +411,6 @@ class Report:
     """
 
     timestamp: int
-    status: Status
-    product: Product
     body: Body
     heart: Heart
     breath: Breath
@@ -529,10 +435,143 @@ class Report:
 
         return Report(
             timestamp=timestamp,
-            status=Status(data.get("status")),
-            product=Product(data.get("product")),
             body=Body(data.get("body")),
             breath=Breath(data.get("breath")),
             heart=Heart(data.get("heart")),
             sleep=Sleep(data.get("sleep")),
+        )
+
+
+
+@dataclass
+class Info:
+    """Object holding device infomation from OWRCare."""
+
+    model: str
+    id: str
+    hardware: str
+    firmware: str
+    version: str
+
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> Info:
+        """Return Device information object from OWRCare API response.
+
+        Args:
+        ----
+            data: The data from the OWRCare device API.
+
+        Returns:
+        -------
+            A Device information object.
+        """
+        product = data.get("info")
+        if product is None:
+            return None
+
+        return Info(
+            model=product.get("model", None),
+            id=product.get("id", None),
+            hardware=product.get("hardware", None),
+            firmware=product.get("firmware", None),
+            version=product.get("version", None),
+        )
+
+class SettingSwitch(IntEnum):
+    """Enumeration representing body range from OWRCare."""
+
+    OFF = 0
+    ON = 1
+
+@dataclass
+class Setting:
+    """Object holding Setting information from OWRCare.
+
+    Args:
+    ----
+        data: The data from the OWRCare device API.
+
+    Returns:
+    -------
+        A Setting object.
+    """
+
+    bingding_count: int
+    bingding: SettingSwitch
+    realtime_ws: SettingSwitch
+    realtime_mq: SettingSwitch
+    body: SettingSwitch
+    heart: SettingSwitch
+    breath: SettingSwitch
+    sleep: SettingSwitch
+    mode: SettingSwitch
+    nobody: SettingSwitch
+    nobody_duration: int
+    struggle: SettingSwitch
+    stop_duration: int
+
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> Setting:
+        """Return Setting object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Setting object.
+        """
+        setting = data.get("setting")
+        if setting is None:
+            return None
+        return Setting(
+            binding_count=setting.get("binding_count", None),
+            binding=setting.get("binding", None),
+            realtime_ws=setting.get("realtime_ws", None),
+            realtime_mq=setting.get("realtime_mq", None),
+            body=setting.get("body", None),
+            heart=setting.get("heart", None),
+            breath=setting.get("breath", None),
+            sleep=setting.get("sleep", None),
+            mode=setting.get("mode", None),
+            nobody=setting.get("nobody", None),
+            nobody_duration=setting.get("nobody_duration", None),
+            struggle=setting.get("struggle", None),
+            stop_duration=setting.get("stop_duration", None),
+        )
+
+@dataclass
+class Device:
+    """Object holding Device Infomation from OWRCare.
+
+    Args:
+    ----
+        data: The data from the OWRCare device API.
+
+    Returns:
+    -------
+        A Device object.
+    """
+
+    setting: Setting
+    info: Info
+
+
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> Device:
+        """Return Device object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Device object.
+        """
+
+        return Device(
+            setting=Setting(data.get("setting")),
+            info=Info(data.get("info")),
         )

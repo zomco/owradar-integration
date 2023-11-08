@@ -4,7 +4,7 @@ from __future__ import annotations
 from typing import Any
 
 import voluptuous as vol
-from owrcare import OWRCare, OWRCareConnectionError
+from owrcare import OWRCare, Device as OWRCareDevice, OWRCareConnectionError
 
 from homeassistant.components import onboarding, zeroconf
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
@@ -13,13 +13,21 @@ from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
-from .const import DOMAIN, LOGGER
+from .const import CONF_REALTIME_MODE, DEFAULT_REALTIME_MODE, DOMAIN, LOGGER
 
 
 class OWRCareFlowHandler(ConfigFlow, domain=DOMAIN):
     """Config flow for OWRCare."""
 
     VERSION = 1
+    discovered_host: str
+    discovered_device: OWRCareDevice
+
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry: ConfigEntry) -> OWRCareOptionsFlowHandler:
+        """Get the options flow for this handler."""
+        return OWRCareOptionsFlowHandler(config_entry)
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
@@ -69,9 +77,6 @@ class OWRCareFlowHandler(ConfigFlow, domain=DOMAIN):
         except OWRCareConnectionError:
             return self.async_abort(reason="cannot_connect")
 
-        if self.discovered_device.info.leds.cct:
-            return self.async_abort(reason="cct_unsupported")
-
         await self.async_set_unique_id(self.discovered_device.info.mac_address)
         self._abort_if_unique_id_configured(updates={CONF_HOST: discovery_info.host})
 
@@ -100,11 +105,37 @@ class OWRCareFlowHandler(ConfigFlow, domain=DOMAIN):
             description_placeholders={"name": self.discovered_device.info.name},
         )
 
-    async def _async_get_device(self, host: str) -> Device:
-        """Get device information from WLED device."""
+    async def _async_get_device(self, host: str) -> OWRCareDevice:
+        """Get device information from OWRCare device."""
         session = async_get_clientsession(self.hass)
-        wled = WLED(host, session=session)
-        return await wled.update()
+        owrcare = OWRCareDevice(host, session=session)
+        return await owrcare.update()
 
 
+class OWRCareOptionsFlowHandler(OptionsFlow):
+    """Handle OWRCare options."""
 
+    def __init__(self, config_entry: ConfigEntry) -> None:
+        """Initialize OWRCare options flow."""
+        self.config_entry = config_entry
+
+    async def async_step_init(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Manage OWRCare options."""
+        if user_input is not None:
+            return self.async_create_entry(title="", data=user_input)
+
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema(
+                {
+                    vol.Optional(
+                        CONF_REALTIME_MODE,
+                        default=self.config_entry.options.get(
+                            CONF_REALTIME_MODE, DEFAULT_REALTIME_MODE
+                        ),
+                    ): bool,
+                }
+            ),
+        )
