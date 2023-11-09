@@ -1,56 +1,148 @@
 """Switch platform for owr_care."""
 from __future__ import annotations
 
-from homeassistant.components.switch import SwitchEntity, SwitchEntityDescription
+from functools import partial
+from typing import Any
+
+from homeassistant.components.switch import SwitchEntity, SwitchEntityDescription, SwitchDeviceClass
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import EntityCategory
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN
-from .coordinator import BlueprintDataUpdateCoordinator
-from .entity import OWRCareEntity
+from .coordinator import OWRCareDataUpdateCoordinator
+from .models import OWRCareEntity
 
-ENTITY_DESCRIPTIONS = (
-    SwitchEntityDescription(
-        key="owr_care",
-        name="Integration Switch",
-        icon="mdi:format-quote-close",
+PARALLEL_UPDATES = 1
+
+@dataclass
+class OWRCareSwitchEntityDescriptionMixin:
+    """Mixin for required keys."""
+
+    value_fn: Callable[[OWRCareDevice], datetime | StateType]
+
+
+@dataclass
+class OWRCareSwitchEntityDescription(
+    SwitchEntityDescription, OWRCareSwitchEntityDescriptionMixin
+):
+    """Describes OWRCare switch entity."""
+
+    exists_fn: Callable[[OWRCareDevice], bool] = lambda _: True
+
+
+SWITCHES: tuple[OWRCareSwitchEntityDescription, ...] = [
+    OWRCareSwitchEntityDescription(
+        key="setting_binding",
+        translation_key="setting_binding",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: device.state.setting.binding,
     ),
-)
+    OWRCareSwitchEntityDescription(
+        key="setting_realtime_ws",
+        translation_key="setting_realtime_ws",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: device.state.setting.realtime_ws,
+    ),
+    OWRCareSwitchEntityDescription(
+        key="setting_realtime_mq",
+        translation_key="setting_realtime_mq",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: device.state.setting.realtime_mq,
+    ),
+    OWRCareSwitchEntityDescription(
+        key="setting_body",
+        translation_key="setting_body",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: device.state.setting.body,
+    ),
+    OWRCareSwitchEntityDescription(
+        key="setting_heart",
+        translation_key="setting_heart",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: device.state.setting.heart,
+    ),
+    OWRCareSwitchEntityDescription(
+        key="setting_body",
+        translation_key="setting_body",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: device.state.setting.body,
+    ),
+    OWRCareSwitchEntityDescription(
+        key="setting_breath",
+        translation_key="setting_breath",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: device.state.setting.breath,
+    ),
+    OWRCareSwitchEntityDescription(
+        key="setting_sleep",
+        translation_key="setting_sleep",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: device.state.setting.sleep,
+    ),
+    OWRCareSwitchEntityDescription(
+        key="setting_mode",
+        translation_key="setting_mode",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: device.state.setting.mode,
+    ),
+    OWRCareSwitchEntityDescription(
+        key="setting_nobody",
+        translation_key="setting_nobody",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: device.state.setting.nobody,
+    ),
+    OWRCareSwitchEntityDescription(
+        key="setting_struggle",
+        translation_key="setting_struggle",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: device.state.setting.struggle,
+    ),
+]
 
 
-async def async_setup_entry(hass, entry, async_add_devices):
-    """Set up the sensor platform."""
-    coordinator = hass.data[DOMAIN][entry.entry_id]
-    async_add_devices(
-        OWRCareSwitch(
-            coordinator=coordinator,
-            entity_description=entity_description,
-        )
-        for entity_description in ENTITY_DESCRIPTIONS
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    """Set up OWRCare switch based on a config entry."""
+    coordinator: OWRCareDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+
+    async_add_entities(
+        OWRCareSwitchEntity(coordinator, description)
+        for description in SWITCHES
+        if description.exists_fn(coordinator.data)
     )
 
 
-class OWRCareSwitch(OWRCareEntity, SwitchEntity):
-    """owr_care switch class."""
+class OWRCareSwitchEntify(OWRCareEntity, SwitchEntity):
+    """Defines a OWRCare switch entity."""
+
+    entity_description: OWRCareSwitchEntityDescription
 
     def __init__(
         self,
-        coordinator: BlueprintDataUpdateCoordinator,
-        entity_description: SwitchEntityDescription,
+        coordinator: OWRCareDataUpdateCoordinator,
+        description: OWRCareSwitchEntityDescription,
     ) -> None:
-        """Initialize the switch class."""
-        super().__init__(coordinator)
-        self.entity_description = entity_description
+        """Initialize a OWRCare switch entity."""
+        super().__init__(coordinator=coordinator)
+        self.entity_description = description
+        self._attr_unique_id = f"{coordinator.data.info.mac_address}_{description.key}"
 
     @property
     def is_on(self) -> bool:
-        """Return true if the switch is on."""
-        return self.coordinator.data.get("title", "") == "foo"
+        """Return the state of the switch."""
+        return bool(self.entity_description.value_fn(self.coordinator.data))
 
-    async def async_turn_on(self, **_: any) -> None:
-        """Turn on the switch."""
-        await self.coordinator.api.async_set_title("bar")
-        await self.coordinator.async_request_refresh()
+    @owrcare_exception_handler
+    async def async_turn_off(self, **kwargs: Any) -> None:
+        """Turn off the OWRCare setting switch."""
+        await self.coordinator.owrcare.setting(on=False)
 
-    async def async_turn_off(self, **_: any) -> None:
-        """Turn off the switch."""
-        await self.coordinator.api.async_set_title("foo")
-        await self.coordinator.async_request_refresh()
+    @owrcare_exception_handler
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """Turn on the OWRCare setting switch."""
+        await self.coordinator.owrcare.setting(on=True)

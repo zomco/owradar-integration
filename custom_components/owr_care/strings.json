@@ -184,8 +184,35 @@
             }
         },
         "switch": {
-            "realtime": {
-                "name": "Realtime Mode"
+            "binding": {
+                "name": "Binding Switch"
+            },
+            "realtime_ws": {
+                "name": "Websocket Realtime Mode"
+            },
+            "realtime_mq": {
+                "name": "MQTT Realtime Mode"
+            },
+            "body": {
+                "name": "Body Monitoring Switch"
+            },
+            "heart": {
+                "name": "Heart Monitoring Switch"
+            },
+            "breath": {
+                "name": "Breath Monitoring Switch"
+            },
+            "sleep": {
+                "name": "Sleep Monitoring Switch"
+            },
+            "mode": {
+                "name": "Mode Monitoring Switch"
+            },
+            "nobody": {
+                "name": "Nobody Monitoring Switch"
+            },
+            "struggle": {
+                "name": "Struggle Monitoring Switch"
             }
         }
     }

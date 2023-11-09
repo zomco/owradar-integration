@@ -14,7 +14,7 @@ _OWRCareEntityT = TypeVar("_OWRCareEntityT", bound=OWRCareEntity)
 _P = ParamSpec("_P")
 
 
-def wled_exception_handler(
+def owrcare_exception_handler(
     func: Callable[Concatenate[_OWRCareEntityT, _P], Coroutine[Any, Any, Any]]
 ) -> Callable[Concatenate[_OWRCareEntityT, _P], Coroutine[Any, Any, None]]:
     """Decorate OWRCare calls to handle OWRCare exceptions.

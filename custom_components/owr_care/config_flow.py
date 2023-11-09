@@ -13,7 +13,7 @@ from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
-from .const import CONF_REALTIME_MODE, DEFAULT_REALTIME_MODE, DOMAIN, LOGGER
+from .const import CONF_REALTIME_WS, DEFAULT_REALTIME_WS, DOMAIN, LOGGER
 
 
 class OWRCareFlowHandler(ConfigFlow, domain=DOMAIN):
@@ -131,9 +131,9 @@ class OWRCareOptionsFlowHandler(OptionsFlow):
             data_schema=vol.Schema(
                 {
                     vol.Optional(
-                        CONF_REALTIME_MODE,
+                        CONF_REALTIME_WS,
                         default=self.config_entry.options.get(
-                            CONF_REALTIME_MODE, DEFAULT_REALTIME_MODE
+                            CONF_REALTIME_WS, DEFAULT_REALTIME_WS
                         ),
                     ): bool,
                 }

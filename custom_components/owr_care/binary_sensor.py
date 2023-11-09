@@ -8,7 +8,7 @@ from homeassistant.components.binary_sensor import (
 )
 
 from .const import DOMAIN
-from .coordinator import BlueprintDataUpdateCoordinator
+from .coordinator import OWRCareDataUpdateCoordinator
 from .entity import OWRCareEntity
 
 ENTITY_DESCRIPTIONS = (
@@ -37,7 +37,7 @@ class OWRCareBinarySensor(OWRCareEntity, BinarySensorEntity):
 
     def __init__(
         self,
-        coordinator: BlueprintDataUpdateCoordinator,
+        coordinator: OWRCareDataUpdateCoordinator,
         entity_description: BinarySensorEntityDescription,
     ) -> None:
         """Initialize the binary_sensor class."""

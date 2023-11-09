@@ -7,9 +7,8 @@ SCAN_INTERVAL = timedelta(seconds=10)
 
 NAME = "owr care"
 DOMAIN = "owr_care"
-VERSION = "0.0.231107"
-ATTRIBUTION = "Data provided by http://jsonplaceholder.typicode.com/"
+VERSION = "0.0.231109"
 
 # Options
-CONF_REALTIME_MODE = "realtime_mode"
-DEFAULT_REALTIME_MODE = False
+CONF_REALTIME_WS = "realtime_ws"
+DEFAULT_REALTIME_WS = False

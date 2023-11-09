@@ -398,8 +398,8 @@ class Sleep:
 
 
 @dataclass
-class Report:
-    """Object holding Report Infomation from OWRCare.
+class State:
+    """Object holding State Infomation from OWRCare.
 
     Args:
     ----
@@ -407,7 +407,7 @@ class Report:
 
     Returns:
     -------
-        A Report object.
+        A State object.
     """
 
     timestamp: int
@@ -418,7 +418,7 @@ class Report:
 
 
     @staticmethod
-    def from_dict(data: dict[str, Any]) -> Report:
+    def from_dict(data: dict[str, Any]) -> State:
         """Return Status object form OWRCare API response.
 
         Args:
@@ -433,7 +433,7 @@ class Report:
         if timestamp is None:
             return None
 
-        return Report(
+        return State(
             timestamp=timestamp,
             body=Body(data.get("body")),
             breath=Breath(data.get("breath")),
@@ -452,6 +452,10 @@ class Info:
     hardware: str
     firmware: str
     version: str
+    free_heap: int
+    ip: str
+    mac_addr: str
+    name: str
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Info:
@@ -465,16 +469,20 @@ class Info:
         -------
             A Device information object.
         """
-        product = data.get("info")
-        if product is None:
+        info = data.get("info")
+        if info is None:
             return None
 
         return Info(
-            model=product.get("model", None),
-            id=product.get("id", None),
-            hardware=product.get("hardware", None),
-            firmware=product.get("firmware", None),
-            version=product.get("version", None),
+            model=info.get("model", None),
+            id=info.get("id", None),
+            hardware=info.get("hardware", None),
+            firmware=info.get("firmware", None),
+            version=info.get("version", None),
+            free_heap=info.get("free_heap", None),
+            ip=info.get("ip", None),
+            mac_addr=info.get("mac_addr", None),
+            name=info.get("name", None),
         )
 
 class SettingSwitch(IntEnum):
@@ -556,22 +564,49 @@ class Device:
 
     setting: Setting
     info: Info
+    state: State
 
 
-    @staticmethod
-    def from_dict(data: dict[str, Any]) -> Device:
-        """Return Device object form OWRCare API response.
+    def __init__(self, data: dict[str, Any]) -> None:
+        """Initialize an empty OWRCare device class.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The full API response from a OWRCare device.
+
+        Raises:
+        ------
+            OWRCareError: In case the given API response is incomplete in a way
+                that a Device object cannot be constructed from it.
+        """
+        # Check if all elements are in the passed dict, else raise an Error
+        # if any(
+        #     k not in data and data[k] is not None
+        #     for k in ("setting","info", "state")
+        # ):
+        #     msg = "OWRCare data is incomplete, cannot construct device object"
+        #     raise OWRCareError(msg)
+        self.update_from_dict(data)
+
+    def update_from_dict(self, data: dict[str, Any]) -> Device:
+        """Return Device object from OWRCare API response.
+
+        Args:
+        ----
+            data: Update the device object with the data received from a
+                OWRCare device API.
 
         Returns:
         -------
-            An Device object.
+            The updated Device object.
         """
+        if _setting := data.get("setting"):
+            self.setting = Setting.from_dict(_setting)
 
-        return Device(
-            setting=Setting(data.get("setting")),
-            info=Info(data.get("info")),
-        )
+        if _info := data.get("info"):
+            self.info = Info.from_dict(_info)
+
+        if _state := data.get("state"):
+            self.state = State.from_dict(_state)
+
+        return self

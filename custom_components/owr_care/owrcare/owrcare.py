@@ -90,7 +90,7 @@ class OWRCare:
             )
             raise OWRCareConnectionError(msg) from exception
 
-    async def listen(self, callback: Callable[[Report], None]) -> None:
+    async def listen(self, callback: Callable[[Device], None]) -> None:
         """Listen for events on the OWRCare WebSocket.
 
         Args:
@@ -118,7 +118,9 @@ class OWRCare:
 
             if message.type == aiohttp.WSMsgType.TEXT:
                 message_data = message.json()
-                callback(message_data[0])
+                msg = { "state": message_data[0] }
+                device = self._device.update_from_dict(data=msg)
+                callback(device)
 
             if message.type in (
                 aiohttp.WSMsgType.CLOSE,
@@ -249,6 +251,56 @@ class OWRCare:
             return self._device
 
         return self._device
+
+    async def setting(
+        self,
+        *,
+        binding: bool | None = None,
+        realtime_ws: bool | None = None,
+        realtime_mq: bool | None = None,
+        body: bool | None = None,
+        heart: bool | None = None,
+        breath: bool | None = None,
+        sleep: bool | None = None,
+        mode: bool | None = None,
+        nobody: bool | None = None,
+        nobody_duration: int | None = None,
+        struggle: bool | None = None,
+        stop_duration: int | None = None,
+    ) -> None:
+        """Set the setting of the OWRCare device.
+
+        Args:
+        ----
+            binding: Process binding switch.
+            realtime_ws: Websocket publishing mode.
+            realtime_mq: MQTT publishing mode.
+            body: Body monioring switch.
+            herat: Heart monioring switch.
+            breath: Breath monioring switch.
+            sleep: Sleep monioring switch.
+            mode: Mode monioring switch.
+            nobody: Nobody monioring switch.
+            nobody_duration: Nobody duration setting.
+            struggle: Struggle monioring switch.
+            stop_duration: Sleep stop duration setting.
+        """
+        setting = {
+            "binding": binding,
+            "realtime_ws": realtime_ws,
+            "realtime_mq": realtime_mq,
+            "body": body,
+            "heart": heart,
+            "breath": breath,
+            "sleep": sleep,
+            "mode": sleep,
+            "nobody": nobody,
+            "nobody": nobody_duration,
+            "struggle": struggle,
+            "stop_duration": stop_duration
+        }
+        setting = {k: v for k, v in setting.items() if v is not None}
+        await self.request("/api/device", method="POST", data={"setting": setting})
 
     async def close(self) -> None:
         """Close open client (WebSocket) session."""
