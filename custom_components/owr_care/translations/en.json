@@ -21,15 +21,6 @@
             }
         }
     },
-    "options": {
-        "step": {
-            "init": {
-                "data": {
-                    "realtime_mode": "Realtime mode."
-                }
-            }
-        }
-    },
     "entity": {
         "sensor": {
             "body_range": {
@@ -184,35 +175,43 @@
             }
         },
         "switch": {
-            "binding": {
+            "setting_binding": {
                 "name": "Binding Switch"
             },
-            "realtime_ws": {
+            "setting_realtime_ws": {
                 "name": "Websocket Realtime Mode"
             },
-            "realtime_mq": {
+            "setting_realtime_mq": {
                 "name": "MQTT Realtime Mode"
             },
-            "body": {
+            "setting_body": {
                 "name": "Body Monitoring Switch"
             },
-            "heart": {
+            "setting_heart": {
                 "name": "Heart Monitoring Switch"
             },
-            "breath": {
+            "setting_breath": {
                 "name": "Breath Monitoring Switch"
             },
-            "sleep": {
+            "setting_sleep": {
                 "name": "Sleep Monitoring Switch"
             },
-            "mode": {
+            "setting_mode": {
                 "name": "Mode Monitoring Switch"
             },
-            "nobody": {
+            "setting_nobody": {
                 "name": "Nobody Monitoring Switch"
             },
-            "struggle": {
+            "setting_struggle": {
                 "name": "Struggle Monitoring Switch"
+            }
+        },
+        "number": {
+            "setting_nobody_duration": {
+                "name": "Binding Switch Duration"
+            },
+            "setting_stop_duration": {
+                "name": "Sleep Stop Duration"
             }
         }
     }

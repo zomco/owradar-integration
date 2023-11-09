@@ -23,12 +23,6 @@ class OWRCareFlowHandler(ConfigFlow, domain=DOMAIN):
     discovered_host: str
     discovered_device: OWRCareDevice
 
-    @staticmethod
-    @callback
-    def async_get_options_flow(config_entry: ConfigEntry) -> OWRCareOptionsFlowHandler:
-        """Get the options flow for this handler."""
-        return OWRCareOptionsFlowHandler(config_entry)
-
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
@@ -47,9 +41,7 @@ class OWRCareFlowHandler(ConfigFlow, domain=DOMAIN):
                 )
                 return self.async_create_entry(
                     title=device.info.name,
-                    data={
-                        CONF_HOST: user_input[CONF_HOST],
-                    },
+                    data={ CONF_HOST: user_input[CONF_HOST] },
                 )
         else:
             user_input = {}
@@ -111,31 +103,3 @@ class OWRCareFlowHandler(ConfigFlow, domain=DOMAIN):
         owrcare = OWRCareDevice(host, session=session)
         return await owrcare.update()
 
-
-class OWRCareOptionsFlowHandler(OptionsFlow):
-    """Handle OWRCare options."""
-
-    def __init__(self, config_entry: ConfigEntry) -> None:
-        """Initialize OWRCare options flow."""
-        self.config_entry = config_entry
-
-    async def async_step_init(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
-        """Manage OWRCare options."""
-        if user_input is not None:
-            return self.async_create_entry(title="", data=user_input)
-
-        return self.async_show_form(
-            step_id="init",
-            data_schema=vol.Schema(
-                {
-                    vol.Optional(
-                        CONF_REALTIME_WS,
-                        default=self.config_entry.options.get(
-                            CONF_REALTIME_WS, DEFAULT_REALTIME_WS
-                        ),
-                    ): bool,
-                }
-            ),
-        )
