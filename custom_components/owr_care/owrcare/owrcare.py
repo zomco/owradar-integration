@@ -23,7 +23,7 @@ from .exceptions import (
     OWRCareError,
     OWRCareUpgradeError,
 )
-from .models import Device, Report
+from .models import Device
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence

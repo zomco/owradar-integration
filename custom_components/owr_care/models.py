@@ -16,9 +16,9 @@ class OWRCareEntity(CoordinatorEntity[OWRCareDataUpdateCoordinator]):
         """Return device information about this OWRCare device."""
         return DeviceInfo(
             connections={
-                (CONNECTION_NETWORK_MAC, self.coordinator.data.info.mac_address)
+                (CONNECTION_NETWORK_MAC, self.coordinator.data.info.mac_addr)
             },
-            identifiers={(DOMAIN, self.coordinator.data.info.mac_address)},
+            identifiers={(DOMAIN, self.coordinator.data.info.mac_addr)},
             name=self.coordinator.data.info.name,
             manufacturer=self.coordinator.data.info.brand,
             model=self.coordinator.data.info.product,

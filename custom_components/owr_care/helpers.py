@@ -4,7 +4,7 @@ from __future__ import annotations
 from collections.abc import Callable, Coroutine
 from typing import Any, Concatenate, ParamSpec, TypeVar
 
-from owrcare import OWRCareConnectionError, OWRCareError
+from .owrcare import OWRCareConnectionError, OWRCareError
 
 from homeassistant.exceptions import HomeAssistantError
 

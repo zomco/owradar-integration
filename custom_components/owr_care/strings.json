@@ -3,14 +3,14 @@
       "flow_title": "{name}",
       "step": {
         "user": {
-          "description": "Set up your WLED to integrate with Home Assistant.",
+          "description": "Set up your OWRCare to integrate with Home Assistant.",
           "data": {
             "host": "[%key:common::config_flow::data::host%]"
           }
         },
         "zeroconf_confirm": {
-          "description": "Do you want to add the WLED named `{name}` to Home Assistant?",
-          "title": "Discovered WLED device"
+          "description": "Do you want to add the OWRCare named `{name}` to Home Assistant?",
+          "title": "Discovered OWRCare device"
         }
       },
       "error": {

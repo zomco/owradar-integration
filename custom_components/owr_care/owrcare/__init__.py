@@ -8,12 +8,12 @@ from .exceptions import (
     OWRCareUpgradeError,
 )
 from .models import (
-    CareMessage,
+    Device,
 )
 from .owrcare import OWRCare
 
 __all__ = [
-    "CareMessage",
+    "Device",
     "OWRCare",
     "OWRCareConnectionClosedError",
     "OWRCareConnectionError",

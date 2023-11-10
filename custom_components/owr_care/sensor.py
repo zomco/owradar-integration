@@ -5,7 +5,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 
-from owrcare import Device as OWRCareDevice
+from .owrcare import Device as OWRCareDevice
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -75,7 +75,7 @@ SENSORS: tuple[OWRCareSensorEntityDescription, ...] = (
         translation_key="body_energy",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
-        value_fn=lambda device: device.state.body.energy),
+        value_fn=lambda device: device.state.body.energy,
     ),
     OWRCareSensorEntityDescription(
         key="body_distance",
@@ -409,7 +409,7 @@ class OWRCareSensorEntity(OWRCareEntity, SensorEntity):
         """Initialize a OWRCare sensor entity."""
         super().__init__(coordinator=coordinator)
         self.entity_description = description
-        self._attr_unique_id = f"{coordinator.data.info.mac_address}_{description.key}"
+        self._attr_unique_id = f"{coordinator.data.info.mac_addr}_{description.key}"
 
     @property
     def native_value(self) -> datetime | StateType:

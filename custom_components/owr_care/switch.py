@@ -135,7 +135,7 @@ class OWRCareSwitchEntify(OWRCareEntity, SwitchEntity):
         """Initialize a OWRCare switch entity."""
         super().__init__(coordinator=coordinator)
         self.entity_description = description
-        self._attr_unique_id = f"{coordinator.data.info.mac_address}_{description.key}"
+        self._attr_unique_id = f"{coordinator.data.info.mac_addr}_{description.key}"
 
     @property
     def is_on(self) -> bool:

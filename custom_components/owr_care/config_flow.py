@@ -1,19 +1,19 @@
-"""Adds config flow for Blueprint."""
+"""Adds config flow for OWRCare."""
 from __future__ import annotations
 
 from typing import Any
 
 import voluptuous as vol
-from owrcare import OWRCare, Device as OWRCareDevice, OWRCareConnectionError
+from .owrcare import OWRCare, Device as OWRCareDevice, OWRCareConnectionError
 
 from homeassistant.components import onboarding, zeroconf
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
 from homeassistant.const import CONF_HOST, CONF_MAC
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
-from homeassistant.helpers.aiohttp_client import async_create_clientsession
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import CONF_REALTIME_WS, DEFAULT_REALTIME_WS, DOMAIN, LOGGER
+from .const import DOMAIN, LOGGER
 
 
 class OWRCareFlowHandler(ConfigFlow, domain=DOMAIN):
@@ -35,7 +35,7 @@ class OWRCareFlowHandler(ConfigFlow, domain=DOMAIN):
             except OWRCareConnectionError:
                 errors["base"] = "cannot_connect"
             else:
-                await self.async_set_unique_id(device.info.mac_address)
+                await self.async_set_unique_id(device.info.mac_addr)
                 self._abort_if_unique_id_configured(
                     updates={CONF_HOST: user_input[CONF_HOST]}
                 )
@@ -69,7 +69,7 @@ class OWRCareFlowHandler(ConfigFlow, domain=DOMAIN):
         except OWRCareConnectionError:
             return self.async_abort(reason="cannot_connect")
 
-        await self.async_set_unique_id(self.discovered_device.info.mac_address)
+        await self.async_set_unique_id(self.discovered_device.info.mac_addr)
         self._abort_if_unique_id_configured(updates={CONF_HOST: discovery_info.host})
 
         self.context.update(
@@ -100,6 +100,6 @@ class OWRCareFlowHandler(ConfigFlow, domain=DOMAIN):
     async def _async_get_device(self, host: str) -> OWRCareDevice:
         """Get device information from OWRCare device."""
         session = async_get_clientsession(self.hass)
-        owrcare = OWRCareDevice(host, session=session)
+        owrcare = OWRCare(host, session=session)
         return await owrcare.update()
 
