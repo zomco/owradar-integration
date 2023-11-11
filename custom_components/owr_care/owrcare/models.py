@@ -34,9 +34,9 @@ class BodyMovement(IntEnum):
 class BodyLocation:
     """Object holding body location state in OWRCare."""
 
-    x: int
-    y: int
-    z: int
+    x: int = None
+    y: int = None
+    z: int = None
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
@@ -57,12 +57,12 @@ class BodyLocation:
 class Body:
     """Object holding body state in OWRCare."""
 
-    range: BodyRange
-    presence: BodyPresence
-    energy: int
-    movement: BodyMovement
-    distance: int
-    location: BodyLocation
+    range: BodyRange = None
+    presence: BodyPresence = None
+    energy: int = None
+    movement: BodyMovement = None
+    distance: int = None
+    location: BodyLocation = None
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
@@ -90,11 +90,11 @@ class Body:
 class Wave:
     """Object holding wave state in OWRCare."""
 
-    w0: int
-    w1: int
-    w2: int
-    w3: int
-    w4: int
+    w0: int = None
+    w1: int = None
+    w2: int = None
+    w3: int = None
+    w4: int = None
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
@@ -119,8 +119,8 @@ class Wave:
 class Heart:
     """Object holding heart state in OWRCare."""
 
-    rate: int
-    waves: Wave
+    rate: int = None
+    waves: Wave = None
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
@@ -148,9 +148,9 @@ class BreathInfo(IntEnum):
 class Breath:
     """Object holding breath state in OWRCare."""
 
-    info: BreathInfo
-    rate: int
-    waves: Wave
+    info: BreathInfo = None
+    rate: int = None
+    waves: Wave = None
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
@@ -226,14 +226,14 @@ class SleepOverview:
         A sleep overview object.
     """
 
-    presence: BodyPresence
-    status: SleepStatus
-    breath: int
-    heart: int
-    turn: int
-    leratio: int
-    seratio: int
-    pause: int
+    presence: BodyPresence = None
+    status: SleepStatus = None
+    breath: int = None
+    heart: int = None
+    turn: int = None
+    leratio: int = None
+    seratio: int = None
+    pause: int = None
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
@@ -273,17 +273,17 @@ class SleepQuality:
         A sleep quality object.
     """
 
-    score: int
-    duration: int
-    awake: int
-    light: int
-    deep: int
-    aduration: int
-    away: int
-    turn: int
-    breath: int
-    heart: int
-    pause: int
+    score: int = None
+    duration: int = None
+    awake: int = None
+    light: int = None
+    deep: int = None
+    aduration: int = None
+    away: int = None
+    turn: int = None
+    breath: int = None
+    heart: int = None
+    pause: int = None
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
@@ -329,18 +329,18 @@ class Sleep:
         A sleep object.
     """
 
-    away: SleepAway
-    status: SleepStatus
-    awake: int
-    light: int
-    deep: int
-    score: int
-    overview: SleepOverview
-    quality: SleepQuality
-    exception: SleepException
-    rating: SleepRating
-    struggle: SleepStruggle
-    nobody: SleepNobody
+    away: SleepAway = None
+    status: SleepStatus = None
+    awake: int = None
+    light: int = None
+    deep: int = None
+    score: int = None
+    overview: SleepOverview = None
+    quality: SleepQuality = None
+    exception: SleepException = None
+    rating: SleepRating = None
+    struggle: SleepStruggle = None
+    nobody: SleepNobody = None
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
@@ -388,11 +388,11 @@ class State:
         A State object.
     """
 
-    timestamp: int
-    body: Body
-    heart: Heart
-    breath: Breath
-    sleep: Sleep
+    timestamp: int = None
+    body: Body = None
+    heart: Heart = None
+    breath: Breath = None
+    sleep: Sleep = None
 
 
     def __init__(self, data: dict[str, Any]) -> None:
@@ -477,19 +477,19 @@ class Setting:
         A Setting object.
     """
 
-    binding_count: int
-    binding: SettingSwitch
-    realtime_ws: SettingSwitch
-    realtime_mq: SettingSwitch
-    body: SettingSwitch
-    heart: SettingSwitch
-    breath: SettingSwitch
-    sleep: SettingSwitch
-    mode: SettingSwitch
-    nobody: SettingSwitch
-    nobody_duration: int
-    struggle: SettingSwitch
-    stop_duration: int
+    binding_count: int = None
+    binding: SettingSwitch = None
+    realtime_ws: SettingSwitch = None
+    realtime_mq: SettingSwitch = None
+    body: SettingSwitch = None
+    heart: SettingSwitch = None
+    breath: SettingSwitch = None
+    sleep: SettingSwitch = None
+    mode: SettingSwitch = None
+    nobody: SettingSwitch = None
+    nobody_duration: int = None
+    struggle: SettingSwitch = None
+    stop_duration: int = None
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Setting:
@@ -535,9 +535,9 @@ class Device:
         A Device object.
     """
 
-    setting: Setting
-    info: Info
-    state: State
+    setting: Setting = None
+    info: Info = None
+    state: State = None
 
 
     def __init__(self, data: dict[str, Any]) -> None:

@@ -41,7 +41,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         coordinator: OWRCareDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
         # Ensure disconnected and cleanup stop sub
-        await coordinator.OWRCare.disconnect()
+        await coordinator.owrcare.disconnect()
         if coordinator.unsub:
             coordinator.unsub()
 

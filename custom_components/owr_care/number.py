@@ -5,6 +5,8 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from functools import partial
 
+from .owrcare import Device as OWRCareDevice
+
 from homeassistant.components.number import NumberEntity, NumberEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import EntityCategory
@@ -42,7 +44,7 @@ NUMBERS = [
         native_step=10,
         native_min_value=30,
         native_max_value=180,
-        value_fn=lambda device: device.state.setting.nobody_duration,
+        value_fn=lambda device: device.setting.nobody_duration,
         update_fn=lambda coordinator, value: coordinator.owrcare.setting(nobody_duration=value),
     ),
     OWRCareNumberEntityDescription(
@@ -52,7 +54,7 @@ NUMBERS = [
         native_step=5,
         native_min_value=5,
         native_max_value=120,
-        value_fn=lambda device: device.state.setting.stop_duration,
+        value_fn=lambda device: device.setting.stop_duration,
         update_fn=lambda coordinator, flag: coordinator.owrcare.setting(stop_duration=value),
     ),
 ]
@@ -90,7 +92,7 @@ class OWRCareNumberEntity(OWRCareEntity, NumberEntity):
     @property
     def native_value(self) -> int | None:
         """Return the current OWRCare number value."""
-        return self.entity_description.value_fn(self.coordinator.data)
+        return self.entity_description.value_fn(self.coordinator.data)if self.coordinator.data.setting else None
 
     @owrcare_exception_handler
     async def async_set_native_value(self, value: int) -> None:
