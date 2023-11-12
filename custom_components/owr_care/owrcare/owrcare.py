@@ -120,7 +120,7 @@ class OWRCare:
                 message_data = message.json()
                 # construct states list to update device
                 msg = { "states": message_data }
-                device = self._device.update_from_dict(data=msg)
+                device = self._device.update_from_dict(msg)
                 callback(device)
 
             if message.type in (
@@ -248,7 +248,7 @@ class OWRCare:
                     " response on full update",
                 )
                 raise OWRCareEmptyResponseError(msg)
-            self._device = Device(data)
+            self._device = Device.from_dict(data)
             return self._device
 
         return self._device

@@ -38,17 +38,23 @@ class BodyLocation:
     y: int
     z: int
 
-    def __init__(self, data: dict[str, Any]) -> None:
-        self.update_from_dict(data)
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> BodyLocation:
+        """Return Body Location object form OWRCare API response.
 
-    def update_from_dict(self, data: dict[str, Any]) -> BodyLocation:
-        if _x := data.get("x"):
-            self.x = _x
-        if _y := data.get("y"):
-            self.y = _y
-        if _z := data.get("z"):
-            self.z = _z
-        return self
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Body Location object.
+        """
+        return BodyLocation(
+            x=data.get("x"),
+            y=data.get("y"),
+            z=data.get("z"),
+        )
 
 @dataclass
 class Body:
@@ -61,13 +67,31 @@ class Body:
     distance: int
     location: BodyLocation
 
-    def __init__(self, data: dict[str, Any]) -> None:
-        self.update_from_dict(data)
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> Body:
+        """Return Body object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Body object.
+        """
+        return Body(
+            range=BodyRange(data.get("range")),
+            presence=BodyPresence(data.get("presence")),
+            energy=data.get("energy"),
+            movement=BodyMovement(data.get("movement")),
+            distance=data.get("distance"),
+            location=BodyLocation.from_dict(data.get("location")),
+        )
 
     def update_from_dict(self, data: dict[str, Any]) -> Body:
         # print(json.dumps(data, indent=4))
         if _range := data.get("range"):
-            self.range = _range
+            self.range = BodyRange(_range)
         if _presence := data.get("presence"):
             self.presence = BodyPresence(_presence)
         if _energy := data.get("energy"):
@@ -77,7 +101,7 @@ class Body:
         if _distance := data.get("distance"):
             self.distance = _distance
         if _location := data.get("location"):
-            self.location = BodyLocation(_location)
+            self.location = BodyLocation.from_dict(_location)
 
         return self
 
@@ -92,22 +116,25 @@ class Wave:
     w3: int
     w4: int
 
-    def __init__(self, data: dict[str, Any]) -> None:
-        self.update_from_dict(data)
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> Wave:
+        """Return Wave object form OWRCare API response.
 
-    def update_from_dict(self, data: dict[str, Any]) -> Wave:
-        if _w0 := data.get("w0"):
-            self.w0 = _w0
-        if _w1 := data.get("w1"):
-            self.w1 = _w1
-        if _w2 := data.get("w2"):
-            self.w2 = _w2
-        if _w3 := data.get("w3"):
-            self.w3 = _w3
-        if _w4 := data.get("w4"):
-            self.w4 = _w4
+        Args:
+        ----
+            data: The response from the OWRCare API.
 
-        return self
+        Returns:
+        -------
+            An Wave object.
+        """
+        return Wave(
+            w0=data.get("w0"),
+            w1=data.get("w1"),
+            w2=data.get("w2"),
+            w3=data.get("w3"),
+            w4=data.get("w4"),
+        )
 
 @dataclass
 class Heart:
@@ -116,14 +143,28 @@ class Heart:
     rate: int
     waves: Wave
 
-    def __init__(self, data: dict[str, Any]) -> None:
-        self.update_from_dict(data)
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> Heart:
+        """Return Heart object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Heart object.
+        """
+        return Heart(
+            rate=data.get("rate"),
+            waves=Wave.from_dict(data.get("waves")),
+        )
 
     def update_from_dict(self, data: dict[str, Any]) -> Heart:
         if _rate := data.get("rate"):
             self.rate = _rate
         if _waves := data.get("waves"):
-            self.waves = Wave(_waves)
+            self.waves = Wave.from_dict(_waves)
 
         return self
 
@@ -131,6 +172,7 @@ class Heart:
 class BreathInfo(IntEnum):
     """Enumeration representing breath info from OWRCare."""
 
+    UNSET = 0
     NORMAL = 1
     TOO_HIGH = 2
     TOO_LOW = 3
@@ -144,8 +186,23 @@ class Breath:
     rate: int
     waves: Wave
 
-    def __init__(self, data: dict[str, Any]) -> None:
-        self.update_from_dict(data)
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> Breath:
+        """Return Breath object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Breath object.
+        """
+        return Breath(
+            info=BreathInfo(data.get("info")),
+            rate=data.get("rate"),
+            waves=Wave.from_dict(data.get("waves")),
+        )
 
     def update_from_dict(self, data: dict[str, Any]) -> Breath:
         if _info := data.get("info"):
@@ -153,7 +210,7 @@ class Breath:
         if _rate := data.get("rate"):
             self.rate = _rate
         if _waves := data.get("waves"):
-            self.waves = Wave(_waves)
+            self.waves = Wave.from_dict(_waves)
 
         return self
 
@@ -225,28 +282,28 @@ class SleepOverview:
     seratio: int
     pause: int
 
-    def __init__(self, data: dict[str, Any]) -> None:
-        self.update_from_dict(data)
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> SleepOverview:
+        """Return SleepOverview object form OWRCare API response.
 
-    def update_from_dict(self, data: dict[str, Any]) -> SleepOverview:
-        if _presence := data.get("presence"):
-            self.presence = _presence
-        if _status := data.get("status"):
-            self.status = _status
-        if _breath := data.get("breath"):
-            self.breath = _breath
-        if _heart := data.get("heart"):
-            self.heart = _heart
-        if _turn := data.get("turn"):
-            self.turn = _turn
-        if _leratio := data.get("leratio"):
-            self.leratio = _leratio
-        if _seratio := data.get("seratio"):
-            self.seratio = _seratio
-        if _pause := data.get("pause"):
-            self.pause = _pause
+        Args:
+        ----
+            data: The response from the OWRCare API.
 
-        return self
+        Returns:
+        -------
+            An SleepOverview object.
+        """
+        return SleepOverview(
+            presence=BodyPresence(data.get("presence")),
+            status=SleepStatus(data.get("status")),
+            heart=data.get("heart"),
+            breath=data.get("breath"),
+            turn=data.get("turn"),
+            leratio=data.get("leratio"),
+            seratio=data.get("seratio"),
+            pause=data.get("pause"),
+        )
 
 @dataclass
 class SleepQuality:
@@ -273,34 +330,31 @@ class SleepQuality:
     heart: int
     pause: int
 
-    def __init__(self, data: dict[str, Any]) -> None:
-        self.update_from_dict(data)
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> SleepQuality:
+        """Return SleepQuality object form OWRCare API response.
 
-    def update_from_dict(self, data: dict[str, Any]) -> SleepQuality:
-        if _score := data.get("score"):
-            self.score = _score
-        if _duration := data.get("duration"):
-            self.duration= _duration
-        if _awake := data.get("awake"):
-            self.awake = _awake
-        if _light := data.get("light"):
-            self.light = _light
-        if _deep := data.get("deep"):
-            self.deep = _deep
-        if _aduration := data.get("aduration"):
-            self.aduration = _aduration
-        if _away := data.get("away"):
-            self.away = _away
-        if _turn := data.get("turn"):
-            self.turn = _turn
-        if _breath := data.get("breath"):
-            self.breath = _breath
-        if _heart := data.get("heart"):
-            self.heart = _heart
-        if _pause := data.get("pause"):
-            self.pause = _pause
+        Args:
+        ----
+            data: The response from the OWRCare API.
 
-        return self
+        Returns:
+        -------
+            An SleepQuality object.
+        """
+        return SleepQuality(
+            score=data.get("score"),
+            duration=data.get("duration"),
+            awake=data.get("awake"),
+            light=data.get("light"),
+            deep=data.get("deep"),
+            aduration=data.get("aduration"),
+            away=data.get("away"),
+            turn=data.get("turn"),
+            breath=data.get("breath"),
+            heart=data.get("heart"),
+            pause=data.get("pause"),
+        )
 
 @dataclass
 class Sleep:
@@ -328,14 +382,36 @@ class Sleep:
     struggle: SleepStruggle
     nobody: SleepNobody
 
-    def __init__(self, data: dict[str, Any]) -> None:
-        self.update_from_dict(data)
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> Sleep:
+        """Return Sleep object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Sleep object.
+        """
+        return Sleep(
+            away=data.get("away"),
+            status=data.get("status"),
+            awake=data.get("awake"),
+            light=data.get("light"),
+            deep=data.get("deep"),
+            score=data.get("score"),
+            overview=SleepOverview.from_dict(data.get("overview")),
+            quality=SleepQuality.from_dict(data.get("quality")),
+            exception=SleepException(data.get("exception")),
+            rating=SleepRating(data.get("rating")),
+            struggle=SleepStruggle(data.get("struggle")),
+            nobody=SleepNobody(data.get("nobody")),
+        )
 
     def update_from_dict(self, data: dict[str, Any]) -> Sleep:
-        if data is None:
-            return None
         if _away := data.get("away"):
-            self.away = _away
+            self.away = SleepAway(_away)
         if _status := data.get("status"):
             self.status = _status
         if _awake := data.get("awake"):
@@ -347,17 +423,17 @@ class Sleep:
         if _score := data.get("score"):
             self.score = _score
         if _overview := data.get("overview"):
-            self.overview = SleepOverview(_overview)
+            self.overview = SleepOverview.from_dict(_overview)
         if _quality := data.get("quality"):
-            self.quality = SleepQuality(_quality)
+            self.quality = SleepQuality.from_dict(_quality)
         if _exception := data.get("exception"):
-            self.exception = _exception
+            self.exception = SleepException(_exception)
         if _rating := data.get("rating"):
-            self.rating = _rating
+            self.rating = SleepRating(_rating)
         if _struggle := data.get("struggle"):
-            self.struggle = _struggle
+            self.struggle = SleepStruggle(_struggle)
         if _nobody := data.get("nobody"):
-            self.nobody = _nobody
+            self.nobody = SleepNobody(_nobody)
 
         return self
 
@@ -380,24 +456,39 @@ class State:
     breath: Breath
     sleep: Sleep
 
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> State:
+        """Return State object form OWRCare API response.
 
-    def __init__(self, data: dict[str, Any]) -> None:
-        self.update_from_dict(data)
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An State object.
+        """
+        return State(
+            timestamp=data.get("timestamp", None),
+            body=Body.from_dict(data.get("body")),
+            heart=Heart.from_dict(data.get("heart")),
+            breath=Breath.from_dict(data.get("breath")),
+            sleep=Sleep.from_dict(data.get("sleep")),
+        )
 
     def update_from_dict(self, data: dict[str, Any]) -> State:
         if _timestamp := data.get("timestamp"):
             self.timestamp = _timestamp
         if _body := data.get("body"):
-            self.body = Body(_body)
+            self.body.update_from_dict(_body)
         if _breath := data.get("breath"):
-            self.breath = Breath(_breath)
+            self.breath.update_from_dict(_breath)
         if _heart := data.get("heart"):
-            self.heart = Heart(_heart)
+            self.heart.update_from_dict(_heart)
         if _sleep := data.get("sleep"):
-            self.sleep = Sleep(_sleep)
+            self.sleep.update_from_dict(_sleep)
 
         return self
-
 
 
 @dataclass
@@ -438,12 +529,34 @@ class Info:
             name=data.get("name", None),
         )
 
+    def update_from_dict(self, data: dict[str, Any]) -> Info:
+        if _model := data.get("model"):
+            self.model = _model
+        if _id := data.get("id"):
+            self.id = _id
+        if _hardware := data.get("hardware"):
+            self.hardware = _hardware
+        if _firmware := data.get("firmware"):
+            self.firmware = _firmware
+        if _version := data.get("version"):
+            self.version = _version
+        if _free_heap := data.get("free_heap"):
+            self.free_heap = _free_heap
+        if _ip := data.get("ip"):
+            self.ip = _ip
+        if _mac := data.get("mac"):
+            self.mac = _mac
+        if _name := data.get("name"):
+            self.name = _name
+
+        return self
+
+
 class SettingSwitch(IntEnum):
     """Enumeration representing body range from OWRCare."""
 
     OFF = 0
     ON = 1
-
 
 @dataclass
 class Setting:
@@ -500,6 +613,36 @@ class Setting:
             stop_duration=data.get("stop_duration", None),
         )
 
+    def update_from_dict(self, data: dict[str, Any]) -> Setting:
+        if _binding_count := data.get("binding_count"):
+            self.binding_count = _binding_count
+        if _binding := data.get("binding"):
+            self.binding = _binding
+        if _realtime_ws := data.get("realtime_ws"):
+            self.realtime_ws = _realtime_ws
+        if _realtime_mq := data.get("realtime_mq"):
+            self.realtime_mq = _realtime_mq
+        if _body := data.get("body"):
+            self.body = _body
+        if _heart := data.get("heart"):
+            self.heart = _heart
+        if _breath := data.get("breath"):
+            self.breath = _breath
+        if _sleep := data.get("sleep"):
+            self.sleep = _sleep
+        if _mode := data.get("mode"):
+            self.mode = _mode
+        if _nobody := data.get("nobody"):
+            self.nobody = _nobody
+        if _nobody_duration := data.get("nobody_duration"):
+            self.nobody_duration = _nobody_duration
+        if _struggle := data.get("struggle"):
+            self.struggle = _struggle
+        if _stop_duration := data.get("stop_duration"):
+            self.stop_duration = _stop_duration
+
+        return self
+
 
 @dataclass
 class Device:
@@ -519,26 +662,44 @@ class Device:
     state: State
 
 
-    def __init__(self, data: dict[str, Any]) -> None:
-        """Initialize an empty OWRCare device class.
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> Device:
+        """Return Device object form OWRCare API response.
 
         Args:
         ----
-            data: The full API response from a OWRCare device.
+            data: The response from the OWRCare API.
 
-        Raises:
-        ------
-            OWRCareError: In case the given API response is incomplete in a way
-                that a Device object cannot be constructed from it.
+        Returns:
+        -------
+            An Device object.
         """
-        # Check if all elements are in the passed dict, else raise an Error
-        # if any(
-        #     k not in data and data[k] is not None
-        #     for k in ("setting","info", "state")
-        # ):
-        #     msg = "OWRCare data is incomplete, cannot construct device object"
-        #     raise OWRCareError(msg)
-        self.update_from_dict(data)
+        return Device(
+            setting=Setting.from_dict(data.get("setting")),
+            info=Info.from_dict(data.get("info")),
+            state=State.from_dict(data.get("states")[0]),
+        )
+
+    # def __init__(self, data: dict[str, Any]) -> None:
+    #     """Initialize an empty OWRCare device class.
+
+    #     Args:
+    #     ----
+    #         data: The full API response from a OWRCare device.
+
+    #     Raises:
+    #     ------
+    #         OWRCareError: In case the given API response is incomplete in a way
+    #             that a Device object cannot be constructed from it.
+    #     """
+    #     # Check if all elements are in the passed dict, else raise an Error
+    #     # if any(
+    #     #     k not in data and data[k] is not None
+    #     #     for k in ("setting","info", "state")
+    #     # ):
+    #     #     msg = "OWRCare data is incomplete, cannot construct device object"
+    #     #     raise OWRCareError(msg)
+    #     self.update_from_dict(data)
 
     def update_from_dict(self, data: dict[str, Any]) -> Device:
         """Return Device object from OWRCare API response.
@@ -553,13 +714,11 @@ class Device:
             The updated Device object.
         """
         if _setting := data.get("setting"):
-            self.setting = Setting.from_dict(_setting)
-
+            self.setting.update_from_dict(_setting)
         if _info := data.get("info"):
-            self.info = Info.from_dict(_info)
-
+            self.info.update_from_dict(_info)
         if _states := data.get("states"):
             # extract first item as the lastest state in list of states
-            self.state = State(_states[0])
+            self.state.update_from_dict(_states[0])
 
         return self
