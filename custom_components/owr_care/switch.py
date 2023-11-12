@@ -26,7 +26,7 @@ class OWRCareSwitchEntityDescriptionMixin:
     """Mixin for required keys."""
 
     value_fn: Callable[[OWRCareDevice], bool | None]
-    update_fn: Callable[[OWRCareDataUpdateCoordinator], None]
+    update_fn: Callable[[OWRCareDataUpdateCoordinator], OWRCareDevice]
 
 
 @dataclass
@@ -40,25 +40,11 @@ class OWRCareSwitchEntityDescription(
 
 SWITCHES: tuple[OWRCareSwitchEntityDescription, ...] = [
     OWRCareSwitchEntityDescription(
-        key="setting_binding",
-        translation_key="setting_binding",
-        device_class=SwitchDeviceClass.SWITCH,
-        value_fn=lambda device: bool(device.setting.binding),
-        update_fn=lambda coordinator, flag: coordinator.owrcare.setting(binding=flag),
-    ),
-    OWRCareSwitchEntityDescription(
         key="setting_realtime_ws",
         translation_key="setting_realtime_ws",
         device_class=SwitchDeviceClass.SWITCH,
         value_fn=lambda device: bool(device.setting.realtime_ws),
         update_fn=lambda coordinator, flag: coordinator.owrcare.setting(realtime_ws=flag),
-    ),
-    OWRCareSwitchEntityDescription(
-        key="setting_realtime_mq",
-        translation_key="setting_realtime_mq",
-        device_class=SwitchDeviceClass.SWITCH,
-        value_fn=lambda device: bool(device.setting.realtime_mq),
-        update_fn=lambda coordinator, flag: coordinator.owrcare.setting(realtime_mq=flag),
     ),
     OWRCareSwitchEntityDescription(
         key="setting_body",
@@ -150,9 +136,11 @@ class OWRCareSwitchEntity(OWRCareEntity, SwitchEntity):
     @owrcare_exception_handler
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn off the OWRCare setting switch."""
-        await self.entity_description.update_fn(self.coordinator, False)
+        device = await self.entity_description.update_fn(self.coordinator, False)
+        self.coordinator.async_set_updated_data(device)
 
     @owrcare_exception_handler
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn on the OWRCare setting switch."""
-        await self.entity_description.update_fn(self.coordinator, True)
+        device = await self.entity_description.update_fn(self.coordinator, True)
+        self.coordinator.async_set_updated_data(device)

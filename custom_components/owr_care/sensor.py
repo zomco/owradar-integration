@@ -49,6 +49,7 @@ class OWRCareSensorEntityDescription(
     """Describes OWRCare sensor entity."""
 
     exists_fn: Callable[[OWRCareDevice], bool] = lambda _: True
+    visible_fn: Callable[[OWRCareDevice], bool] = lambda _: True
 
 
 SENSORS: tuple[OWRCareSensorEntityDescription, ...] = (
@@ -57,6 +58,7 @@ SENSORS: tuple[OWRCareSensorEntityDescription, ...] = (
         translation_key="body_range",
         device_class=SensorDeviceClass.ENUM,
         value_fn=lambda device: device.state.body.range,
+        visible_fn=lambda device: device.setting.realtime_ws and device.setting.body
     ),
     OWRCareSensorEntityDescription(
         key="body_presence",
@@ -112,7 +114,7 @@ SENSORS: tuple[OWRCareSensorEntityDescription, ...] = (
     OWRCareSensorEntityDescription(
         key="heart_rate",
         translation_key="heart_rate",
-        native_unit_of_measurement="bpm",
+        native_unit_of_measurement="BPM",
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda device: device.state.heart.rate,
     ),
@@ -155,7 +157,7 @@ SENSORS: tuple[OWRCareSensorEntityDescription, ...] = (
     OWRCareSensorEntityDescription(
         key="breath_rate",
         translation_key="breath_rate",
-        native_unit_of_measurement="bpm",
+        native_unit_of_measurement="BPM",
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda device: device.state.breath.rate,
     ),
@@ -247,14 +249,14 @@ SENSORS: tuple[OWRCareSensorEntityDescription, ...] = (
     OWRCareSensorEntityDescription(
         key="sleep_overview_breath",
         translation_key="sleep_overview_breath",
-        native_unit_of_measurement="bpm",
+        native_unit_of_measurement="BPM",
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda device: device.state.sleep.overview.breath,
     ),
     OWRCareSensorEntityDescription(
         key="sleep_overview_heart",
         translation_key="sleep_overview_heart",
-        native_unit_of_measurement="bpm",
+        native_unit_of_measurement="BPM",
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda device: device.state.sleep.overview.heart,
     ),
@@ -337,14 +339,14 @@ SENSORS: tuple[OWRCareSensorEntityDescription, ...] = (
     OWRCareSensorEntityDescription(
         key="sleep_quality_breath",
         translation_key="sleep_quality_breath",
-        native_unit_of_measurement="bpm",
+        native_unit_of_measurement="BPM",
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda device: device.state.sleep.quality.breath,
     ),
     OWRCareSensorEntityDescription(
         key="sleep_quality_heart",
         translation_key="sleep_quality_heart",
-        native_unit_of_measurement="bpm",
+        native_unit_of_measurement="BPM",
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda device: device.state.sleep.quality.heart,
     ),
@@ -413,5 +415,6 @@ class OWRCareSensorEntity(OWRCareEntity, SensorEntity):
     @property
     def native_value(self) -> datetime | StateType:
         """Return the state of the sensor."""
+        self.entity_description.entity_registry_visible_default = self.entity_description.visible_fn(self.coordinator.data)
         return self.entity_description.value_fn(self.coordinator.data)
 

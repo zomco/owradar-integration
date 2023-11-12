@@ -256,9 +256,7 @@ class OWRCare:
     async def setting(
         self,
         *,
-        binding: bool | None = None,
         realtime_ws: bool | None = None,
-        realtime_mq: bool | None = None,
         body: bool | None = None,
         heart: bool | None = None,
         breath: bool | None = None,
@@ -268,14 +266,12 @@ class OWRCare:
         nobody_duration: int | None = None,
         struggle: bool | None = None,
         stop_duration: int | None = None,
-    ) -> None:
+    ) -> Device:
         """Set the setting of the OWRCare device.
 
         Args:
         ----
-            binding: Process binding switch.
             realtime_ws: Websocket publishing mode.
-            realtime_mq: MQTT publishing mode.
             body: Body monioring switch.
             herat: Heart monioring switch.
             breath: Breath monioring switch.
@@ -287,21 +283,20 @@ class OWRCare:
             stop_duration: Sleep stop duration setting.
         """
         setting = {
-            "binding": binding,
             "realtime_ws": realtime_ws,
-            "realtime_mq": realtime_mq,
             "body": body,
             "heart": heart,
             "breath": breath,
             "sleep": sleep,
-            "mode": sleep,
+            "mode": mode,
             "nobody": nobody,
             "nobody": nobody_duration,
             "struggle": struggle,
             "stop_duration": stop_duration
         }
         setting = {k: v for k, v in setting.items() if v is not None}
-        await self.request("/api/device", method="POST", data={"setting": setting})
+        message_data = await self.request("/api/device", method="POST", data={"setting": setting})
+        return self._device.update_from_dict(message_data)
 
     async def close(self) -> None:
         """Close open client (WebSocket) session."""
