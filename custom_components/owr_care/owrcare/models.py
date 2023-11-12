@@ -34,16 +34,14 @@ class BodyMovement(IntEnum):
 class BodyLocation:
     """Object holding body location state in OWRCare."""
 
-    x: int = None
-    y: int = None
-    z: int = None
+    x: int
+    y: int
+    z: int
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
 
     def update_from_dict(self, data: dict[str, Any]) -> BodyLocation:
-        if data is None:
-            return None
         if _x := data.get("x"):
             self.x = _x
         if _y := data.get("y"):
@@ -52,26 +50,24 @@ class BodyLocation:
             self.z = _z
         return self
 
-
 @dataclass
 class Body:
     """Object holding body state in OWRCare."""
 
-    range: BodyRange = None
-    presence: BodyPresence = None
-    energy: int = None
-    movement: BodyMovement = None
-    distance: int = None
-    location: BodyLocation = None
+    range: BodyRange
+    presence: BodyPresence
+    energy: int
+    movement: BodyMovement
+    distance: int
+    location: BodyLocation
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
 
     def update_from_dict(self, data: dict[str, Any]) -> Body:
-        if data is None:
-            return None
+        # print(json.dumps(data, indent=4))
         if _range := data.get("range"):
-            self.range = BodyRange(_range)
+            self.range = _range
         if _presence := data.get("presence"):
             self.presence = BodyPresence(_presence)
         if _energy := data.get("energy"):
@@ -90,18 +86,16 @@ class Body:
 class Wave:
     """Object holding wave state in OWRCare."""
 
-    w0: int = None
-    w1: int = None
-    w2: int = None
-    w3: int = None
-    w4: int = None
+    w0: int
+    w1: int
+    w2: int
+    w3: int
+    w4: int
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
 
     def update_from_dict(self, data: dict[str, Any]) -> Wave:
-        if data is None:
-            return None
         if _w0 := data.get("w0"):
             self.w0 = _w0
         if _w1 := data.get("w1"):
@@ -119,15 +113,13 @@ class Wave:
 class Heart:
     """Object holding heart state in OWRCare."""
 
-    rate: int = None
-    waves: Wave = None
+    rate: int
+    waves: Wave
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
 
     def update_from_dict(self, data: dict[str, Any]) -> Heart:
-        if data is None:
-            return None
         if _rate := data.get("rate"):
             self.rate = _rate
         if _waves := data.get("waves"):
@@ -148,16 +140,14 @@ class BreathInfo(IntEnum):
 class Breath:
     """Object holding breath state in OWRCare."""
 
-    info: BreathInfo = None
-    rate: int = None
-    waves: Wave = None
+    info: BreathInfo
+    rate: int
+    waves: Wave
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
 
     def update_from_dict(self, data: dict[str, Any]) -> Breath:
-        if data is None:
-            return None
         if _info := data.get("info"):
             self.info = BreathInfo(_info)
         if _rate := data.get("rate"):
@@ -226,21 +216,19 @@ class SleepOverview:
         A sleep overview object.
     """
 
-    presence: BodyPresence = None
-    status: SleepStatus = None
-    breath: int = None
-    heart: int = None
-    turn: int = None
-    leratio: int = None
-    seratio: int = None
-    pause: int = None
+    presence: BodyPresence
+    status: SleepStatus
+    breath: int
+    heart: int
+    turn: int
+    leratio: int
+    seratio: int
+    pause: int
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
 
     def update_from_dict(self, data: dict[str, Any]) -> SleepOverview:
-        if data is None:
-            return None
         if _presence := data.get("presence"):
             self.presence = _presence
         if _status := data.get("status"):
@@ -273,24 +261,22 @@ class SleepQuality:
         A sleep quality object.
     """
 
-    score: int = None
-    duration: int = None
-    awake: int = None
-    light: int = None
-    deep: int = None
-    aduration: int = None
-    away: int = None
-    turn: int = None
-    breath: int = None
-    heart: int = None
-    pause: int = None
+    score: int
+    duration: int
+    awake: int
+    light: int
+    deep: int
+    aduration: int
+    away: int
+    turn: int
+    breath: int
+    heart: int
+    pause: int
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
 
     def update_from_dict(self, data: dict[str, Any]) -> SleepQuality:
-        if data is None:
-            return None
         if _score := data.get("score"):
             self.score = _score
         if _duration := data.get("duration"):
@@ -329,18 +315,18 @@ class Sleep:
         A sleep object.
     """
 
-    away: SleepAway = None
-    status: SleepStatus = None
-    awake: int = None
-    light: int = None
-    deep: int = None
-    score: int = None
-    overview: SleepOverview = None
-    quality: SleepQuality = None
-    exception: SleepException = None
-    rating: SleepRating = None
-    struggle: SleepStruggle = None
-    nobody: SleepNobody = None
+    away: SleepAway
+    status: SleepStatus
+    awake: int
+    light: int
+    deep: int
+    score: int
+    overview: SleepOverview
+    quality: SleepQuality
+    exception: SleepException
+    rating: SleepRating
+    struggle: SleepStruggle
+    nobody: SleepNobody
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
@@ -388,22 +374,19 @@ class State:
         A State object.
     """
 
-    timestamp: int = None
-    body: Body = None
-    heart: Heart = None
-    breath: Breath = None
-    sleep: Sleep = None
+    timestamp: int
+    body: Body
+    heart: Heart
+    breath: Breath
+    sleep: Sleep
 
 
     def __init__(self, data: dict[str, Any]) -> None:
         self.update_from_dict(data)
 
     def update_from_dict(self, data: dict[str, Any]) -> State:
-        if data is None:
-            return None
-        timestamp = data.get("timestamp")
-        if timestamp is None:
-            return None
+        if _timestamp := data.get("timestamp"):
+            self.timestamp = _timestamp
         if _body := data.get("body"):
             self.body = Body(_body)
         if _breath := data.get("breath"):
@@ -443,9 +426,6 @@ class Info:
         -------
             A Device information object.
         """
-        if data is None:
-            return None
-
         return Info(
             model=data.get("model", None),
             id=data.get("id", None),
@@ -464,6 +444,7 @@ class SettingSwitch(IntEnum):
     OFF = 0
     ON = 1
 
+
 @dataclass
 class Setting:
     """Object holding Setting information from OWRCare.
@@ -477,19 +458,19 @@ class Setting:
         A Setting object.
     """
 
-    binding_count: int = None
-    binding: SettingSwitch = None
-    realtime_ws: SettingSwitch = None
-    realtime_mq: SettingSwitch = None
-    body: SettingSwitch = None
-    heart: SettingSwitch = None
-    breath: SettingSwitch = None
-    sleep: SettingSwitch = None
-    mode: SettingSwitch = None
-    nobody: SettingSwitch = None
-    nobody_duration: int = None
-    struggle: SettingSwitch = None
-    stop_duration: int = None
+    binding_count: int
+    binding: SettingSwitch
+    realtime_ws: SettingSwitch
+    realtime_mq: SettingSwitch
+    body: SettingSwitch
+    heart: SettingSwitch
+    breath: SettingSwitch
+    sleep: SettingSwitch
+    mode: SettingSwitch
+    nobody: SettingSwitch
+    nobody_duration: int
+    struggle: SettingSwitch
+    stop_duration: int
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Setting:
@@ -503,9 +484,6 @@ class Setting:
         -------
             An Setting object.
         """
-        if data is None:
-            return None
-
         return Setting(
             binding_count=data.get("binding_count", None),
             binding=data.get("binding", None),
@@ -522,6 +500,7 @@ class Setting:
             stop_duration=data.get("stop_duration", None),
         )
 
+
 @dataclass
 class Device:
     """Object holding Device Infomation from OWRCare.
@@ -535,9 +514,9 @@ class Device:
         A Device object.
     """
 
-    setting: Setting = None
-    info: Info = None
-    state: State = None
+    setting: Setting
+    info: Info
+    state: State
 
 
     def __init__(self, data: dict[str, Any]) -> None:
@@ -579,7 +558,8 @@ class Device:
         if _info := data.get("info"):
             self.info = Info.from_dict(_info)
 
-        if _states := data.get("state"):
-            self.state = State(_states)
+        if _states := data.get("states"):
+            # extract first item as the lastest state in list of states
+            self.state = State(_states[0])
 
         return self

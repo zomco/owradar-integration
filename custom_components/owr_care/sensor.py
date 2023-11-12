@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 
 from .owrcare import Device as OWRCareDevice
+import json
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -50,12 +51,12 @@ class OWRCareSensorEntityDescription(
 
 
 SENSORS: tuple[OWRCareSensorEntityDescription, ...] = (
-    OWRCareSensorEntityDescription(
-        key="body_range",
-        translation_key="body_range",
-        device_class=SensorDeviceClass.ENUM,
-        value_fn=lambda device: device.state.body.range if device.state.body else None,
-    ),
+    # OWRCareSensorEntityDescription(
+    #     key="body_range",
+    #     translation_key="body_range",
+    #     device_class=SensorDeviceClass.ENUM,
+    #     value_fn=lambda device: device.state.body.range,
+    # ),
     OWRCareSensorEntityDescription(
         key="body_presence",
         translation_key="body_presence",
@@ -404,5 +405,6 @@ class OWRCareSensorEntity(OWRCareEntity, SensorEntity):
     @property
     def native_value(self) -> datetime | StateType:
         """Return the state of the sensor."""
-        return self.entity_description.value_fn(self.coordinator.data) if self.coordinator.data.state else None
+        print(self.coordinator.data)
+        return self.entity_description.value_fn(self.coordinator.data)
 

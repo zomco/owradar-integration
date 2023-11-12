@@ -55,7 +55,7 @@ NUMBERS = [
         native_min_value=5,
         native_max_value=120,
         value_fn=lambda device: device.setting.stop_duration,
-        update_fn=lambda coordinator, flag: coordinator.owrcare.setting(stop_duration=value),
+        update_fn=lambda coordinator, value: coordinator.owrcare.setting(stop_duration=value),
     ),
 ]
 
@@ -77,12 +77,12 @@ async def async_setup_entry(
 class OWRCareNumberEntity(OWRCareEntity, NumberEntity):
     """Defines a OWRCare number entity."""
 
-    entity_description: OWRCareSwitchEntityDescription
+    entity_description: OWRCareNumberEntityDescription
 
     def __init__(
         self,
         coordinator: OWRCareDataUpdateCoordinator,
-        description: OWRCareSwitchEntityDescription,
+        description: OWRCareNumberEntityDescription,
     ) -> None:
         """Initialize a OWRCare switch entity."""
         super().__init__(coordinator=coordinator)
@@ -92,7 +92,7 @@ class OWRCareNumberEntity(OWRCareEntity, NumberEntity):
     @property
     def native_value(self) -> int | None:
         """Return the current OWRCare number value."""
-        return self.entity_description.value_fn(self.coordinator.data)if self.coordinator.data.setting else None
+        return self.entity_description.value_fn(self.coordinator.data)
 
     @owrcare_exception_handler
     async def async_set_native_value(self, value: int) -> None:

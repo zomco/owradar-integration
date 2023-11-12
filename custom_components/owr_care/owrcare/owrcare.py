@@ -118,7 +118,8 @@ class OWRCare:
 
             if message.type == aiohttp.WSMsgType.TEXT:
                 message_data = message.json()
-                msg = { "state": message_data[0] }
+                # construct states list to update device
+                msg = { "states": message_data }
                 device = self._device.update_from_dict(data=msg)
                 callback(device)
 

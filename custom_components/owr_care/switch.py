@@ -145,7 +145,7 @@ class OWRCareSwitchEntity(OWRCareEntity, SwitchEntity):
     @property
     def is_on(self) -> bool:
         """Return the state of the switch."""
-        return self.entity_description.value_fn(self.coordinator.data) if self.coordinator.data.setting else None
+        return self.entity_description.value_fn(self.coordinator.data)
 
     @owrcare_exception_handler
     async def async_turn_off(self, **kwargs: Any) -> None:
