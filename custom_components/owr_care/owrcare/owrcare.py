@@ -256,15 +256,15 @@ class OWRCare:
     async def setting(
         self,
         *,
-        realtime_ws: bool | None = None,
-        body: bool | None = None,
-        heart: bool | None = None,
-        breath: bool | None = None,
-        sleep: bool | None = None,
-        mode: bool | None = None,
-        nobody: bool | None = None,
+        realtime_ws: int | None = None,
+        body: int | None = None,
+        heart: int | None = None,
+        breath: int | None = None,
+        sleep: int | None = None,
+        mode: int | None = None,
+        nobody: int | None = None,
         nobody_duration: int | None = None,
-        struggle: bool | None = None,
+        struggle: int | None = None,
         stop_duration: int | None = None,
     ) -> Device:
         """Set the setting of the OWRCare device.
@@ -294,7 +294,7 @@ class OWRCare:
             "struggle": struggle,
             "stop_duration": stop_duration
         }
-        setting = {k: v for k, v in setting.items() if v is not None}
+        setting = {k: int(v) for k, v in setting.items() if v is not None}
         message_data = await self.request("/api/device", method="POST", data={"setting": setting})
         return self._device.update_from_dict(message_data)
 

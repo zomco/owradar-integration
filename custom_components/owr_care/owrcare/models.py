@@ -90,17 +90,17 @@ class Body:
 
     def update_from_dict(self, data: dict[str, Any]) -> Body:
         # print(json.dumps(data, indent=4))
-        if _range := data.get("range"):
+        if (_range := data.get("range")) is not None:
             self.range = BodyRange(_range)
-        if _presence := data.get("presence"):
+        if (_presence := data.get("presence")) is not None:
             self.presence = BodyPresence(_presence)
-        if _energy := data.get("energy"):
+        if (_energy := data.get("energy")) is not None:
             self.energy = _energy
-        if _movement := data.get("movement"):
+        if (_movement := data.get("movement")) is not None:
             self.movement = BodyMovement(_movement)
-        if _distance := data.get("distance"):
+        if (_distance := data.get("distance")) is not None:
             self.distance = _distance
-        if _location := data.get("location"):
+        if (_location := data.get("location")) is not None:
             self.location = BodyLocation.from_dict(_location)
 
         return self
@@ -161,9 +161,9 @@ class Heart:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Heart:
-        if _rate := data.get("rate"):
+        if (_rate := data.get("rate")) is not None:
             self.rate = _rate
-        if _waves := data.get("waves"):
+        if (_waves := data.get("waves")) is not None:
             self.waves = Wave.from_dict(_waves)
 
         return self
@@ -205,11 +205,11 @@ class Breath:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Breath:
-        if _info := data.get("info"):
+        if (_info := data.get("info")) is not None:
             self.info = BreathInfo(_info)
-        if _rate := data.get("rate"):
+        if (_rate := data.get("rate")) is not None:
             self.rate = _rate
-        if _waves := data.get("waves"):
+        if (_waves := data.get("waves")) is not None:
             self.waves = Wave.from_dict(_waves)
 
         return self
@@ -410,29 +410,29 @@ class Sleep:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Sleep:
-        if _away := data.get("away"):
+        if (_away := data.get("away")) is not None:
             self.away = SleepAway(_away)
-        if _status := data.get("status"):
+        if (_status := data.get("status")) is not None:
             self.status = _status
-        if _awake := data.get("awake"):
+        if (_awake := data.get("awake")) is not None:
             self.awake = _awake
-        if _light := data.get("light"):
+        if (_light := data.get("light")) is not None:
             self.light = _light
-        if _deep := data.get("deep"):
+        if (_deep := data.get("deep")) is not None:
             self.deep = _deep
-        if _score := data.get("score"):
+        if (_score := data.get("score")) is not None:
             self.score = _score
-        if _overview := data.get("overview"):
+        if (_overview := data.get("overview")) is not None:
             self.overview = SleepOverview.from_dict(_overview)
-        if _quality := data.get("quality"):
+        if (_quality := data.get("quality")) is not None:
             self.quality = SleepQuality.from_dict(_quality)
-        if _exception := data.get("exception"):
+        if (_exception := data.get("exception")) is not None:
             self.exception = SleepException(_exception)
-        if _rating := data.get("rating"):
+        if (_rating := data.get("rating")) is not None:
             self.rating = SleepRating(_rating)
-        if _struggle := data.get("struggle"):
+        if (_struggle := data.get("struggle")) is not None:
             self.struggle = SleepStruggle(_struggle)
-        if _nobody := data.get("nobody"):
+        if (_nobody := data.get("nobody")) is not None:
             self.nobody = SleepNobody(_nobody)
 
         return self
@@ -477,15 +477,15 @@ class State:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> State:
-        if _timestamp := data.get("timestamp"):
+        if (_timestamp := data.get("timestamp")) is not None:
             self.timestamp = _timestamp
-        if _body := data.get("body"):
+        if (_body := data.get("body")) is not None:
             self.body.update_from_dict(_body)
-        if _breath := data.get("breath"):
+        if (_breath := data.get("breath")) is not None:
             self.breath.update_from_dict(_breath)
-        if _heart := data.get("heart"):
+        if (_heart := data.get("heart")) is not None:
             self.heart.update_from_dict(_heart)
-        if _sleep := data.get("sleep"):
+        if (_sleep := data.get("sleep")) is not None:
             self.sleep.update_from_dict(_sleep)
 
         return self
@@ -614,31 +614,31 @@ class Setting:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Setting:
-        if _binding_count := data.get("binding_count"):
+        if (_binding_count := data.get("binding_count")) is not None:
             self.binding_count = _binding_count
-        if _binding := data.get("binding"):
+        if (_binding := data.get("binding")) is not None:
             self.binding = _binding
-        if _realtime_ws := data.get("realtime_ws"):
+        if (_realtime_ws := data.get("realtime_ws")) is not None:
             self.realtime_ws = _realtime_ws
-        if _realtime_mq := data.get("realtime_mq"):
+        if (_realtime_mq := data.get("realtime_mq")) is not None:
             self.realtime_mq = _realtime_mq
-        if _body := data.get("body"):
+        if (_body := data.get("body")) is not None:
             self.body = _body
-        if _heart := data.get("heart"):
+        if (_heart := data.get("heart")) is not None:
             self.heart = _heart
-        if _breath := data.get("breath"):
+        if (_breath := data.get("breath")) is not None:
             self.breath = _breath
-        if _sleep := data.get("sleep"):
+        if (_sleep := data.get("sleep")) is not None:
             self.sleep = _sleep
-        if _mode := data.get("mode"):
+        if (_mode := data.get("mode")) is not None:
             self.mode = _mode
-        if _nobody := data.get("nobody"):
+        if (_nobody := data.get("nobody")) is not None:
             self.nobody = _nobody
-        if _nobody_duration := data.get("nobody_duration"):
+        if (_nobody_duration := data.get("nobody_duration")) is not None:
             self.nobody_duration = _nobody_duration
-        if _struggle := data.get("struggle"):
+        if (_struggle := data.get("struggle")) is not None:
             self.struggle = _struggle
-        if _stop_duration := data.get("stop_duration"):
+        if (_stop_duration := data.get("stop_duration")) is not None:
             self.stop_duration = _stop_duration
 
         return self

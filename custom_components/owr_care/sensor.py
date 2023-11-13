@@ -49,7 +49,6 @@ class OWRCareSensorEntityDescription(
     """Describes OWRCare sensor entity."""
 
     exists_fn: Callable[[OWRCareDevice], bool] = lambda _: True
-    visible_fn: Callable[[OWRCareDevice], bool] = lambda _: True
 
 
 SENSORS: tuple[OWRCareSensorEntityDescription, ...] = (
@@ -58,7 +57,6 @@ SENSORS: tuple[OWRCareSensorEntityDescription, ...] = (
         translation_key="body_range",
         device_class=SensorDeviceClass.ENUM,
         value_fn=lambda device: device.state.body.range,
-        visible_fn=lambda device: device.setting.realtime_ws and device.setting.body
     ),
     OWRCareSensorEntityDescription(
         key="body_presence",
@@ -415,6 +413,5 @@ class OWRCareSensorEntity(OWRCareEntity, SensorEntity):
     @property
     def native_value(self) -> datetime | StateType:
         """Return the state of the sensor."""
-        self.entity_description.entity_registry_visible_default = self.entity_description.visible_fn(self.coordinator.data)
         return self.entity_description.value_fn(self.coordinator.data)
 
