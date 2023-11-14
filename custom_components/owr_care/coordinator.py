@@ -1,7 +1,6 @@
 """DataUpdateCoordinator for owr_care."""
 from __future__ import annotations
 
-from datetime import timedelta
 from .owrcare import OWRCare, Device as OWRCareDevice, OWRCareConnectionClosedError, OWRCareError
 
 from homeassistant.config_entries import ConfigEntry
@@ -9,7 +8,6 @@ from homeassistant.const import CONF_HOST, EVENT_HOMEASSISTANT_STOP
 from homeassistant.core import CALLBACK_TYPE, Event, HomeAssistant, callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from homeassistant.exceptions import ConfigEntryAuthFailed
 
 from .const import DOMAIN, LOGGER, SCAN_INTERVAL
 

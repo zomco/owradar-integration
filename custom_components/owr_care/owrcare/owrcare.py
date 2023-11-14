@@ -4,14 +4,12 @@ from __future__ import annotations
 import asyncio
 import json
 import socket
-from contextlib import suppress
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
 import aiohttp
 import async_timeout
 import backoff
-from awesomeversion import AwesomeVersion, AwesomeVersionException
 from cachetools import TTLCache
 from yarl import URL
 
@@ -21,12 +19,11 @@ from .exceptions import (
     OWRCareConnectionTimeoutError,
     OWRCareEmptyResponseError,
     OWRCareError,
-    OWRCareUpgradeError,
 )
 from .models import Device
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Sequence
+    from collections.abc import Callable
 
 
 VERSION_CACHE: TTLCache[str, str | None] = TTLCache(maxsize=16, ttl=7200)
@@ -273,7 +270,7 @@ class OWRCare:
         ----
             realtime_ws: Websocket publishing mode.
             body: Body monioring switch.
-            herat: Heart monioring switch.
+            heart: Heart monioring switch.
             breath: Breath monioring switch.
             sleep: Sleep monioring switch.
             mode: Mode monioring switch.
@@ -290,7 +287,7 @@ class OWRCare:
             "sleep": sleep,
             "mode": mode,
             "nobody": nobody,
-            "nobody": nobody_duration,
+            "nobody_duration": nobody_duration,
             "struggle": struggle,
             "stop_duration": stop_duration
         }

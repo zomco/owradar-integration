@@ -7,13 +7,12 @@ import voluptuous as vol
 from .owrcare import OWRCare, Device as OWRCareDevice, OWRCareConnectionError
 
 from homeassistant.components import onboarding, zeroconf
-from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
+from homeassistant.config_entries import ConfigFlow
 from homeassistant.const import CONF_HOST, CONF_MAC
-from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import DOMAIN, LOGGER
+from .const import DOMAIN
 
 
 class OWRCareFlowHandler(ConfigFlow, domain=DOMAIN):

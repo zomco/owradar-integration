@@ -3,10 +3,9 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from .owrcare import Device as OWRCareDevice
-import json
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -17,21 +16,15 @@ from homeassistant.components.sensor import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     PERCENTAGE,
-    SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
-    EntityCategory,
-    UnitOfElectricCurrent,
-    UnitOfInformation,
     UnitOfLength,
     UnitOfTime
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
-from homeassistant.util.dt import utcnow
 
 from .const import DOMAIN
 from .coordinator import OWRCareDataUpdateCoordinator
-from .helpers import owrcare_exception_handler
 from .models import OWRCareEntity
 
 

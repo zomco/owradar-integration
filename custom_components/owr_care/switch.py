@@ -3,15 +3,13 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from functools import partial
 from typing import Any
 
 from .owrcare import Device as OWRCareDevice
 
 from homeassistant.components.switch import SwitchEntity, SwitchEntityDescription, SwitchDeviceClass
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import EntityCategory
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN

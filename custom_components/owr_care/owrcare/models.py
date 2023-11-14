@@ -2,13 +2,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import IntEnum, IntFlag
+from enum import IntEnum
 from typing import Any
-
-from awesomeversion import AwesomeVersion
-
-from .exceptions import OWRCareError
-import json
 
 
 class BodyRange(IntEnum):
@@ -89,7 +84,16 @@ class Body:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Body:
-        # print(json.dumps(data, indent=4))
+        """Update and Return Body object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Body object.
+        """
         if (_range := data.get("range")) is not None:
             self.range = BodyRange(_range)
         if (_presence := data.get("presence")) is not None:
@@ -161,6 +165,16 @@ class Heart:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Heart:
+        """Update and Return Heart object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Heart object.
+        """
         if (_rate := data.get("rate")) is not None:
             self.rate = _rate
         if (_waves := data.get("waves")) is not None:
@@ -205,6 +219,16 @@ class Breath:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Breath:
+        """Update and Return Breath object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Breath object.
+        """
         if (_info := data.get("info")) is not None:
             self.info = BreathInfo(_info)
         if (_rate := data.get("rate")) is not None:
@@ -410,6 +434,16 @@ class Sleep:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Sleep:
+        """Update and Return Sleep object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Sleep object.
+        """
         if (_away := data.get("away")) is not None:
             self.away = SleepAway(_away)
         if (_status := data.get("status")) is not None:
@@ -477,6 +511,16 @@ class State:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> State:
+        """Update Return State object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An State object.
+        """
         if (_timestamp := data.get("timestamp")) is not None:
             self.timestamp = _timestamp
         if (_body := data.get("body")) is not None:
@@ -495,15 +539,17 @@ class State:
 class Info:
     """Object holding device infomation from OWRCare."""
 
-    model: str
-    id: str
-    hardware: str
-    firmware: str
-    version: str
-    free_heap: int
-    ip: str
+    radar_model: str
+    radar_version: str
     mac_addr: str
     name: str
+    ip: str
+    free_heap: int
+    version: str
+    architecture: str
+    brand: str
+    product: str
+
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Info:
@@ -518,36 +564,49 @@ class Info:
             A Device information object.
         """
         return Info(
-            model=data.get("model", None),
-            id=data.get("id", None),
-            hardware=data.get("hardware", None),
-            firmware=data.get("firmware", None),
-            version=data.get("version", None),
-            free_heap=data.get("free_heap", None),
-            ip=data.get("ip", None),
+            radar_model=data.get("radar_model", None),
+            radar_version=data.get("radar_version", None),
             mac_addr=data.get("mac_addr", None),
             name=data.get("name", None),
+            ip=data.get("ip", None),
+            free_heap=data.get("free_heap", None),
+            version=data.get("version", None),
+            architecture=data.get("architecture", None),
+            brand=data.get("brand", None),
+            product=data.get("product", None),
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Info:
-        if _model := data.get("model"):
-            self.model = _model
-        if _id := data.get("id"):
-            self.id = _id
-        if _hardware := data.get("hardware"):
-            self.hardware = _hardware
-        if _firmware := data.get("firmware"):
-            self.firmware = _firmware
-        if _version := data.get("version"):
-            self.version = _version
-        if _free_heap := data.get("free_heap"):
-            self.free_heap = _free_heap
-        if _ip := data.get("ip"):
-            self.ip = _ip
+        """Update and Return Device information object from OWRCare API response.
+
+        Args:
+        ----
+            data: The data from the OWRCare device API.
+
+        Returns:
+        -------
+            A Device information object.
+        """
+        if _radar_model := data.get("radar_model"):
+            self.radar_model = _radar_model
+        if _radar_version := data.get("radar_version"):
+            self.radar_version = _radar_version
         if _mac := data.get("mac"):
             self.mac = _mac
         if _name := data.get("name"):
             self.name = _name
+        if _ip := data.get("ip"):
+            self.ip = _ip
+        if _free_heap := data.get("free_heap"):
+            self.free_heap = _free_heap
+        if _version := data.get("version"):
+            self.version = _version
+        if _architecture := data.get("architecture"):
+            self.architecture = _architecture
+        if _brand := data.get("brand"):
+            self.brand = _brand
+        if _product := data.get("product"):
+            self.product = _product
 
         return self
 
@@ -614,6 +673,16 @@ class Setting:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Setting:
+        """Update and Return Setting object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Setting object.
+        """
         if (_binding_count := data.get("binding_count")) is not None:
             self.binding_count = _binding_count
         if (_binding := data.get("binding")) is not None:
@@ -702,7 +771,7 @@ class Device:
     #     self.update_from_dict(data)
 
     def update_from_dict(self, data: dict[str, Any]) -> Device:
-        """Return Device object from OWRCare API response.
+        """Update and Return Device object from OWRCare API response.
 
         Args:
         ----
