@@ -4,7 +4,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass
 
-from .owrcare import Device as OWRCareDevice
+from .core import Device as OWRCareDevice
 
 from homeassistant.components.number import NumberEntity, NumberEntityDescription
 from homeassistant.config_entries import ConfigEntry
@@ -19,6 +19,7 @@ from .models import OWRCareEntity
 
 PARALLEL_UPDATES = 1
 
+
 @dataclass
 class OWRCareNumberDescriptionMixin:
     """Mixin for OWRCare number."""
@@ -28,7 +29,9 @@ class OWRCareNumberDescriptionMixin:
 
 
 @dataclass
-class OWRCareNumberEntityDescription(NumberEntityDescription, OWRCareNumberDescriptionMixin):
+class OWRCareNumberEntityDescription(
+    NumberEntityDescription, OWRCareNumberDescriptionMixin
+):
     """Describes OWRCare number entity."""
 
     exists_fn: Callable[[OWRCareDevice], bool] = lambda _: True
@@ -44,7 +47,9 @@ NUMBERS = [
         native_min_value=30,
         native_max_value=180,
         value_fn=lambda device: device.setting.nobody_duration,
-        update_fn=lambda coordinator, value: coordinator.owrcare.setting(nobody_duration=value),
+        update_fn=lambda coordinator, value: coordinator.owrcare.setting(
+            nobody_duration=value
+        ),
     ),
     OWRCareNumberEntityDescription(
         key="setting_stop_duration",
@@ -54,7 +59,9 @@ NUMBERS = [
         native_min_value=5,
         native_max_value=120,
         value_fn=lambda device: device.setting.stop_duration,
-        update_fn=lambda coordinator, value: coordinator.owrcare.setting(stop_duration=value),
+        update_fn=lambda coordinator, value: coordinator.owrcare.setting(
+            stop_duration=value
+        ),
     ),
 ]
 
@@ -72,6 +79,7 @@ async def async_setup_entry(
         for description in NUMBERS
         if description.exists_fn(coordinator.data)
     )
+
 
 class OWRCareNumberEntity(OWRCareEntity, NumberEntity):
     """Defines a OWRCare number entity."""
@@ -97,4 +105,3 @@ class OWRCareNumberEntity(OWRCareEntity, NumberEntity):
     async def async_set_native_value(self, value: int) -> None:
         """Set the OWRCare number value."""
         await self.entity_description.update_fn(self.coordinator, value)
-

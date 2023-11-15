@@ -4,7 +4,7 @@ from __future__ import annotations
 from collections.abc import Callable, Coroutine
 from typing import Any, Concatenate, ParamSpec, TypeVar
 
-from .owrcare import OWRCareConnectionError, OWRCareError
+from .core import OWRCareConnectionError, OWRCareError
 
 from homeassistant.exceptions import HomeAssistantError
 
@@ -23,7 +23,9 @@ def owrcare_exception_handler(
     and handles the availability of the device in the data coordinator.
     """
 
-    async def handler(self: _OWRCareEntityT, *args: _P.args, **kwargs: _P.kwargs) -> None:
+    async def handler(
+        self: _OWRCareEntityT, *args: _P.args, **kwargs: _P.kwargs
+    ) -> None:
         try:
             await func(self, *args, **kwargs)
             self.coordinator.async_update_listeners()

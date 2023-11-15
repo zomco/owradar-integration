@@ -1,7 +1,12 @@
 """DataUpdateCoordinator for owr_care."""
 from __future__ import annotations
 
-from .owrcare import OWRCare, Device as OWRCareDevice, OWRCareConnectionClosedError, OWRCareError
+from .core import (
+    OWRCare,
+    Device as OWRCareDevice,
+    OWRCareConnectionClosedError,
+    OWRCareError,
+)
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, EVENT_HOMEASSISTANT_STOP
@@ -25,7 +30,9 @@ class OWRCareDataUpdateCoordinator(DataUpdateCoordinator):
         entry: ConfigEntry,
     ) -> None:
         """Initialize."""
-        self.owrcare = OWRCare(entry.data[CONF_HOST], session=async_get_clientsession(hass))
+        self.owrcare = OWRCare(
+            entry.data[CONF_HOST], session=async_get_clientsession(hass)
+        )
         self.unsub: CALLBACK_TYPE | None = None
 
         super().__init__(
@@ -90,8 +97,7 @@ class OWRCareDataUpdateCoordinator(DataUpdateCoordinator):
             raise UpdateFailed(f"Invalid response from API: {error}") from error
 
         # If the device supports a WebSocket, try activating it.
-        if (not self.owrcare.connected and not self.unsub):
+        if not self.owrcare.connected and not self.unsub:
             self._use_websocket()
 
         return device
-

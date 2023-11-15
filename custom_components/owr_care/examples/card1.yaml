@@ -1,0 +1,246 @@
+type: vertical-stack
+title: 睡眠雷达
+cards:
+  - type: entities
+    entities:
+      - entity: switch.owrcare_7b0ad4_mode_monitoring_switch
+        name: Sleep Mode
+      - entity: switch.owrcare_7b0ad4_websocket_realtime_mode
+        name: Realtime Mode
+  - type: conditional
+    conditions:
+      - entity: switch.owrcare_7b0ad4_websocket_realtime_mode
+        state: 'on'
+    card:
+      type: vertical-stack
+      cards:
+        - type: entities
+          entities:
+            - entity: switch.owrcare_7b0ad4_body_monitoring_switch
+              name: Body Monitoring
+        - type: conditional
+          conditions:
+            - entity: switch.owrcare_7b0ad4_body_monitoring_switch
+              state: 'on'
+          card:
+            type: vertical-stack
+            cards:
+              - type: sensor
+                name: Distance
+                entity: sensor.owrcare_7b0ad4_body_distance
+                graph: line
+              - type: sensor
+                name: Energy
+                entity: sensor.owrcare_7b0ad4_body_energy
+                graph: line
+              - type: horizontal-stack
+                cards:
+                  - type: entity
+                    name: Range
+                    entity: sensor.owrcare_7b0ad4_body_in_range
+                  - type: entity
+                    name: Movement
+                    entity: sensor.owrcare_7b0ad4_body_movement
+                  - type: entity
+                    name: Presence
+                    entity: sensor.owrcare_7b0ad4_body_presence
+              - type: horizontal-stack
+                cards:
+                  - type: entity
+                    name: X
+                    entity: sensor.owrcare_7b0ad4_body_location_x
+                  - type: entity
+                    name: 'Y'
+                    entity: sensor.owrcare_7b0ad4_body_location_y
+                  - type: entity
+                    name: Z
+                    entity: sensor.owrcare_7b0ad4_body_location_z
+  - type: conditional
+    conditions:
+      - entity: switch.owrcare_7b0ad4_websocket_realtime_mode
+        state: 'on'
+    card:
+      type: vertical-stack
+      cards:
+        - type: entities
+          entities:
+            - entity: switch.owrcare_7b0ad4_breath_monitoring_switch
+              name: Breath Monitoring
+        - type: conditional
+          conditions:
+            - entity: switch.owrcare_7b0ad4_breath_monitoring_switch
+              state: 'on'
+          card:
+            type: vertical-stack
+            cards:
+              - type: sensor
+                name: Rate
+                entity: sensor.owrcare_7b0ad4_breath_rate
+                graph: line
+              - type: entity
+                name: Info
+                entity: sensor.owrcare_7b0ad4_breath_info
+              - type: conditional
+                conditions:
+                  - entity: switch.owrcare_7b0ad4_mode_monitoring_switch
+                    state: 'off'
+                card:
+                  type: horizontal-stack
+                  cards:
+                    - type: entity
+                      name: ' '
+                      entity: sensor.owrcare_7b0ad4_breath_waves_0
+                    - type: entity
+                      name: ' '
+                      entity: sensor.owrcare_7b0ad4_breath_waves_1
+                    - type: entity
+                      name: ' '
+                      entity: sensor.owrcare_7b0ad4_breath_waves_2
+                    - type: entity
+                      name: ' '
+                      entity: sensor.owrcare_7b0ad4_breath_waves_3
+                    - type: entity
+                      name: ' '
+                      entity: sensor.owrcare_7b0ad4_breath_waves_4
+  - type: conditional
+    conditions:
+      - entity: switch.owrcare_7b0ad4_websocket_realtime_mode
+        state: 'on'
+    card:
+      type: vertical-stack
+      cards:
+        - type: entities
+          entities:
+            - entity: switch.owrcare_7b0ad4_heart_monitoring_switch
+              name: Heart Monitoring
+        - type: conditional
+          conditions:
+            - entity: switch.owrcare_7b0ad4_heart_monitoring_switch
+              state: 'on'
+          card:
+            type: vertical-stack
+            cards:
+              - type: sensor
+                name: Rate
+                entity: sensor.owrcare_7b0ad4_heart_rate
+                graph: line
+              - type: conditional
+                conditions:
+                  - entity: switch.owrcare_7b0ad4_mode_monitoring_switch
+                    state: 'off'
+                card:
+                  type: horizontal-stack
+                  cards:
+                    - type: entity
+                      name: ' '
+                      entity: sensor.owrcare_7b0ad4_heart_waves_0
+                    - type: entity
+                      name: ' '
+                      entity: sensor.owrcare_7b0ad4_heart_waves_1
+                    - type: entity
+                      name: ' '
+                      entity: sensor.owrcare_7b0ad4_heart_waves_2
+                    - type: entity
+                      name: ' '
+                      entity: sensor.owrcare_7b0ad4_heart_waves_3
+                    - type: entity
+                      name: ' '
+                      entity: sensor.owrcare_7b0ad4_heart_waves_4
+  - type: conditional
+    conditions:
+      - entity: switch.owrcare_7b0ad4_websocket_realtime_mode
+        state: 'off'
+    card:
+      type: vertical-stack
+      cards:
+        - type: entities
+          entities:
+            - entity: switch.owrcare_7b0ad4_sleep_monitoring_switch
+              name: Sleep Monitoring
+            - entity: switch.owrcare_7b0ad4_struggle_monitoring_switch
+              name: Struggle Monitoring
+            - entity: switch.owrcare_7b0ad4_nobody_monitoring_switch
+              name: Nobody Monitoring
+        - type: conditional
+          conditions:
+            - entity: switch.owrcare_7b0ad4_sleep_monitoring_switch
+              state: 'on'
+          card:
+            type: vertical-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: entity
+                    name: Rate
+                    entity: sensor.owrcare_7b0ad4_sleep_status
+                  - type: entity
+                    name: Score
+                    entity: sensor.owrcare_7b0ad4_sleep_score
+                  - type: entity
+                    name: Rating
+                    entity: sensor.owrcare_7b0ad4_sleep_rating
+              - type: horizontal-stack
+                cards:
+                  - type: entity
+                    entity: sensor.owrcare_7b0ad4_sleep_awake_duration
+                    name: Awake
+                  - type: entity
+                    entity: sensor.owrcare_7b0ad4_sleep_light_duration
+                    name: Light
+                  - type: entity
+                    entity: sensor.owrcare_7b0ad4_sleep_deep_duration
+                    name: Deep
+              - type: horizontal-stack
+                cards:
+                  - type: entity
+                    entity: sensor.owrcare_7b0ad4_sleep_away
+                    name: Away
+                  - type: entity
+                    entity: sensor.owrcare_7b0ad4_sleep_exception
+                    name: Exception
+                  - type: entity
+                    entity: sensor.owrcare_7b0ad4_sleep_nobody
+                    name: Nobody
+                  - type: entity
+                    entity: sensor.owrcare_7b0ad4_sleep_struggle
+                    name: Struggle
+              - type: entities
+                entities:
+                  - entity: sensor.owrcare_7b0ad4_sleep_overview_breath
+                    name: Breath Rate
+                  - entity: sensor.owrcare_7b0ad4_sleep_overview_heart
+                    name: Heart Rate
+                  - entity: sensor.owrcare_7b0ad4_sleep_overview_leratio
+                    name: Large Energy Ratio
+                  - entity: sensor.owrcare_7b0ad4_sleep_overview_pause
+                    name: Pause Count
+                  - entity: sensor.owrcare_7b0ad4_sleep_overview_presence
+                    name: Human Presence
+                  - entity: sensor.owrcare_7b0ad4_sleep_overview_seratio
+                    name: Small Energy Ratio
+                  - entity: sensor.owrcare_7b0ad4_sleep_overview_status
+                    name: Sleep Status
+                  - entity: sensor.owrcare_7b0ad4_sleep_overview_turn
+                    name: Turn Count
+              - type: entities
+                entities:
+                  - entity: sensor.owrcare_7b0ad4_sleep_quality_awake_duration
+                    name: Awake Duration
+                  - entity: sensor.owrcare_7b0ad4_sleep_quality_away_count
+                    name: Away Count
+                  - entity: sensor.owrcare_7b0ad4_sleep_quality_breath_rate
+                    name: Breath Rate
+                  - entity: sensor.owrcare_7b0ad4_sleep_quality_deep_duration
+                    name: Deep Duration
+                  - entity: sensor.owrcare_7b0ad4_sleep_quality_duration
+                    name: Total Duration
+                  - entity: sensor.owrcare_7b0ad4_sleep_quality_heart_rate
+                    name: Heart Rate
+                  - entity: sensor.owrcare_7b0ad4_sleep_quality_light_duration
+                    name: Light Duration
+                  - entity: sensor.owrcare_7b0ad4_sleep_quality_pause_count
+                    name: Pause Count
+                  - entity: sensor.owrcare_7b0ad4_sleep_quality_score
+                    name: Sleep Score
+                  - entity: sensor.owrcare_7b0ad4_sleep_quality_turn_count
+                    name: Turn Count

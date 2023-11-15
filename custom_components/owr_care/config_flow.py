@@ -4,7 +4,7 @@ from __future__ import annotations
 from typing import Any
 
 import voluptuous as vol
-from .owrcare import OWRCare, Device as OWRCareDevice, OWRCareConnectionError
+from .core import OWRCare, Device as OWRCareDevice, OWRCareConnectionError
 
 from homeassistant.components import onboarding, zeroconf
 from homeassistant.config_entries import ConfigFlow
@@ -40,7 +40,7 @@ class OWRCareFlowHandler(ConfigFlow, domain=DOMAIN):
                 )
                 return self.async_create_entry(
                     title=device.info.name,
-                    data={ CONF_HOST: user_input[CONF_HOST] },
+                    data={CONF_HOST: user_input[CONF_HOST]},
                 )
         else:
             user_input = {}
@@ -101,4 +101,3 @@ class OWRCareFlowHandler(ConfigFlow, domain=DOMAIN):
         session = async_get_clientsession(self.hass)
         owrcare = OWRCare(host, session=session)
         return await owrcare.update()
-

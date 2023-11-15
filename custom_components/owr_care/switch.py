@@ -5,9 +5,13 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-from .owrcare import Device as OWRCareDevice
+from .core import Device as OWRCareDevice
 
-from homeassistant.components.switch import SwitchEntity, SwitchEntityDescription, SwitchDeviceClass
+from homeassistant.components.switch import (
+    SwitchEntity,
+    SwitchEntityDescription,
+    SwitchDeviceClass,
+)
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -18,6 +22,7 @@ from .helpers import owrcare_exception_handler
 from .models import OWRCareEntity
 
 PARALLEL_UPDATES = 1
+
 
 @dataclass
 class OWRCareSwitchEntityDescriptionMixin:
@@ -42,7 +47,9 @@ SWITCHES: tuple[OWRCareSwitchEntityDescription, ...] = [
         translation_key="setting_realtime_ws",
         device_class=SwitchDeviceClass.SWITCH,
         value_fn=lambda device: bool(device.setting.realtime_ws),
-        update_fn=lambda coordinator, flag: coordinator.owrcare.setting(realtime_ws=flag),
+        update_fn=lambda coordinator, flag: coordinator.owrcare.setting(
+            realtime_ws=flag
+        ),
     ),
     OWRCareSwitchEntityDescription(
         key="setting_body",
