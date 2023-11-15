@@ -7,7 +7,7 @@
   "integration_type": "device",
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/zomco/owr-care-ha/issues",
-  "version": "0.0.231109",
   "requirements": [],
+  "version": "0.0.231109",
   "zeroconf": ["_owrcare._tcp.local."]
 }
