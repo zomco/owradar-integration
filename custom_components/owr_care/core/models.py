@@ -12,11 +12,13 @@ class BodyRange(IntEnum):
     OUT = 0
     IN = 1
 
+
 class BodyPresence(IntEnum):
     """Enumeration representing body presence from OWRCare."""
 
     NOBODY = 0
     SOMEBODY = 1
+
 
 class BodyMovement(IntEnum):
     """Enumeration representing body movement from OWRCare."""
@@ -24,6 +26,7 @@ class BodyMovement(IntEnum):
     NONE = 0
     STATIC = 1
     ACTIVE = 2
+
 
 @dataclass
 class BodyLocation:
@@ -50,6 +53,7 @@ class BodyLocation:
             y=data.get("y"),
             z=data.get("z"),
         )
+
 
 @dataclass
 class Body:
@@ -140,6 +144,7 @@ class Wave:
             w4=data.get("w4"),
         )
 
+
 @dataclass
 class Heart:
     """Object holding heart state in OWRCare."""
@@ -191,6 +196,7 @@ class BreathInfo(IntEnum):
     TOO_HIGH = 2
     TOO_LOW = 3
     NONE = 4
+
 
 @dataclass
 class Breath:
@@ -246,6 +252,7 @@ class SleepAway(IntEnum):
     IN = 1
     ACTIVE = 2
 
+
 class SleepStatus(IntEnum):
     """Enumeration representing sleep status from OWRCare."""
 
@@ -253,6 +260,7 @@ class SleepStatus(IntEnum):
     LIGHT = 1
     AWAKE = 2
     NONE = 3
+
 
 class SleepException(IntEnum):
     """Enumeration representing sleep exception from OWRCare."""
@@ -262,6 +270,7 @@ class SleepException(IntEnum):
     LONG_TIME = 2
     NONE = 3
 
+
 class SleepRating(IntEnum):
     """Enumeration representing sleep rating from OWRCare."""
 
@@ -270,6 +279,7 @@ class SleepRating(IntEnum):
     MEDIAN = 2
     BAD = 3
 
+
 class SleepStruggle(IntEnum):
     """Enumeration representing sleep struggle from OWRCare."""
 
@@ -277,12 +287,14 @@ class SleepStruggle(IntEnum):
     NORMAL = 1
     ABNORMAL = 2
 
+
 class SleepNobody(IntEnum):
     """Enumeration representing sleep nobody from OWRCare."""
 
     NONE = 0
     NORMAL = 1
     ABNORMAL = 2
+
 
 @dataclass
 class SleepOverview:
@@ -328,6 +340,7 @@ class SleepOverview:
             seratio=data.get("seratio"),
             pause=data.get("pause"),
         )
+
 
 @dataclass
 class SleepQuality:
@@ -379,6 +392,7 @@ class SleepQuality:
             heart=data.get("heart"),
             pause=data.get("pause"),
         )
+
 
 @dataclass
 class Sleep:
@@ -471,6 +485,106 @@ class Sleep:
 
         return self
 
+
+@dataclass
+class Coord:
+    """Object holding coordinate state in OWRCare."""
+
+    x: float
+    y: float
+    z: float
+
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> Coord:
+        """Return Coordinate object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Coordinate object.
+        """
+        return Coord(
+            x=data.get("x"),
+            y=data.get("y"),
+            z=data.get("z"),
+        )
+
+
+@dataclass
+class MotionAngle:
+    """Object holding Motion Angle state in OWRCare."""
+
+    pitch: float
+    roll: float
+
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> MotionAngle:
+        """Return Motion Angle object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Motion Angle object.
+        """
+        return MotionAngle(
+            pitch=data.get("pitch"),
+            roll=data.get("roll"),
+        )
+
+
+@dataclass
+class Motion:
+    """Object holding motion state in OWRCare."""
+
+    acce: Coord
+    gyro: Coord
+    angle: MotionAngle
+
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> Motion:
+        """Return Motion object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Motion object.
+        """
+        return Motion(
+            acce=Coord.from_dict(data.get("acce")),
+            gyro=Coord.from_dict(data.get("gyro")),
+            angle=MotionAngle.from_dict(data.get("angle")),
+        )
+
+    def update_from_dict(self, data: dict[str, Any]) -> Motion:
+        """Update and Return Motion object form OWRCare API response.
+
+        Args:
+        ----
+            data: The response from the OWRCare API.
+
+        Returns:
+        -------
+            An Motion object.
+        """
+        if (_acce := data.get("acce")) is not None:
+            self.acce = Coord.from_dict(_acce)
+        if (_gyro := data.get("gyro")) is not None:
+            self.gyro = Coord.from_dict(_gyro)
+        if (_angle := data.get("angle")) is not None:
+            self.angle = MotionAngle.from_dict(_angle)
+
+        return self
+
+
 @dataclass
 class State:
     """Object holding State Infomation from OWRCare.
@@ -489,6 +603,7 @@ class State:
     heart: Heart
     breath: Breath
     sleep: Sleep
+    motion: Motion
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> State:
@@ -508,6 +623,7 @@ class State:
             heart=Heart.from_dict(data.get("heart")),
             breath=Breath.from_dict(data.get("breath")),
             sleep=Sleep.from_dict(data.get("sleep")),
+            motion=Motion.from_dict(data.get("motion")),
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> State:
@@ -531,6 +647,8 @@ class State:
             self.heart.update_from_dict(_heart)
         if (_sleep := data.get("sleep")) is not None:
             self.sleep.update_from_dict(_sleep)
+        if (_motion := data.get("motion")) is not None:
+            self.motion.update_from_dict(_motion)
 
         return self
 
@@ -549,7 +667,6 @@ class Info:
     architecture: str
     brand: str
     product: str
-
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Info:
@@ -616,6 +733,7 @@ class SettingSwitch(IntEnum):
 
     OFF = 0
     ON = 1
+
 
 @dataclass
 class Setting:
@@ -730,7 +848,6 @@ class Device:
     info: Info
     state: State
 
-
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Device:
         """Return Device object form OWRCare API response.
@@ -746,7 +863,7 @@ class Device:
         return Device(
             setting=Setting.from_dict(data.get("setting")),
             info=Info.from_dict(data.get("info")),
-            state=State.from_dict(data.get("states")[0]),
+            state=State.from_dict(data.get("state")),
         )
 
     # def __init__(self, data: dict[str, Any]) -> None:
@@ -786,8 +903,7 @@ class Device:
             self.setting.update_from_dict(_setting)
         if _info := data.get("info"):
             self.info.update_from_dict(_info)
-        if _states := data.get("states"):
-            # extract first item as the lastest state in list of states
-            self.state.update_from_dict(_states[0])
+        if _state := data.get("state"):
+            self.state.update_from_dict(_state)
 
         return self

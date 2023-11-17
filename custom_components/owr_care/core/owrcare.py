@@ -116,7 +116,7 @@ class OWRCare:
             if message.type == aiohttp.WSMsgType.TEXT:
                 message_data = message.json()
                 # construct states list to update device
-                msg = { "states": message_data }
+                msg = {"state": message_data}
                 device = self._device.update_from_dict(msg)
                 callback(device)
 
@@ -135,7 +135,9 @@ class OWRCare:
 
         await self._client.close()
 
-    @backoff.on_exception(backoff.expo, OWRCareConnectionError, max_tries=3, logger=None)
+    @backoff.on_exception(
+        backoff.expo, OWRCareConnectionError, max_tries=3, logger=None
+    )
     async def request(
         self,
         uri: str = "",
@@ -209,7 +211,9 @@ class OWRCare:
             msg = f"Timeout occurred while connecting to OWRCare device at {self.host}"
             raise OWRCareConnectionTimeoutError(msg) from exception
         except (aiohttp.ClientError, socket.gaierror) as exception:
-            msg = f"Error occurred while communicating with OWRCare device at {self.host}"
+            msg = (
+                f"Error occurred while communicating with OWRCare device at {self.host}"
+            )
             raise OWRCareConnectionError(msg) from exception
 
         return response_data
@@ -289,10 +293,12 @@ class OWRCare:
             "nobody": nobody,
             "nobody_duration": nobody_duration,
             "struggle": struggle,
-            "stop_duration": stop_duration
+            "stop_duration": stop_duration,
         }
         setting = {k: int(v) for k, v in setting.items() if v is not None}
-        message_data = await self.request("/api/device", method="POST", data={"setting": setting})
+        message_data = await self.request(
+            "/api/device", method="POST", data={"setting": setting}
+        )
         return self._device.update_from_dict(message_data)
 
     async def close(self) -> None:
