@@ -175,14 +175,11 @@
             }
         },
         "switch": {
-            "setting_binding": {
-                "name": "Binding Switch"
-            },
             "setting_realtime_ws": {
                 "name": "Websocket Realtime Mode"
             },
-            "setting_realtime_mq": {
-                "name": "MQTT Realtime Mode"
+            "setting_indicate": {
+                "name": "Indicator Switch"
             },
             "setting_body": {
                 "name": "Body Monitoring Switch"

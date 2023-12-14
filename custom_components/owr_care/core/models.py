@@ -748,10 +748,8 @@ class Setting:
         A Setting object.
     """
 
-    binding_count: int
-    binding: SettingSwitch
     realtime_ws: SettingSwitch
-    realtime_mq: SettingSwitch
+    indicate: SettingSwitch
     body: SettingSwitch
     heart: SettingSwitch
     breath: SettingSwitch
@@ -778,7 +776,7 @@ class Setting:
             binding_count=data.get("binding_count", None),
             binding=data.get("binding", None),
             realtime_ws=data.get("realtime_ws", None),
-            realtime_mq=data.get("realtime_mq", None),
+            indicate=data.get("indicate", None),
             body=data.get("body", None),
             heart=data.get("heart", None),
             breath=data.get("breath", None),
@@ -807,8 +805,8 @@ class Setting:
             self.binding = _binding
         if (_realtime_ws := data.get("realtime_ws")) is not None:
             self.realtime_ws = _realtime_ws
-        if (_realtime_mq := data.get("realtime_mq")) is not None:
-            self.realtime_mq = _realtime_mq
+        if (_indicate := data.get("indicate")) is not None:
+            self.indicate = _indicate
         if (_body := data.get("body")) is not None:
             self.body = _body
         if (_heart := data.get("heart")) is not None:

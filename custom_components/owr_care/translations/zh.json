@@ -24,67 +24,67 @@
     "entity": {
         "sensor": {
             "body_range": {
-                "name": "Body in range"
+                "name": "越界"
             },
             "body_presence": {
-                "name": "Body presence"
+                "name": "存在"
             },
             "body_movement": {
-                "name": "Body movement"
+                "name": "动作"
             },
             "body_energy": {
-                "name": "Body energy"
+                "name": "体动"
             },
             "body_distance": {
-                "name": "Body distance"
+                "name": "距离"
             },
             "body_location_x": {
-                "name": "Body location x"
+                "name": "方位X"
             },
             "body_location_y": {
-                "name": "Body location y"
+                "name": "方位Y"
             },
             "body_location_z": {
-                "name": "Body location z"
+                "name": "方位Z"
             },
             "heart_rate": {
-                "name": "Heart rate"
+                "name": "心率"
             },
             "heart_waves_w0": {
-                "name": "Heart waves 0"
+                "name": "心率波形采样点1"
             },
             "heart_waves_w1": {
-                "name": "Heart waves 1"
+                "name": "心率波形采样点2"
             },
             "heart_waves_w2": {
-                "name": "Heart waves 2"
+                "name": "心率波形采样点3"
             },
             "heart_waves_w3": {
-                "name": "Heart waves 3"
+                "name": "心率波形采样点4"
             },
             "heart_waves_w4": {
-                "name": "Heart waves 4"
+                "name": "心率波形采样点5"
             },
             "breath_info": {
                 "name": "Breath info"
             },
             "breath_rate": {
-                "name": "Breath rate"
+                "name": "呼吸频率"
             },
             "breath_waves_w0": {
-                "name": "Breath waves 0"
+                "name": "呼吸波形采样点1"
             },
             "breath_waves_w1": {
-                "name": "Breath waves 1"
+                "name": "呼吸波形采样点2"
             },
             "breath_waves_w2": {
-                "name": "Breath waves 2"
+                "name": "呼吸波形采样点3"
             },
             "breath_waves_w3": {
-                "name": "Breath waves 3"
+                "name": "呼吸波形采样点4"
             },
             "breath_waves_w4": {
-                "name": "Breath waves 4"
+                "name": "呼吸波形采样点5"
             },
             "sleep_away": {
                 "name": "Sleep away"
@@ -176,39 +176,39 @@
         },
         "switch": {
             "setting_realtime_ws": {
-                "name": "Websocket Realtime Mode"
+                "name": "实时模式"
             },
             "setting_indicate": {
-                "name": "Indicator Switch"
+                "name": "指示灯"
             },
             "setting_body": {
-                "name": "Body Monitoring Switch"
+                "name": "监测体动"
             },
             "setting_heart": {
-                "name": "Heart Monitoring Switch"
+                "name": "监测心率"
             },
             "setting_breath": {
-                "name": "Breath Monitoring Switch"
+                "name": "监测呼吸"
             },
             "setting_sleep": {
-                "name": "Sleep Monitoring Switch"
+                "name": "监测睡眠"
             },
             "setting_mode": {
-                "name": "Mode Monitoring Switch"
+                "name": "监测模式"
             },
             "setting_nobody": {
-                "name": "Nobody Monitoring Switch"
+                "name": "监测睡眠无人"
             },
             "setting_struggle": {
-                "name": "Struggle Monitoring Switch"
+                "name": "监测睡眠挣扎"
             }
         },
         "number": {
             "setting_nobody_duration": {
-                "name": "Binding Switch Duration"
+                "name": "监测睡眠无人时长"
             },
             "setting_stop_duration": {
-                "name": "Sleep Stop Duration"
+                "name": "监测睡眠截止时长"
             }
         }
     }
