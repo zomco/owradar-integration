@@ -773,8 +773,6 @@ class Setting:
             An Setting object.
         """
         return Setting(
-            binding_count=data.get("binding_count", None),
-            binding=data.get("binding", None),
             realtime_ws=data.get("realtime_ws", None),
             indicate=data.get("indicate", None),
             body=data.get("body", None),
@@ -799,10 +797,6 @@ class Setting:
         -------
             An Setting object.
         """
-        if (_binding_count := data.get("binding_count")) is not None:
-            self.binding_count = _binding_count
-        if (_binding := data.get("binding")) is not None:
-            self.binding = _binding
         if (_realtime_ws := data.get("realtime_ws")) is not None:
             self.realtime_ws = _realtime_ws
         if (_indicate := data.get("indicate")) is not None:
