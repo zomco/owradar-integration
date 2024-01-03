@@ -1,0 +1,278 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "デバイスはすでに設定されています",
+            "cannot_connect": "接続できませんでした"
+        },
+        "error": {
+            "cannot_connect": "接続できませんでした"
+        },
+        "flow_title": "{name}",
+        "step": {
+            "user": {
+                "data": {
+                    "host": "ホスト"
+                },
+                "description": "OWRCareデバイスをHome Assistantに統合するために設定します。"
+            },
+            "zeroconf_confirm": {
+                "description": "名前が`{name}`のOWRCareデバイスをHome Assistantに追加しますか？",
+                "title": "OWRCareデバイスが見つかりました"
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "body_range": {
+                "name": "範囲ステータス",
+                "state": {
+                    "0": "範囲外",
+                    "1": "範囲内"
+                }
+            },
+            "body_presence": {
+                "name": "存在情報",
+                "state": {
+                    "0": "誰もいない",
+                    "1": "誰かいる"
+                }
+            },
+            "body_movement": {
+                "name": "動き情報",
+                "state": {
+                    "0": "なし",
+                    "1": "静止",
+                    "2": "活発"
+                }
+            },
+            "body_energy": {
+                "name": "体エネルギー"
+            },
+            "body_distance": {
+                "name": "体距離"
+            },
+            "body_location_x": {
+                "name": "体位置 - X"
+            },
+            "body_location_y": {
+                "name": "体位置 - Y"
+            },
+            "body_location_z": {
+                "name": "体位置 - Z"
+            },
+            "heart_rate": {
+                "name": "心拍数"
+            },
+            "heart_waves_w0": {
+                "name": "心拍波形 - 1"
+            },
+            "heart_waves_w1": {
+                "name": "心拍波形 - 2"
+            },
+            "heart_waves_w2": {
+                "name": "心拍波形 - 3"
+            },
+            "heart_waves_w3": {
+                "name": "心拍波形 - 4"
+            },
+            "heart_waves_w4": {
+                "name": "心拍波形 - 5"
+            },
+            "breath_info": {
+                "name": "呼吸情報",
+                "state": {
+                    "0": "なし",
+                    "1": "正常",
+                    "2": "過度の呼吸",
+                    "3": "過少の呼吸",
+                    "4": "なし"
+                }
+            },
+            "breath_rate": {
+                "name": "呼吸数値"
+            },
+            "breath_waves_w0": {
+                "name": "呼吸波形 - 1"
+            },
+            "breath_waves_w1": {
+                "name": "呼吸波形 - 2"
+            },
+            "breath_waves_w2": {
+                "name": "呼吸波形 - 3"
+            },
+            "breath_waves_w3": {
+                "name": "呼吸波形 - 4"
+            },
+            "breath_waves_w4": {
+                "name": "呼吸波形 - 5"
+            },
+            "sleep_away": {
+                "name": "寝床ステータス",
+                "state": {
+                    "0": "ベッドから離れている",
+                    "1": "ベッドにいる",
+                    "2": "なし"
+                }
+            },
+            "sleep_status": {
+                "name": "睡眠状態",
+                "state": {
+                    "0": "深い眠り",
+                    "1": "浅い眠り",
+                    "2": "目が覚めている",
+                    "3": "なし"
+                }
+            },
+            "sleep_awake": {
+                "name": "目が覚めた時間"
+            },
+            "sleep_light": {
+                "name": "浅い眠りの時間"
+            },
+            "sleep_deep": {
+                "name": "深い眠りの時間"
+            },
+            "sleep_score": {
+                "name": "睡眠品質評価"
+            },
+            "sleep_overview_presence": {
+                "name": "睡眠概要状態 - 存在",
+                "state": {
+                    "0": "誰もいない",
+                    "1": "誰かいる"
+                }
+            },
+            "sleep_overview_status": {
+                "name": "睡眠概要状態 - 睡眠状態",
+                "state": {
+                    "0": "深い眠り",
+                    "1": "浅い眠り",
+                    "2": "目が覚めている",
+                    "3": "ベッドから離れている"
+                }
+            },
+            "sleep_overview_breath": {
+                "name": "睡眠概要状態 - 平均呼吸"
+            },
+            "sleep_overview_heart": {
+                "name": "睡眠概要状態 - 平均心拍"
+            },
+            "sleep_overview_turn": {
+                "name": "睡眠概要状態 - 転回回数"
+            },
+            "sleep_overview_leratio": {
+                "name": "睡眠概要状態 - 大幅な体動比率"
+            },
+            "sleep_overview_seratio": {
+                "name": "睡眠概要状態 - 小幅な体動比率"
+            },
+            "sleep_overview_pause": {
+                "name": "睡眠概要状態 - 呼吸停止回数"
+            },
+            "sleep_quality_score": {
+                "name": "睡眠品質分析 - 評価"
+            },
+            "sleep_quality_duration": {
+                "name": "睡眠品質分析 - 合計時間"
+            },
+            "sleep_quality_awake": {
+                "name": "睡眠品質分析 - 目が覚めた時間の割合"
+            },
+            "sleep_quality_light": {
+                "name": "睡眠品質分析 - 浅い眠りの時間の割合"
+            },
+            "sleep_quality_deep": {
+                "name": "睡眠品質分析 - 深い眠りの時間の割合"
+            },
+            "sleep_quality_aduration": {
+                "name": "睡眠品質分析 - ベッドから離れた時間"
+            },
+            "sleep_quality_away": {
+                "name": "睡眠品質分析 - ベッドから離れた回数"
+            },
+            "sleep_quality_turn": {
+                "name": "睡眠品質分析 - 転回回数"
+            },
+            "sleep_quality_breath": {
+                "name": "睡眠品質分析 - 平均呼吸"
+            },
+            "sleep_quality_heart": {
+                "name": "睡眠品質分析 - 平均心拍"
+            },
+            "sleep_quality_pause": {
+                "name": "睡眠品質分析 - 呼吸停止回数"
+            },
+            "sleep_exception": {
+                "name": "睡眠例外",
+                "state": {
+                    "0": "睡眠時間が4時間未満",
+                    "1": "睡眠時間が12時間を超える",
+                    "2": "長時間の不在",
+                    "3": "なし"
+                }
+            },
+            "sleep_rating": {
+                "name": "睡眠品質評価",
+                "state": {
+                    "0": "なし",
+                    "1": "良質な睡眠",
+                    "2": "平均的な睡眠",
+                    "3": "低品質な睡眠"
+                }
+            },
+            "sleep_struggle": {
+                "name": "異常な戦闘状態",
+                "state": {
+                    "0": "なし",
+                    "1": "正常",
+                    "2": "異常な戦闘"
+                }
+            },
+            "sleep_nobody": {
+                "name": "誰もいない状態",
+                "state": {
+                    "0": "なし",
+                    "1": "正常",
+                    "2": "異常"
+                }
+            }
+        },
+        "switch": {
+            "setting_realtime_ws": {
+                "name": "リアルタイム送信モード選択"
+            },
+            "setting_indicate": {
+                "name": "インジケーターライト"
+            },
+            "setting_body": {
+                "name": "体動検出スイッチ"
+            },
+            "setting_heart": {
+                "name": "心拍検出スイッチ"
+            },
+            "setting_breath": {
+                "name": "呼吸検出スイッチ"
+            },
+            "setting_sleep": {
+                "name": "睡眠検出スイッチ"
+            },
+            "setting_mode": {
+                "name": "報告モード選択"
+            },
+            "setting_nobody": {
+                "name": "誰もいない状態スイッチ"
+            },
+            "setting_struggle": {
+                "name": "異常な戦闘状態スイッチ"
+            }
+        },
+        "number": {
+            "setting_nobody_duration": {
+                "name": "誰もいない状態の期間設定"
+            },
+            "setting_stop_duration": {
+                "name": "睡眠停止期間設定"
+            }
+        }
+    }
+}

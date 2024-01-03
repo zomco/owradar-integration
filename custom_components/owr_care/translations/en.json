@@ -81,6 +81,7 @@
             "breath_info": {
                 "name": "Breathing information",
                 "state": {
+                    "0": "None",
                     "1": "Normal",
                     "2": "Breathing too high",
                     "3": "Breathing too low",

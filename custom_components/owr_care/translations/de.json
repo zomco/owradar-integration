@@ -1,0 +1,276 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Gerät bereits konfiguriert",
+            "cannot_connect": "Verbindung fehlgeschlagen"
+        },
+        "error": {
+            "cannot_connect": "Verbindung fehlgeschlagen"
+        },
+        "flow_title": "{name}",
+        "step": {
+            "user": {
+                "data": {
+                    "host": "Host"
+                },
+                "description": "Richten Sie Ihr OWRCare-Gerät für die Integration in Home Assistant ein."
+            },
+            "zeroconf_confirm": {
+                "description": "OWRCare-Gerät mit Namen `{name}` zu Home Assistant hinzufügen?",
+                "title": "OWRCare-Gerät gefunden"
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "body_range": {
+                "name": "Bereichsstatus",
+                "state": {
+                    "0": "Außerhalb des Bereichs",
+                    "1": "Innerhalb des Bereichs"
+                }
+            },
+            "body_presence": {
+                "name": "Anwesenheitsstatus",
+                "state": {
+                    "0": "Niemand",
+                    "1": "Jemand"
+                }
+            },
+            "body_movement": {
+                "name": "Bewegungsstatus",
+                "state": {
+                    "0": "Keine",
+                    "1": "Stillstand",
+                    "2": "Aktiv"
+                }
+            },
+            "body_energy": {
+                "name": "Energie des Körpers"
+            },
+            "body_distance": {
+                "name": "Körperentfernung"
+            },
+            "body_location_x": {
+                "name": "Körperposition - X"
+            },
+            "body_location_y": {
+                "name": "Körperposition - Y"
+            },
+            "body_location_z": {
+                "name": "Körperposition - Z"
+            },
+            "heart_rate": {
+                "name": "Herzfrequenz"
+            },
+            "heart_waves_w0": {
+                "name": "Herzwellen - 1"
+            },
+            "heart_waves_w1": {
+                "name": "Herzwellen - 2"
+            },
+            "heart_waves_w2": {
+                "name": "Herzwellen - 3"
+            },
+            "heart_waves_w3": {
+                "name": "Herzwellen - 4"
+            },
+            "heart_waves_w4": {
+                "name": "Herzwellen - 5"
+            },
+            "breath_info": {
+                "name": "Ateminformation",
+                "state": {
+                    "0": "Keiner",
+                    "1": "Normal",
+                    "2": "Zu hoher Atem",
+                    "3": "Zu niedriger Atem",
+                    "4": "Keiner"
+                }
+            },
+            "breath_rate": {
+                "name": "Atemfrequenz"
+            },
+            "breath_waves_w0": {
+                "name": "Atemwellen - 1"
+            },
+            "breath_waves_w1": {
+                "name": "Atemwellen - 2"
+            },
+            "breath_waves_w2": {
+                "name": "Atemwellen - 3"
+            },
+            "breath_waves_w3": {
+                "name": "Atemwellen - 4"
+            },
+            "breath_waves_w4": {
+                "name": "Atemwellen - 5"
+            },
+            "sleep_away": {
+                "name": "Schlafstatus",
+                "state": {
+                    "0": "Nicht im Bett",
+                    "1": "Im Bett",
+                    "2": "Keiner"
+                }
+            },
+            "sleep_status": {
+                "name": "Schlafzustand",
+                "state": {
+                    "0": "Tiefschlaf",
+                    "1": "Leichtschlaf",
+                    "2": "Wach",
+                    "3": "Keiner"
+                }
+            },
+            "sleep_awake": {
+                "name": "Wachphasen"
+            },
+            "sleep_light": {
+                "name": "Leichtschlafphasen"
+            },
+            "sleep_deep": {
+                "name": "Tiefschlafphasen"
+            },
+            "sleep_score": {
+                "name": "Schlafqualität Bewertung"
+            },
+            "sleep_overview_presence": {
+                "name": "Übersicht Schlafstatus - Anwesenheit",
+                "state": {
+                    "0": "Niemand",
+                    "1": "Jemand"
+                }
+            },
+            "sleep_overview_status": {
+                "name": "Übersicht Schlafstatus - Schlafzustand",
+                "state": {
+                    "0": "Tiefschlaf",
+                    "1": "Leichtschlaf",
+                    "2": "Wach",
+                    "3": "Nicht im Bett"
+                }
+            },
+            "sleep_overview_breath": {
+                "name": "Übersicht Schlafstatus - Durchschnittlicher Atem"
+            },
+            "sleep_overview_heart": {
+                "name": "Übersicht Schlafstatus - Durchschnittlicher Herzschlag"
+            },
+            "sleep_overview_turn": {
+                "name": "Übersicht Schlafstatus - Umdrehungen"
+            },
+            "sleep_overview_leratio": {
+                "name": "Übersicht Schlafstatus - Große Körperbewegungen"
+            },
+            "sleep_overview_seratio": {
+                "name": "Übersicht Schlafstatus - Kleine Körperbewegungen"
+            },
+            "sleep_overview_pause": {
+                "name": "Übersicht Schlafstatus - Atempausen"
+            },
+            "sleep_quality_score": {
+                "name": "Schlafqualitätsanalyse - Bewertung"
+            },
+            "sleep_quality_duration": {
+                "name": "Schlafqualitätsanalyse - Gesamtdauer"
+            },
+            "sleep_quality_awake": {
+                "name": "Schlafqualitätsanalyse - Wachphasen Anteil"
+            },
+            "sleep_quality_light": {
+                "name": "Schlafqualitätsanalyse - Leichtschlafphasen Anteil"
+            },
+            "sleep_quality_deep": {
+                "name": "Schlafqualitätsanalyse - Tiefschlafphasen Anteil"
+            },
+            "sleep_quality_aduration": {
+                "name": "Schlafqualitätsanalyse - Nicht im Bett Dauer"
+            },
+            "sleep_quality_away": {
+                "name": "Schlafqualitätsanalyse - Nicht im Bett Häufigkeit"
+            },
+            "sleep_quality_turn": {
+                "name": "Schlafqualitätsanalyse - Umdrehungen"
+            },
+            "sleep_quality_breath": {
+                "name": "Schlafqualitätsanalyse - Durchschnittlicher Atem"
+            },
+            "sleep_quality_heart": {
+                "name": "Schlafqualitätsanalyse - Durchschnittlicher Herzschlag"
+            },
+            "sleep_quality_pause": {
+                "name": "Schlafqualitätsanalyse - Atempausen"
+            },
+            "sleep_exception": {
+                "name": "Schlafausnahme",
+                "state": {
+                    "0": "Schlafdauer unter 4 Stunden",
+                    "1": "Schlafdauer über 12 Stunden",
+                    "2": "Lange Zeit ohne Anwesenheit",
+                    "3": "Keiner"
+                }
+            },
+            "sleep_rating": {
+                "name": "Schlafqualitätsbewertung",
+                "state": {
+                    "0": "Keiner",
+                    "1": "Gute Schlafqualität",
+                    "2": "Durchschnittliche Schlafqualität",
+                    "3": "Schlechte Schlafqualität"
+                }
+            },
+            "sleep_struggle": {
+                "name": "Ausnahmezustand - Kampf""state": {
+                    "0": "Keiner",
+                    "1": "Normal",
+                    "2": "Außergewöhnliche Kämpfe"
+                }
+            },
+            "sleep_nobody": {
+                "name": "Keine Anwesenheit""state": {
+                    "0": "Keiner",
+                    "1": "Normal",
+                    "2": "Abnormal"
+                }
+            }
+        },
+        "switch": {
+            "setting_realtime_ws": {
+                "name": "Auswahl des Übertragungsmodus"
+            },
+            "setting_indicate": {
+                "name": "Anzeigeleuchte"
+            },
+            "setting_body": {
+                "name": "Körperbewegungserkennung"
+            },
+            "setting_heart": {
+                "name": "Herzfrequenzerkennung"
+            },
+            "setting_breath": {
+                "name": "Atemerkennung"
+            },
+            "setting_sleep": {
+                "name": "Schlaferkennung"
+            },
+            "setting_mode": {
+                "name": "Auswahl des Berichtsmodus"
+            },
+            "setting_nobody": {
+                "name": "Keine Anwesenheit Schalter"
+            },
+            "setting_struggle": {
+                "name": "Ausnahmezustand - Kampf Schalter"
+            }
+        },
+        "number": {
+            "setting_nobody_duration": {
+                "name": "Einstellung der Keine Anwesenheit Dauer"
+            },
+            "setting_stop_duration": {
+                "name": "Einstellung der Schlafunterbrechungsdauer"
+            }
+        }
+    }
+}
