@@ -221,14 +221,16 @@
                 }
             },
             "sleep_struggle": {
-                "name": "Ausnahmezustand - Kampf""state": {
+                "name": "Ausnahmezustand - Kampf",
+                "state": {
                     "0": "Keiner",
                     "1": "Normal",
                     "2": "Außergewöhnliche Kämpfe"
                 }
             },
             "sleep_nobody": {
-                "name": "Keine Anwesenheit""state": {
+                "name": "Keine Anwesenheit",
+                "state": {
                     "0": "Keiner",
                     "1": "Normal",
                     "2": "Abnormal"
