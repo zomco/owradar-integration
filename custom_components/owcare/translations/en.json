@@ -3,14 +3,14 @@
         "flow_title": "{name}",
         "step": {
             "user": {
-                "description": "Set up your OWRCare to integrate with Home Assistant.",
+                "description": "Set up your Owcare to integrate with Home Assistant.",
                 "data": {
                     "host": "Host"
                 }
             },
             "zeroconf_confirm": {
-                "description": "Do you want to add the OWRCare named `{name}` to Home Assistant?",
-                "title": "Discovered OWRCare device"
+                "description": "Do you want to add the Owcare named `{name}` to Home Assistant?",
+                "title": "Discovered Owcare device"
             }
         },
         "error": {

@@ -1,6 +1,6 @@
 {
-    "name": "owr care",
-    "filename": "owr_care.zip",
+    "name": "owcare",
+    "filename": "owcare.zip",
     "hide_default_branch": true,
     "homeassistant": "2023.11.2",
     "render_readme": true,

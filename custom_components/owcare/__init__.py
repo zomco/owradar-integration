@@ -1,7 +1,7 @@
-"""Custom integration to integrate owr_care with Home Assistant.
+"""Custom integration to integrate owcare with Home Assistant.
 
 For more details about this integration, please refer to
-https://github.com/zomco/owr-care-ha
+https://github.com/zomco/owcare-integration
 """
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 
 from .const import DOMAIN
-from .coordinator import OWRCareDataUpdateCoordinator
+from .coordinator import OwcareDataUpdateCoordinator
 
 PLATFORMS: list[Platform] = [
     Platform.SENSOR,
@@ -20,8 +20,8 @@ PLATFORMS: list[Platform] = [
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up OWRCare from a config entry."""
-    coordinator = OWRCareDataUpdateCoordinator(hass, entry=entry)
+    """Set up Owcare from a config entry."""
+    coordinator = OwcareDataUpdateCoordinator(hass, entry=entry)
     await coordinator.async_config_entry_first_refresh()
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
@@ -36,12 +36,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Unload OWRCare config entry."""
+    """Unload Owcare config entry."""
     if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
-        coordinator: OWRCareDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+        coordinator: OwcareDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
         # Ensure disconnected and cleanup stop sub
-        await coordinator.owrcare.disconnect()
+        await coordinator.client.disconnect()
         if coordinator.unsub:
             coordinator.unsub()
 

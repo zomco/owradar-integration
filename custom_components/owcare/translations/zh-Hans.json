@@ -1,64 +1,64 @@
 {
     "config": {
         "abort": {
-            "already_configured": "設備已配置",
-            "cannot_connect": "連接失敗"
+            "already_configured": "设备已配置",
+            "cannot_connect": "连接失败"
         },
         "error": {
-            "cannot_connect": "連接失敗"
+            "cannot_connect": "连接失败"
         },
         "flow_title": "{name}",
         "step": {
             "user": {
                 "data": {
-                    "host": "主機"
+                    "host": "主机"
                 },
-                "description": "設置您的 OWRCare 設備整合到 Home Assistant。"
+                "description": "设置你的 Owcare 设备整合到 Home Assistant."
             },
             "zeroconf_confirm": {
-                "description": "是否將名為 `{name}` 的 OWRCare 設備添加至 Home Assistant？",
-                "title": "發現 OWRCare 設備"
+                "description": "是否将名为 `{name}` 的 Owcare 设备添加至 Home Assistant?",
+                "title": "发现 Owcare 设备"
             }
         }
     },
     "entity": {
         "sensor": {
             "body_range": {
-                "name": "位置越界狀態",
+                "name": "位置越界状态",
                 "state": {
-                    "0": "範圍外",
-                    "1": "範圍內"
+                    "0": "范围外",
+                    "1": "范围内"
                 }
             },
             "body_presence": {
                 "name": "存在信息",
                 "state": {
-                    "0": "無人",
+                    "0": "无人",
                     "1": "有人"
                 }
             },
             "body_movement": {
-                "name": "運動信息",
+                "name": "运动信息",
                 "state": {
-                    "0": "無",
-                    "1": "靜止",
-                    "2": "活躍"
+                    "0": "无",
+                    "1": "静止",
+                    "2": "活跃"
                 }
             },
             "body_energy": {
-                "name": "體動參數"
+                "name": "体动参数"
             },
             "body_distance": {
-                "name": "人體距離"
+                "name": "人体距离"
             },
             "body_location_x": {
-                "name": "人體方位 - X"
+                "name": "人体方位 - X"
             },
             "body_location_y": {
-                "name": "人體方位 - Y"
+                "name": "人体方位 - Y"
             },
             "body_location_z": {
-                "name": "人體方位 - Z"
+                "name": "人体方位 - Z"
             },
             "heart_rate": {
                 "name": "心率"
@@ -81,15 +81,15 @@
             "breath_info": {
                 "name": "呼吸信息",
                 "state": {
-                    "0": "無",
+                    "0": "无",
                     "1": "正常",
-                    "2": "呼吸過高",
-                    "3": "呼吸過低",
-                    "4": "無"
+                    "2": "呼吸过高",
+                    "3": "呼吸过低",
+                    "4": "无"
                 }
             },
             "breath_rate": {
-                "name": "呼吸數值"
+                "name": "呼吸数值"
             },
             "breath_waves_w0": {
                 "name": "呼吸波形 - 1"
@@ -107,171 +107,171 @@
                 "name": "呼吸波形 - 5"
             },
             "sleep_away": {
-                "name": "入床狀態",
+                "name": "入床状态",
                 "state": {
-                    "0": "離床",
+                    "0": "离床",
                     "1": "入床",
-                    "2": "無"
+                    "2": "无"
                 }
             },
             "sleep_status": {
-                "name": "睡眠狀態",
+                "name": "睡眠状态",
                 "state": {
                     "0": "深睡",
-                    "1": "淺睡",
+                    "1": "浅睡",
                     "2": "清醒",
-                    "3": "無"
+                    "3": "无"
                 }
             },
             "sleep_awake": {
-                "name": "清醒時長"
+                "name": "清醒时长"
             },
             "sleep_light": {
-                "name": "淺睡時長"
+                "name": "浅睡时长"
             },
             "sleep_deep": {
-                "name": "深睡時長"
+                "name": "深睡时长"
             },
             "sleep_score": {
-                "name": "睡眠質量評分"
+                "name": "睡眠质量评分"
             },
             "sleep_overview_presence": {
-                "name": "睡眠綜合狀態 - 存在",
+                "name": "睡眠综合状态 - 存在",
                 "state": {
-                    "0": "無人",
+                    "0": "无人",
                     "1": "有人"
                 }
             },
             "sleep_overview_status": {
-                "name": "睡眠綜合狀態 - 睡眠狀態",
+                "name": "睡眠综合状态 - 睡眠状态",
                 "state": {
                     "0": "深睡",
-                    "1": "淺睡",
+                    "1": "浅睡",
                     "2": "清醒",
-                    "3": "離床"
+                    "3": "离床"
                 }
             },
             "sleep_overview_breath": {
-                "name": "睡眠綜合狀態 - 平均呼吸"
+                "name": "睡眠综合状态 - 平均呼吸"
             },
             "sleep_overview_heart": {
-                "name": "睡眠綜合狀態 - 平均心跳"
+                "name": "睡眠综合状态 - 平均心跳"
             },
             "sleep_overview_turn": {
-                "name": "睡眠綜合狀態 - 翻身次數"
+                "name": "睡眠综合状态 - 翻身次数"
             },
             "sleep_overview_leratio": {
-                "name": "睡眠綜合狀態 - 大幅度體動佔比"
+                "name": "睡眠综合状态 - 大幅度体动占比"
             },
             "sleep_overview_seratio": {
-                "name": "睡眠綜合狀態 - 小幅度體動佔比"
+                "name": "睡眠综合状态 - 小幅度体动占比"
             },
             "sleep_overview_pause": {
-                "name": "睡眠綜合狀態 - 呼吸暫停次數"
+                "name": "睡眠综合状态 - 呼吸暂停次数"
             },
             "sleep_quality_score": {
-                "name": "睡眠質量分析 - 評分"
+                "name": "睡眠质量分析 - 评分"
             },
             "sleep_quality_duration": {
-                "name": "睡眠質量分析 - 總時長"
+                "name": "睡眠质量分析 - 总时长"
             },
             "sleep_quality_awake": {
-                "name": "睡眠質量分析 - 清醒時長佔比"
+                "name": "睡眠质量分析 - 清醒时长占比"
             },
             "sleep_quality_light": {
-                "name": "睡眠質量分析 - 淺睡時長佔比"
+                "name": "睡眠质量分析 - 浅睡时长占比"
             },
             "sleep_quality_deep": {
-                "name": "睡眠質量分析 - 深睡時長佔比"
+                "name": "睡眠质量分析 - 深睡时长占比"
             },
             "sleep_quality_aduration": {
-                "name": "睡眠質量分析 - 離床時長"
+                "name": "睡眠质量分析 - 离床时长"
             },
             "sleep_quality_away": {
-                "name": "睡眠質量分析 - 離床次數"
+                "name": "睡眠质量分析 - 离床次数"
             },
             "sleep_quality_turn": {
-                "name": "睡眠質量分析 - 翻身次數"
+                "name": "睡眠质量分析 - 翻身次数"
             },
             "sleep_quality_breath": {
-                "name": "睡眠質量分析 - 平均呼吸"
+                "name": "睡眠质量分析 - 平均呼吸"
             },
             "sleep_quality_heart": {
-                "name": "睡眠質量分析 - 平均心跳"
+                "name": "睡眠质量分析 - 平均心跳"
             },
             "sleep_quality_pause": {
-                "name": "睡眠質量分析 - 呼吸暫停次數"
+                "name": "睡眠质量分析 - 呼吸暂停次数"
             },
             "sleep_exception": {
-                "name": "睡眠異常",
+                "name": "睡眠异常",
                 "state": {
-                    "0": "睡眠時長不足4小時",
-                    "1": "睡眠時長大於12小時",
-                    "2": "長時間異常無人",
-                    "3": "無"
+                    "0": "睡眠时长不足4小时",
+                    "1": "睡眠时长大于12小时",
+                    "2": "长时间异常无人",
+                    "3": "无"
                 }
             },
             "sleep_rating": {
-                "name": "睡眠質量評級",
+                "name": "睡眠质量评级",
                 "state": {
-                    "0": "無",
-                    "1": "睡眠質量良好",
-                    "2": "睡眠質量一般",
-                    "3": "睡眠質量較差"
+                    "0": "无",
+                    "1": "睡眠质量良好",
+                    "2": "睡眠质量一般",
+                    "3": "睡眠质量较差"
                 }
             },
             "sleep_struggle": {
-                "name": "異常掙扎狀態",
+                "name": "异常挣扎状态",
                 "state": {
-                    "0": "無",
+                    "0": "无",
                     "1": "正常",
-                    "2": "異常掙扎"
+                    "2": "异常挣扎"
                 }
             },
             "sleep_nobody": {
-                "name": "無人計時狀態",
+                "name": "无人计时状态",
                 "state": {
-                    "0": "無",
+                    "0": "无",
                     "1": "正常",
-                    "2": "異常"
+                    "2": "异常"
                 }
             }
         },
         "switch": {
             "setting_realtime_ws": {
-                "name": "傳輸模式選擇"
+                "name": "传输模式选择"
             },
             "setting_indicate": {
-                "name": "指示燈"
+                "name": "指示灯"
             },
             "setting_body": {
-                "name": "體動檢測開關"
+                "name": "体动检测开关"
             },
             "setting_heart": {
-                "name": "心率檢測開關"
+                "name": "心率检测开关"
             },
             "setting_breath": {
-                "name": "呼吸檢測開關"
+                "name": "呼吸检测开关"
             },
             "setting_sleep": {
-                "name": "睡眠檢測開關"
+                "name": "睡眠检测开关"
             },
             "setting_mode": {
-                "name": "上報模式選擇"
+                "name": "上报模式选择"
             },
             "setting_nobody": {
-                "name": "無人計時狀態開關"
+                "name": "无人计时状态开关"
             },
             "setting_struggle": {
-                "name": "異常掙扎狀態開關"
+                "name": "异常挣扎状态开关"
             }
         },
         "number": {
             "setting_nobody_duration": {
-                "name": "無人計時時長設置"
+                "name": "无人计时时长设置"
             },
             "setting_stop_duration": {
-                "name": "睡眠截止時長設置"
+                "name": "睡眠截止时长设置"
             }
         }
     }

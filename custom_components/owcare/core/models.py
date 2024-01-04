@@ -1,4 +1,4 @@
-"""Models for OWRCare."""
+"""Models for Owcare."""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -7,21 +7,21 @@ from typing import Any
 
 
 class BodyRange(IntEnum):
-    """Enumeration representing body range from OWRCare."""
+    """Enumeration representing body range from Owcare."""
 
     OUT = 0
     IN = 1
 
 
 class BodyPresence(IntEnum):
-    """Enumeration representing body presence from OWRCare."""
+    """Enumeration representing body presence from Owcare."""
 
     NOBODY = 0
     SOMEBODY = 1
 
 
 class BodyMovement(IntEnum):
-    """Enumeration representing body movement from OWRCare."""
+    """Enumeration representing body movement from Owcare."""
 
     NONE = 0
     STATIC = 1
@@ -30,7 +30,7 @@ class BodyMovement(IntEnum):
 
 @dataclass
 class BodyLocation:
-    """Object holding body location state in OWRCare."""
+    """Object holding body location state in Owcare."""
 
     x: int
     y: int
@@ -38,11 +38,11 @@ class BodyLocation:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> BodyLocation:
-        """Return Body Location object form OWRCare API response.
+        """Return Body Location object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -57,7 +57,7 @@ class BodyLocation:
 
 @dataclass
 class Body:
-    """Object holding body state in OWRCare."""
+    """Object holding body state in Owcare."""
 
     range: BodyRange
     presence: BodyPresence
@@ -68,11 +68,11 @@ class Body:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Body:
-        """Return Body object form OWRCare API response.
+        """Return Body object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -88,11 +88,11 @@ class Body:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Body:
-        """Update and Return Body object form OWRCare API response.
+        """Update and Return Body object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -116,7 +116,7 @@ class Body:
 
 @dataclass
 class Wave:
-    """Object holding wave state in OWRCare."""
+    """Object holding wave state in Owcare."""
 
     w0: int
     w1: int
@@ -126,11 +126,11 @@ class Wave:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Wave:
-        """Return Wave object form OWRCare API response.
+        """Return Wave object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -147,18 +147,18 @@ class Wave:
 
 @dataclass
 class Heart:
-    """Object holding heart state in OWRCare."""
+    """Object holding heart state in Owcare."""
 
     rate: int
     waves: Wave
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Heart:
-        """Return Heart object form OWRCare API response.
+        """Return Heart object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -170,11 +170,11 @@ class Heart:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Heart:
-        """Update and Return Heart object form OWRCare API response.
+        """Update and Return Heart object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -189,7 +189,7 @@ class Heart:
 
 
 class BreathInfo(IntEnum):
-    """Enumeration representing breath info from OWRCare."""
+    """Enumeration representing breath info from Owcare."""
 
     UNSET = 0
     NORMAL = 1
@@ -200,7 +200,7 @@ class BreathInfo(IntEnum):
 
 @dataclass
 class Breath:
-    """Object holding breath state in OWRCare."""
+    """Object holding breath state in Owcare."""
 
     info: BreathInfo
     rate: int
@@ -208,11 +208,11 @@ class Breath:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Breath:
-        """Return Breath object form OWRCare API response.
+        """Return Breath object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -225,11 +225,11 @@ class Breath:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Breath:
-        """Update and Return Breath object form OWRCare API response.
+        """Update and Return Breath object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -246,7 +246,7 @@ class Breath:
 
 
 class SleepAway(IntEnum):
-    """Enumeration representing sleep away from OWRCare."""
+    """Enumeration representing sleep away from Owcare."""
 
     OUT = 0
     IN = 1
@@ -254,7 +254,7 @@ class SleepAway(IntEnum):
 
 
 class SleepStatus(IntEnum):
-    """Enumeration representing sleep status from OWRCare."""
+    """Enumeration representing sleep status from Owcare."""
 
     DEEP = 0
     LIGHT = 1
@@ -263,7 +263,7 @@ class SleepStatus(IntEnum):
 
 
 class SleepException(IntEnum):
-    """Enumeration representing sleep exception from OWRCare."""
+    """Enumeration representing sleep exception from Owcare."""
 
     LESS_4HOUR = 0
     MORE_12HOUR = 1
@@ -272,7 +272,7 @@ class SleepException(IntEnum):
 
 
 class SleepRating(IntEnum):
-    """Enumeration representing sleep rating from OWRCare."""
+    """Enumeration representing sleep rating from Owcare."""
 
     NONE = 0
     GOOD = 1
@@ -281,7 +281,7 @@ class SleepRating(IntEnum):
 
 
 class SleepStruggle(IntEnum):
-    """Enumeration representing sleep struggle from OWRCare."""
+    """Enumeration representing sleep struggle from Owcare."""
 
     NONE = 0
     NORMAL = 1
@@ -289,7 +289,7 @@ class SleepStruggle(IntEnum):
 
 
 class SleepNobody(IntEnum):
-    """Enumeration representing sleep nobody from OWRCare."""
+    """Enumeration representing sleep nobody from Owcare."""
 
     NONE = 0
     NORMAL = 1
@@ -298,11 +298,11 @@ class SleepNobody(IntEnum):
 
 @dataclass
 class SleepOverview:
-    """Object holding sleep overview state in OWRCare.
+    """Object holding sleep overview state in Owcare.
 
     Args:
     ----
-        data: The data from the OWRCare device API.
+        data: The data from the Owcare device API.
 
     Returns:
     -------
@@ -320,11 +320,11 @@ class SleepOverview:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> SleepOverview:
-        """Return SleepOverview object form OWRCare API response.
+        """Return SleepOverview object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -344,11 +344,11 @@ class SleepOverview:
 
 @dataclass
 class SleepQuality:
-    """Object holding sleep quality state in OWRCare.
+    """Object holding sleep quality state in Owcare.
 
     Args:
     ----
-        data: The data from the OWRCare device API.
+        data: The data from the Owcare device API.
 
     Returns:
     -------
@@ -369,11 +369,11 @@ class SleepQuality:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> SleepQuality:
-        """Return SleepQuality object form OWRCare API response.
+        """Return SleepQuality object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -396,11 +396,11 @@ class SleepQuality:
 
 @dataclass
 class Sleep:
-    """Object holding sleep state in OWRCare.
+    """Object holding sleep state in Owcare.
 
     Args:
     ----
-        data: The data from the OWRCare device API.
+        data: The data from the Owcare device API.
 
     Returns:
     -------
@@ -422,11 +422,11 @@ class Sleep:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Sleep:
-        """Return Sleep object form OWRCare API response.
+        """Return Sleep object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -448,11 +448,11 @@ class Sleep:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Sleep:
-        """Update and Return Sleep object form OWRCare API response.
+        """Update and Return Sleep object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -488,7 +488,7 @@ class Sleep:
 
 @dataclass
 class Coord:
-    """Object holding coordinate state in OWRCare."""
+    """Object holding coordinate state in Owcare."""
 
     x: float
     y: float
@@ -496,11 +496,11 @@ class Coord:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Coord:
-        """Return Coordinate object form OWRCare API response.
+        """Return Coordinate object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -515,18 +515,18 @@ class Coord:
 
 @dataclass
 class MotionAngle:
-    """Object holding Motion Angle state in OWRCare."""
+    """Object holding Motion Angle state in Owcare."""
 
     pitch: float
     roll: float
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> MotionAngle:
-        """Return Motion Angle object form OWRCare API response.
+        """Return Motion Angle object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -540,7 +540,7 @@ class MotionAngle:
 
 @dataclass
 class Motion:
-    """Object holding motion state in OWRCare."""
+    """Object holding motion state in Owcare."""
 
     acce: Coord
     gyro: Coord
@@ -548,11 +548,11 @@ class Motion:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Motion:
-        """Return Motion object form OWRCare API response.
+        """Return Motion object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -565,11 +565,11 @@ class Motion:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Motion:
-        """Update and Return Motion object form OWRCare API response.
+        """Update and Return Motion object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -587,11 +587,11 @@ class Motion:
 
 @dataclass
 class State:
-    """Object holding State Infomation from OWRCare.
+    """Object holding State Infomation from Owcare.
 
     Args:
     ----
-        data: The data from the OWRCare device API.
+        data: The data from the Owcare device API.
 
     Returns:
     -------
@@ -607,11 +607,11 @@ class State:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> State:
-        """Return State object form OWRCare API response.
+        """Return State object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -627,11 +627,11 @@ class State:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> State:
-        """Update Return State object form OWRCare API response.
+        """Update Return State object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -655,7 +655,7 @@ class State:
 
 @dataclass
 class Info:
-    """Object holding device infomation from OWRCare."""
+    """Object holding device infomation from Owcare."""
 
     radar_model: str
     radar_version: str
@@ -670,11 +670,11 @@ class Info:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Info:
-        """Return Device information object from OWRCare API response.
+        """Return Device information object from Owcare API response.
 
         Args:
         ----
-            data: The data from the OWRCare device API.
+            data: The data from the Owcare device API.
 
         Returns:
         -------
@@ -694,11 +694,11 @@ class Info:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Info:
-        """Update and Return Device information object from OWRCare API response.
+        """Update and Return Device information object from Owcare API response.
 
         Args:
         ----
-            data: The data from the OWRCare device API.
+            data: The data from the Owcare device API.
 
         Returns:
         -------
@@ -729,7 +729,7 @@ class Info:
 
 
 class SettingSwitch(IntEnum):
-    """Enumeration representing body range from OWRCare."""
+    """Enumeration representing body range from Owcare."""
 
     OFF = 0
     ON = 1
@@ -737,11 +737,11 @@ class SettingSwitch(IntEnum):
 
 @dataclass
 class Setting:
-    """Object holding Setting information from OWRCare.
+    """Object holding Setting information from Owcare.
 
     Args:
     ----
-        data: The data from the OWRCare device API.
+        data: The data from the Owcare device API.
 
     Returns:
     -------
@@ -762,11 +762,11 @@ class Setting:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Setting:
-        """Return Setting object form OWRCare API response.
+        """Return Setting object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -787,11 +787,11 @@ class Setting:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Setting:
-        """Update and Return Setting object form OWRCare API response.
+        """Update and Return Setting object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -825,11 +825,11 @@ class Setting:
 
 @dataclass
 class Device:
-    """Object holding Device Infomation from OWRCare.
+    """Object holding Device Infomation from Owcare.
 
     Args:
     ----
-        data: The data from the OWRCare device API.
+        data: The data from the Owcare device API.
 
     Returns:
     -------
@@ -842,11 +842,11 @@ class Device:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Device:
-        """Return Device object form OWRCare API response.
+        """Return Device object form Owcare API response.
 
         Args:
         ----
-            data: The response from the OWRCare API.
+            data: The response from the Owcare API.
 
         Returns:
         -------
@@ -859,15 +859,15 @@ class Device:
         )
 
     # def __init__(self, data: dict[str, Any]) -> None:
-    #     """Initialize an empty OWRCare device class.
+    #     """Initialize an empty Owcare device class.
 
     #     Args:
     #     ----
-    #         data: The full API response from a OWRCare device.
+    #         data: The full API response from a Owcare device.
 
     #     Raises:
     #     ------
-    #         OWRCareError: In case the given API response is incomplete in a way
+    #         OwcareError: In case the given API response is incomplete in a way
     #             that a Device object cannot be constructed from it.
     #     """
     #     # Check if all elements are in the passed dict, else raise an Error
@@ -875,17 +875,17 @@ class Device:
     #     #     k not in data and data[k] is not None
     #     #     for k in ("setting","info", "state")
     #     # ):
-    #     #     msg = "OWRCare data is incomplete, cannot construct device object"
-    #     #     raise OWRCareError(msg)
+    #     #     msg = "Owcare data is incomplete, cannot construct device object"
+    #     #     raise OwcareError(msg)
     #     self.update_from_dict(data)
 
     def update_from_dict(self, data: dict[str, Any]) -> Device:
-        """Update and Return Device object from OWRCare API response.
+        """Update and Return Device object from Owcare API response.
 
         Args:
         ----
             data: Update the device object with the data received from a
-                OWRCare device API.
+                Owcare device API.
 
         Returns:
         -------
