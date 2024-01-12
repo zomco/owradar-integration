@@ -3,120 +3,120 @@ title: 睡眠雷达
 cards:
   - type: entities
     entities:
-      - entity: switch.owcare_3e3268_mode_monitoring_switch
-      - entity: switch.owcare_3e3268_websocket_realtime_mode
+      - entity: switch.owcare_3e3268_sleep_monitoring_switch
+      - entity: switch.owcare_3e3268_transfering_mode_selection
   - type: conditional
     conditions:
-      - entity: switch.owcare_3e3268_websocket_realtime_mode
+      - entity: switch.owcare_3e3268_transfering_mode_selection
         state: 'on'
     card:
       type: vertical-stack
       cards:
         - type: entities
           entities:
-            - entity: switch.owcare_3e3268_body_monitoring_switch
+            - entity: switch.owcare_3e3268_human_presence_monitoring_switch
         - type: conditional
           conditions:
-            - entity: switch.owcare_3e3268_body_monitoring_switch
+            - entity: switch.owcare_3e3268_human_presence_monitoring_switch
               state: 'on'
           card:
             type: vertical-stack
             cards:
               - type: sensor
-                entity: sensor.owcare_3e3268_body_distance
+                entity: sensor.owcare_3e3268_human_distance
                 graph: line
               - type: sensor
-                entity: sensor.owcare_3e3268_body_energy
+                entity: sensor.owcare_3e3268_physical_activity_parameters
                 graph: line
               - type: history-graph
                 entities:
-                  - entity: sensor.owcare_3e3268_body_in_range
-                  - entity: sensor.owcare_3e3268_body_movement
-                  - entity: sensor.owcare_3e3268_body_presence
+                  - entity: sensor.owcare_3e3268_location_out_of_bounds_status
+                  - entity: sensor.owcare_3e3268_sports_information
+                  - entity: sensor.owcare_3e3268_bed_in
               - type: entities
                 entities:
-                  - entity: sensor.owcare_3e3268_body_location_x
-                  - entity: sensor.owcare_3e3268_body_location_y
-                  - entity: sensor.owcare_3e3268_body_location_z
+                  - entity: sensor.owcare_3e3268_body_position_x
+                  - entity: sensor.owcare_3e3268_body_position_y
+                  - entity: sensor.owcare_3e3268_body_position_z
   - type: conditional
     conditions:
-      - entity: switch.owcare_3e3268_websocket_realtime_mode
+      - entity: switch.owcare_3e3268_transfering_mode_selection
         state: 'on'
     card:
       type: vertical-stack
       cards:
         - type: entities
           entities:
-            - entity: switch.owcare_3e3268_breath_monitoring_switch
+            - entity: switch.owcare_3e3268_breathing_monitoring_switch
         - type: conditional
           conditions:
-            - entity: switch.owcare_3e3268_breath_monitoring_switch
+            - entity: switch.owcare_3e3268_breathing_monitoring_switch
               state: 'on'
           card:
             type: vertical-stack
             cards:
               - type: sensor
-                entity: sensor.owcare_3e3268_breath_rate
+                entity: sensor.owcare_3e3268_breath_value
                 graph: line
               - type: entity
-                entity: sensor.owcare_3e3268_breath_info
+                entity: sensor.owcare_3e3268_breathing_information
               - type: conditional
                 conditions:
-                  - entity: switch.owcare_3e3268_mode_monitoring_switch
+                  - entity: switch.owcare_3e3268_reporting_mode_selection
                     state: 'off'
                 card:
                   type: horizontal-stack
                   cards:
                     - type: entity
-                      entity: sensor.owcare_3e3268_breath_waves_0
+                      entity: sensor.owcare_3e3268_respiratory_waveform_1
                     - type: entity
-                      entity: sensor.owcare_3e3268_breath_waves_1
+                      entity: sensor.owcare_3e3268_respiratory_waveform_2
                     - type: entity
-                      entity: sensor.owcare_3e3268_breath_waves_2
+                      entity: sensor.owcare_3e3268_respiratory_waveform_3
                     - type: entity
-                      entity: sensor.owcare_3e3268_breath_waves_3
+                      entity: sensor.owcare_3e3268_respiratory_waveform_4
                     - type: entity
-                      entity: sensor.owcare_3e3268_breath_waves_4
+                      entity: sensor.owcare_3e3268_respiratory_waveform_5
   - type: conditional
     conditions:
-      - entity: switch.owcare_3e3268_websocket_realtime_mode
+      - entity: switch.owcare_3e3268_transfering_mode_selection
         state: 'on'
     card:
       type: vertical-stack
       cards:
         - type: entities
           entities:
-            - entity: switch.owcare_3e3268_heart_monitoring_switch
+            - entity: switch.owcare_3e3268_heartrate_monitoring_switch
         - type: conditional
           conditions:
-            - entity: switch.owcare_3e3268_heart_monitoring_switch
+            - entity: switch.owcare_3e3268_heartrate_monitoring_switch
               state: 'on'
           card:
             type: vertical-stack
             cards:
               - type: sensor
-                entity: sensor.owcare_3e3268_heart_rate
+                entity: sensor.owcare_3e3268_heart_rate_value
                 graph: line
               - type: conditional
                 conditions:
-                  - entity: switch.owcare_3e3268_mode_monitoring_switch
+                  - entity: switch.owcare_3e3268_reporting_mode_selection
                     state: 'off'
                 card:
                   type: horizontal-stack
                   cards:
                     - type: entity
-                      entity: sensor.owcare_3e3268_heart_waves_0
+                      entity: sensor.owcare_3e3268_heart_rate_waveform_1
                     - type: entity
-                      entity: sensor.owcare_3e3268_heart_waves_1
+                      entity: sensor.owcare_3e3268_heart_rate_waveform_2
                     - type: entity
-                      entity: sensor.owcare_3e3268_heart_waves_2
+                      entity: sensor.owcare_3e3268_heart_rate_waveform_3
                     - type: entity
-                      entity: sensor.owcare_3e3268_heart_waves_3
+                      entity: sensor.owcare_3e3268_heart_rate_waveform_4
                     - type: entity
-                      entity: sensor.owcare_3e3268_heart_waves_4
+                      entity: sensor.owcare_3e3268_heart_rate_waveform_5
   - type: conditional
     conditions:
-      - entity: switch.owcare_3e3268_websocket_realtime_mode
+      - entity: switch.owcare_3e3268_transfering_mode_selection
         state: 'off'
     card:
       type: vertical-stack
@@ -133,214 +133,54 @@ cards:
             cards:
               - type: entities
                 entities:
-                  - entity: sensor.owcare_3e3268_sleep_status
-                  - entity: sensor.owcare_3e3268_sleep_score
-                  - entity: sensor.owcare_3e3268_sleep_rating
-                  - entity: sensor.owcare_3e3268_sleep_awake_duration
-                  - entity: sensor.owcare_3e3268_sleep_light_duration
-                  - entity: sensor.owcare_3e3268_sleep_deep_duration
-                  - entity: sensor.owcare_3e3268_sleep_away
-                  - entity: sensor.owcare_3e3268_sleep_exception
-              - type: entities
-                entities:
-                  - entity: switch.owcare_3e3268_struggle_monitoring_switch
-                  - entity: sensor.owcare_3e3268_sleep_struggle
-              - type: entities
-                entities:
-                  - entity: switch.owcare_3e3268_nobody_monitoring_switch
-                  - entity: sensor.owcare_3e3268_sleep_nobody
-              - type: entities
-                entities:
-                  - entity: sensor.owcare_3e3268_sleep_overview_breath
-                  - entity: sensor.owcare_3e3268_sleep_overview_heart
-                  - entity: sensor.owcare_3e3268_sleep_overview_leratio
-                  - entity: sensor.owcare_3e3268_sleep_overview_pause
-                  - entity: sensor.owcare_3e3268_sleep_overview_presence
-                  - entity: sensor.owcare_3e3268_sleep_overview_seratio
-                  - entity: sensor.owcare_3e3268_sleep_overview_status
-                  - entity: sensor.owcare_3e3268_sleep_overview_turn
-              - type: entities
-                entities:
-                  - entity: sensor.owcare_3e3268_sleep_quality_awake_duration
-                  - entity: sensor.owcare_3e3268_sleep_quality_away_count
-                  - entity: sensor.owcare_3e3268_sleep_quality_breath_rate
-                  - entity: sensor.owcare_3e3268_sleep_quality_deep_duration
-                  - entity: sensor.owcare_3e3268_sleep_quality_duration
-                  - entity: sensor.owcare_3e3268_sleep_quality_heart_rate
-                  - entity: sensor.owcare_3e3268_sleep_quality_light_duration
-                  - entity: sensor.owcare_3e3268_sleep_quality_pause_count
+                  - entity: sensor.owcare_3e3268_sleep_state
                   - entity: sensor.owcare_3e3268_sleep_quality_score
-                  - entity: sensor.owcare_3e3268_sleep_quality_turn_count
-type: vertical-stack
-title: 睡眠雷达
-cards:
-  - type: entities
-    entities:
-      - entity: switch.owcare_3e3268_mode_monitoring_switch
-      - entity: switch.owcare_3e3268_websocket_realtime_mode
-  - type: conditional
-    conditions:
-      - entity: switch.owcare_3e3268_websocket_realtime_mode
-        state: 'on'
-    card:
-      type: vertical-stack
-      cards:
-        - type: entities
-          entities:
-            - entity: switch.owcare_3e3268_body_monitoring_switch
-        - type: conditional
-          conditions:
-            - entity: switch.owcare_3e3268_body_monitoring_switch
-              state: 'on'
-          card:
-            type: vertical-stack
-            cards:
-              - type: sensor
-                entity: sensor.owcare_3e3268_body_distance
-                graph: line
-              - type: sensor
-                entity: sensor.owcare_3e3268_body_energy
-                graph: line
-              - type: history-graph
-                entities:
-                  - entity: sensor.owcare_3e3268_body_in_range
-                  - entity: sensor.owcare_3e3268_body_movement
-                  - entity: sensor.owcare_3e3268_body_presence
+                  - entity: sensor.owcare_3e3268_sleep_quality_rating
+                  - entity: sensor.owcare_3e3268_awake_time
+                  - entity: sensor.owcare_3e3268_light_sleep_duration
+                  - entity: sensor.owcare_3e3268_deep_sleep_duration
+                  - entity: sensor.owcare_3e3268_bed_in
+                  - entity: sensor.owcare_3e3268_abnormal_sleep
               - type: entities
                 entities:
-                  - entity: sensor.owcare_3e3268_body_location_x
-                  - entity: sensor.owcare_3e3268_body_location_y
-                  - entity: sensor.owcare_3e3268_body_location_z
-  - type: conditional
-    conditions:
-      - entity: switch.owcare_3e3268_websocket_realtime_mode
-        state: 'on'
-    card:
-      type: vertical-stack
-      cards:
-        - type: entities
-          entities:
-            - entity: switch.owcare_3e3268_breath_monitoring_switch
-        - type: conditional
-          conditions:
-            - entity: switch.owcare_3e3268_breath_monitoring_switch
-              state: 'on'
-          card:
-            type: vertical-stack
-            cards:
-              - type: sensor
-                entity: sensor.owcare_3e3268_breath_rate
-                graph: line
-              - type: entity
-                entity: sensor.owcare_3e3268_breath_info
-              - type: conditional
-                conditions:
-                  - entity: switch.owcare_3e3268_mode_monitoring_switch
-                    state: 'off'
-                card:
-                  type: horizontal-stack
-                  cards:
-                    - type: entity
-                      entity: sensor.owcare_3e3268_breath_waves_0
-                    - type: entity
-                      entity: sensor.owcare_3e3268_breath_waves_1
-                    - type: entity
-                      entity: sensor.owcare_3e3268_breath_waves_2
-                    - type: entity
-                      entity: sensor.owcare_3e3268_breath_waves_3
-                    - type: entity
-                      entity: sensor.owcare_3e3268_breath_waves_4
-  - type: conditional
-    conditions:
-      - entity: switch.owcare_3e3268_websocket_realtime_mode
-        state: 'on'
-    card:
-      type: vertical-stack
-      cards:
-        - type: entities
-          entities:
-            - entity: switch.owcare_3e3268_heart_monitoring_switch
-        - type: conditional
-          conditions:
-            - entity: switch.owcare_3e3268_heart_monitoring_switch
-              state: 'on'
-          card:
-            type: vertical-stack
-            cards:
-              - type: sensor
-                entity: sensor.owcare_3e3268_heart_rate
-                graph: line
-              - type: conditional
-                conditions:
-                  - entity: switch.owcare_3e3268_mode_monitoring_switch
-                    state: 'off'
-                card:
-                  type: horizontal-stack
-                  cards:
-                    - type: entity
-                      entity: sensor.owcare_3e3268_heart_waves_0
-                    - type: entity
-                      entity: sensor.owcare_3e3268_heart_waves_1
-                    - type: entity
-                      entity: sensor.owcare_3e3268_heart_waves_2
-                    - type: entity
-                      entity: sensor.owcare_3e3268_heart_waves_3
-                    - type: entity
-                      entity: sensor.owcare_3e3268_heart_waves_4
-  - type: conditional
-    conditions:
-      - entity: switch.owcare_3e3268_websocket_realtime_mode
-        state: 'off'
-    card:
-      type: vertical-stack
-      cards:
-        - type: entities
-          entities:
-            - entity: switch.owcare_3e3268_sleep_monitoring_switch
-        - type: conditional
-          conditions:
-            - entity: switch.owcare_3e3268_sleep_monitoring_switch
-              state: 'on'
-          card:
-            type: vertical-stack
-            cards:
+                  - entity: >-
+                      switch.owcare_3e3268_abnormal_struggling_state_switch_setting
+                  - entity: sensor.owcare_3e3268_abnormal_struggling_status
               - type: entities
                 entities:
-                  - entity: sensor.owcare_3e3268_sleep_status
-                  - entity: sensor.owcare_3e3268_sleep_score
-                  - entity: sensor.owcare_3e3268_sleep_rating
-                  - entity: sensor.owcare_3e3268_sleep_awake_duration
-                  - entity: sensor.owcare_3e3268_sleep_light_duration
-                  - entity: sensor.owcare_3e3268_sleep_deep_duration
-                  - entity: sensor.owcare_3e3268_sleep_away
-                  - entity: sensor.owcare_3e3268_sleep_exception
+                  - entity: >-
+                      switch.owcare_3e3268_unoccupied_timing_status_report_switch_setting
+                  - entity: sensor.owcare_3e3268_unoccupied_timing_status
               - type: entities
                 entities:
-                  - entity: switch.owcare_3e3268_struggle_monitoring_switch
-                  - entity: sensor.owcare_3e3268_sleep_struggle
+                  - entity: sensor.owcare_3e3268_sleep_status_report_average_breathing
+                  - entity: sensor.owcare_3e3268_sleep_status_report_average_heartbeat
+                  - entity: >-
+                      sensor.owcare_3e3268_sleep_status_report_large_scale_movements
+                  - entity: sensor.owcare_3e3268_sleep_status_report_apnea_times
+                  - entity: sensor.owcare_3e3268_sleep_status_report_existing
+                  - entity: >-
+                      sensor.owcare_3e3268_sleep_status_report_small_scale_movements
+                  - entity: sensor.owcare_3e3268_sleep_status_report_sleeping_state
+                  - entity: sensor.owcare_3e3268_sleep_status_report_turnover_times
               - type: entities
                 entities:
-                  - entity: switch.owcare_3e3268_nobody_monitoring_switch
-                  - entity: sensor.owcare_3e3268_sleep_nobody
-              - type: entities
-                entities:
-                  - entity: sensor.owcare_3e3268_sleep_overview_breath
-                  - entity: sensor.owcare_3e3268_sleep_overview_heart
-                  - entity: sensor.owcare_3e3268_sleep_overview_leratio
-                  - entity: sensor.owcare_3e3268_sleep_overview_pause
-                  - entity: sensor.owcare_3e3268_sleep_overview_presence
-                  - entity: sensor.owcare_3e3268_sleep_overview_seratio
-                  - entity: sensor.owcare_3e3268_sleep_overview_status
-                  - entity: sensor.owcare_3e3268_sleep_overview_turn
-              - type: entities
-                entities:
-                  - entity: sensor.owcare_3e3268_sleep_quality_awake_duration
-                  - entity: sensor.owcare_3e3268_sleep_quality_away_count
-                  - entity: sensor.owcare_3e3268_sleep_quality_breath_rate
-                  - entity: sensor.owcare_3e3268_sleep_quality_deep_duration
-                  - entity: sensor.owcare_3e3268_sleep_quality_duration
-                  - entity: sensor.owcare_3e3268_sleep_quality_heart_rate
-                  - entity: sensor.owcare_3e3268_sleep_quality_light_duration
-                  - entity: sensor.owcare_3e3268_sleep_quality_pause_count
+                  - entity: >-
+                      sensor.owcare_3e3268_sleep_quality_analysis_report_awake_duration
+                  - entity: >-
+                      sensor.owcare_3e3268_sleep_quality_analysis_report_number_of_getting_out_of_bed
+                  - entity: >-
+                      sensor.owcare_3e3268_sleep_quality_analysis_report_average_breathing
+                  - entity: >-
+                      sensor.owcare_3e3268_sleep_quality_analysis_report_deep_sleep_duration
+                  - entity: >-
+                      sensor.owcare_3e3268_sleep_quality_analysis_report_total_sleep_duration
+                  - entity: >-
+                      sensor.owcare_3e3268_sleep_quality_analysis_report_average_heartbeat
+                  - entity: >-
+                      sensor.owcare_3e3268_sleep_quality_analysis_report_light_sleep_duration
+                  - entity: >-
+                      sensor.owcare_3e3268_sleep_quality_analysis_report_number_of_apnea
                   - entity: sensor.owcare_3e3268_sleep_quality_score
-                  - entity: sensor.owcare_3e3268_sleep_quality_turn_count
+                  - entity: >-
+                      sensor.owcare_3e3268_sleep_quality_analysis_report_number_of_turning_over
