@@ -1,4 +1,4 @@
-"""Models for Owcare."""
+"""Models for OwRadar."""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -7,21 +7,21 @@ from typing import Any
 
 
 class BodyRange(IntEnum):
-    """Enumeration representing body range from Owcare."""
+    """Enumeration representing body range from OwRadar."""
 
     OUT = 0
     IN = 1
 
 
 class BodyPresence(IntEnum):
-    """Enumeration representing body presence from Owcare."""
+    """Enumeration representing body presence from OwRadar."""
 
     NOBODY = 0
     SOMEBODY = 1
 
 
 class BodyMovement(IntEnum):
-    """Enumeration representing body movement from Owcare."""
+    """Enumeration representing body movement from OwRadar."""
 
     NONE = 0
     STATIC = 1
@@ -30,7 +30,7 @@ class BodyMovement(IntEnum):
 
 @dataclass
 class BodyLocation:
-    """Object holding body location state in Owcare."""
+    """Object holding body location state in OwRadar."""
 
     x: int
     y: int
@@ -38,15 +38,16 @@ class BodyLocation:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> BodyLocation:
-        """Return Body Location object form Owcare API response.
+        """Return Body Location object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Body Location object.
+
         """
         return BodyLocation(
             x=data.get("x"),
@@ -57,7 +58,7 @@ class BodyLocation:
 
 @dataclass
 class Body:
-    """Object holding body state in Owcare."""
+    """Object holding body state in OwRadar."""
 
     range: BodyRange
     presence: BodyPresence
@@ -68,15 +69,16 @@ class Body:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Body:
-        """Return Body object form Owcare API response.
+        """Return Body object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Body object.
+
         """
         return Body(
             range=BodyRange(data.get("range")),
@@ -88,15 +90,16 @@ class Body:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Body:
-        """Update and Return Body object form Owcare API response.
+        """Update and Return Body object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Body object.
+
         """
         if (_range := data.get("range")) is not None:
             self.range = BodyRange(_range)
@@ -116,7 +119,7 @@ class Body:
 
 @dataclass
 class Wave:
-    """Object holding wave state in Owcare."""
+    """Object holding wave state in OwRadar."""
 
     w0: int
     w1: int
@@ -126,15 +129,16 @@ class Wave:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Wave:
-        """Return Wave object form Owcare API response.
+        """Return Wave object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Wave object.
+
         """
         return Wave(
             w0=data.get("w0"),
@@ -147,22 +151,23 @@ class Wave:
 
 @dataclass
 class Heart:
-    """Object holding heart state in Owcare."""
+    """Object holding heart state in OwRadar."""
 
     rate: int
     waves: Wave
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Heart:
-        """Return Heart object form Owcare API response.
+        """Return Heart object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Heart object.
+
         """
         return Heart(
             rate=data.get("rate"),
@@ -170,15 +175,16 @@ class Heart:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Heart:
-        """Update and Return Heart object form Owcare API response.
+        """Update and Return Heart object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Heart object.
+
         """
         if (_rate := data.get("rate")) is not None:
             self.rate = _rate
@@ -189,7 +195,7 @@ class Heart:
 
 
 class BreathInfo(IntEnum):
-    """Enumeration representing breath info from Owcare."""
+    """Enumeration representing breath info from OwRadar."""
 
     UNSET = 0
     NORMAL = 1
@@ -200,7 +206,7 @@ class BreathInfo(IntEnum):
 
 @dataclass
 class Breath:
-    """Object holding breath state in Owcare."""
+    """Object holding breath state in OwRadar."""
 
     info: BreathInfo
     rate: int
@@ -208,15 +214,16 @@ class Breath:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Breath:
-        """Return Breath object form Owcare API response.
+        """Return Breath object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Breath object.
+
         """
         return Breath(
             info=BreathInfo(data.get("info")),
@@ -225,15 +232,16 @@ class Breath:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Breath:
-        """Update and Return Breath object form Owcare API response.
+        """Update and Return Breath object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Breath object.
+
         """
         if (_info := data.get("info")) is not None:
             self.info = BreathInfo(_info)
@@ -246,7 +254,7 @@ class Breath:
 
 
 class SleepAway(IntEnum):
-    """Enumeration representing sleep away from Owcare."""
+    """Enumeration representing sleep away from OwRadar."""
 
     OUT = 0
     IN = 1
@@ -254,7 +262,7 @@ class SleepAway(IntEnum):
 
 
 class SleepStatus(IntEnum):
-    """Enumeration representing sleep status from Owcare."""
+    """Enumeration representing sleep status from OwRadar."""
 
     DEEP = 0
     LIGHT = 1
@@ -263,7 +271,7 @@ class SleepStatus(IntEnum):
 
 
 class SleepException(IntEnum):
-    """Enumeration representing sleep exception from Owcare."""
+    """Enumeration representing sleep exception from OwRadar."""
 
     LESS_4HOUR = 0
     MORE_12HOUR = 1
@@ -272,7 +280,7 @@ class SleepException(IntEnum):
 
 
 class SleepRating(IntEnum):
-    """Enumeration representing sleep rating from Owcare."""
+    """Enumeration representing sleep rating from OwRadar."""
 
     NONE = 0
     GOOD = 1
@@ -281,7 +289,7 @@ class SleepRating(IntEnum):
 
 
 class SleepStruggle(IntEnum):
-    """Enumeration representing sleep struggle from Owcare."""
+    """Enumeration representing sleep struggle from OwRadar."""
 
     NONE = 0
     NORMAL = 1
@@ -289,7 +297,7 @@ class SleepStruggle(IntEnum):
 
 
 class SleepNobody(IntEnum):
-    """Enumeration representing sleep nobody from Owcare."""
+    """Enumeration representing sleep nobody from OwRadar."""
 
     NONE = 0
     NORMAL = 1
@@ -298,15 +306,16 @@ class SleepNobody(IntEnum):
 
 @dataclass
 class SleepOverview:
-    """Object holding sleep overview state in Owcare.
+    """Object holding sleep overview state in OwRadar.
 
     Args:
     ----
-        data: The data from the Owcare device API.
+        data: The data from the OwRadar device API.
 
     Returns:
     -------
         A sleep overview object.
+
     """
 
     presence: BodyPresence
@@ -320,15 +329,16 @@ class SleepOverview:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> SleepOverview:
-        """Return SleepOverview object form Owcare API response.
+        """Return SleepOverview object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An SleepOverview object.
+
         """
         return SleepOverview(
             presence=BodyPresence(data.get("presence")),
@@ -344,15 +354,16 @@ class SleepOverview:
 
 @dataclass
 class SleepQuality:
-    """Object holding sleep quality state in Owcare.
+    """Object holding sleep quality state in OwRadar.
 
     Args:
     ----
-        data: The data from the Owcare device API.
+        data: The data from the OwRadar device API.
 
     Returns:
     -------
         A sleep quality object.
+
     """
 
     score: int
@@ -369,15 +380,16 @@ class SleepQuality:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> SleepQuality:
-        """Return SleepQuality object form Owcare API response.
+        """Return SleepQuality object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An SleepQuality object.
+
         """
         return SleepQuality(
             score=data.get("score"),
@@ -396,15 +408,16 @@ class SleepQuality:
 
 @dataclass
 class Sleep:
-    """Object holding sleep state in Owcare.
+    """Object holding sleep state in OwRadar.
 
     Args:
     ----
-        data: The data from the Owcare device API.
+        data: The data from the OwRadar device API.
 
     Returns:
     -------
         A sleep object.
+
     """
 
     away: SleepAway
@@ -422,15 +435,16 @@ class Sleep:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Sleep:
-        """Return Sleep object form Owcare API response.
+        """Return Sleep object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Sleep object.
+
         """
         return Sleep(
             away=data.get("away"),
@@ -448,15 +462,16 @@ class Sleep:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Sleep:
-        """Update and Return Sleep object form Owcare API response.
+        """Update and Return Sleep object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Sleep object.
+
         """
         if (_away := data.get("away")) is not None:
             self.away = SleepAway(_away)
@@ -488,7 +503,7 @@ class Sleep:
 
 @dataclass
 class Coord:
-    """Object holding coordinate state in Owcare."""
+    """Object holding coordinate state in OwRadar."""
 
     x: float
     y: float
@@ -496,15 +511,16 @@ class Coord:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Coord:
-        """Return Coordinate object form Owcare API response.
+        """Return Coordinate object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Coordinate object.
+
         """
         return Coord(
             x=data.get("x"),
@@ -515,22 +531,23 @@ class Coord:
 
 @dataclass
 class MotionAngle:
-    """Object holding Motion Angle state in Owcare."""
+    """Object holding Motion Angle state in OwRadar."""
 
     pitch: float
     roll: float
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> MotionAngle:
-        """Return Motion Angle object form Owcare API response.
+        """Return Motion Angle object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Motion Angle object.
+
         """
         return MotionAngle(
             pitch=data.get("pitch"),
@@ -540,7 +557,7 @@ class MotionAngle:
 
 @dataclass
 class Motion:
-    """Object holding motion state in Owcare."""
+    """Object holding motion state in OwRadar."""
 
     acce: Coord
     gyro: Coord
@@ -548,15 +565,16 @@ class Motion:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Motion:
-        """Return Motion object form Owcare API response.
+        """Return Motion object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Motion object.
+
         """
         return Motion(
             acce=Coord.from_dict(data.get("acce")),
@@ -565,15 +583,16 @@ class Motion:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Motion:
-        """Update and Return Motion object form Owcare API response.
+        """Update and Return Motion object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Motion object.
+
         """
         if (_acce := data.get("acce")) is not None:
             self.acce = Coord.from_dict(_acce)
@@ -587,15 +606,16 @@ class Motion:
 
 @dataclass
 class State:
-    """Object holding State Infomation from Owcare.
+    """Object holding State Infomation from OwRadar.
 
     Args:
     ----
-        data: The data from the Owcare device API.
+        data: The data from the OwRadar device API.
 
     Returns:
     -------
         A State object.
+
     """
 
     timestamp: int
@@ -607,15 +627,16 @@ class State:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> State:
-        """Return State object form Owcare API response.
+        """Return State object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An State object.
+
         """
         return State(
             timestamp=data.get("timestamp", None),
@@ -627,15 +648,16 @@ class State:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> State:
-        """Update Return State object form Owcare API response.
+        """Update Return State object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An State object.
+
         """
         if (_timestamp := data.get("timestamp")) is not None:
             self.timestamp = _timestamp
@@ -655,7 +677,7 @@ class State:
 
 @dataclass
 class Info:
-    """Object holding device infomation from Owcare."""
+    """Object holding device infomation from OwRadar."""
 
     radar_model: str
     radar_version: str
@@ -670,15 +692,16 @@ class Info:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Info:
-        """Return Device information object from Owcare API response.
+        """Return Device information object from OwRadar API response.
 
         Args:
         ----
-            data: The data from the Owcare device API.
+            data: The data from the OwRadar device API.
 
         Returns:
         -------
             A Device information object.
+
         """
         return Info(
             radar_model=data.get("radar_model", None),
@@ -694,15 +717,16 @@ class Info:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Info:
-        """Update and Return Device information object from Owcare API response.
+        """Update and Return Device information object from OwRadar API response.
 
         Args:
         ----
-            data: The data from the Owcare device API.
+            data: The data from the OwRadar device API.
 
         Returns:
         -------
             A Device information object.
+
         """
         if _radar_model := data.get("radar_model"):
             self.radar_model = _radar_model
@@ -729,7 +753,7 @@ class Info:
 
 
 class SettingSwitch(IntEnum):
-    """Enumeration representing body range from Owcare."""
+    """Enumeration representing body range from OwRadar."""
 
     OFF = 0
     ON = 1
@@ -737,15 +761,16 @@ class SettingSwitch(IntEnum):
 
 @dataclass
 class Setting:
-    """Object holding Setting information from Owcare.
+    """Object holding Setting information from OwRadar.
 
     Args:
     ----
-        data: The data from the Owcare device API.
+        data: The data from the OwRadar device API.
 
     Returns:
     -------
         A Setting object.
+
     """
 
     realtime_ws: SettingSwitch
@@ -762,15 +787,16 @@ class Setting:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Setting:
-        """Return Setting object form Owcare API response.
+        """Return Setting object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Setting object.
+
         """
         return Setting(
             realtime_ws=data.get("realtime_ws", None),
@@ -787,15 +813,16 @@ class Setting:
         )
 
     def update_from_dict(self, data: dict[str, Any]) -> Setting:
-        """Update and Return Setting object form Owcare API response.
+        """Update and Return Setting object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Setting object.
+
         """
         if (_realtime_ws := data.get("realtime_ws")) is not None:
             self.realtime_ws = _realtime_ws
@@ -825,15 +852,16 @@ class Setting:
 
 @dataclass
 class Device:
-    """Object holding Device Infomation from Owcare.
+    """Object holding Device Infomation from OwRadar.
 
     Args:
     ----
-        data: The data from the Owcare device API.
+        data: The data from the OwRadar device API.
 
     Returns:
     -------
         A Device object.
+
     """
 
     setting: Setting
@@ -842,15 +870,16 @@ class Device:
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Device:
-        """Return Device object form Owcare API response.
+        """Return Device object form OwRadar API response.
 
         Args:
         ----
-            data: The response from the Owcare API.
+            data: The response from the OwRadar API.
 
         Returns:
         -------
             An Device object.
+
         """
         return Device(
             setting=Setting.from_dict(data.get("setting")),
@@ -859,15 +888,15 @@ class Device:
         )
 
     # def __init__(self, data: dict[str, Any]) -> None:
-    #     """Initialize an empty Owcare device class.
+    #     """Initialize an empty OwRadar device class.
 
     #     Args:
     #     ----
-    #         data: The full API response from a Owcare device.
+    #         data: The full API response from a OwRadar device.
 
     #     Raises:
     #     ------
-    #         OwcareError: In case the given API response is incomplete in a way
+    #         OwRadarError: In case the given API response is incomplete in a way
     #             that a Device object cannot be constructed from it.
     #     """
     #     # Check if all elements are in the passed dict, else raise an Error
@@ -875,21 +904,22 @@ class Device:
     #     #     k not in data and data[k] is not None
     #     #     for k in ("setting","info", "state")
     #     # ):
-    #     #     msg = "Owcare data is incomplete, cannot construct device object"
-    #     #     raise OwcareError(msg)
+    #     #     msg = "OwRadar data is incomplete, cannot construct device object"
+    #     #     raise OwRadarError(msg)
     #     self.update_from_dict(data)
 
     def update_from_dict(self, data: dict[str, Any]) -> Device:
-        """Update and Return Device object from Owcare API response.
+        """Update and Return Device object from OwRadar API response.
 
         Args:
         ----
             data: Update the device object with the data received from a
-                Owcare device API.
+                OwRadar device API.
 
         Returns:
         -------
             The updated Device object.
+
         """
         if _setting := data.get("setting"):
             self.setting.update_from_dict(_setting)

@@ -1,4 +1,4 @@
-"""Asynchronous Python client for owcare."""
+"""Asynchronous Python client for owradar."""
 from __future__ import annotations
 
 import asyncio
@@ -14,11 +14,11 @@ from cachetools import TTLCache
 from yarl import URL
 
 from .exceptions import (
-    OwcareConnectionClosedError,
-    OwcareConnectionError,
-    OwcareConnectionTimeoutError,
-    OwcareEmptyResponseError,
-    OwcareError,
+    OwRadarConnectionClosedError,
+    OwRadarConnectionError,
+    OwRadarConnectionTimeoutError,
+    OwRadarEmptyResponseError,
+    OwRadarError,
 )
 from .models import Device
 
@@ -31,7 +31,7 @@ VERSION_CACHE: TTLCache[str, str | None] = TTLCache(maxsize=16, ttl=7200)
 
 @dataclass
 class Client:
-    """Main class for handling connections with owcare."""
+    """Main class for handling connections with owradar."""
 
     host: str
     request_timeout: float = 8.0
@@ -43,24 +43,26 @@ class Client:
 
     @property
     def connected(self) -> bool:
-        """Return if we are connect to the WebSocket of a owcare device.
+        """Return if we are connect to the WebSocket of a owradar device.
 
         Returns
         -------
-            True if we are connected to the WebSocket of a owcare device,
+            True if we are connected to the WebSocket of a owradar device,
             False otherwise.
+
         """
         return self._client is not None and not self._client.closed
 
     async def connect(self) -> None:
-        """Connect to the WebSocket of a owcare device.
+        """Connect to the WebSocket of a owradar device.
 
         Raises
         ------
-            OwcareError: The configured owcare device, does not support WebSocket
+            OwRadarError: The configured owradar device, does not support WebSocket
                 communications.
-            OwcareConnectionError: Error occurred while communicating with
-                the owcare device via the WebSocket.
+            OwRadarConnectionError: Error occurred while communicating with
+                the owradar device via the WebSocket.
+
         """
         if self.connected:
             return
@@ -69,8 +71,8 @@ class Client:
             await self.update()
 
         if not self.session or not self._device:
-            msg = "The owcare device at {self.host} does not support WebSockets"
-            raise OwcareError(msg)
+            msg = "The owradar device at {self.host} does not support WebSockets"
+            raise OwRadarError(msg)
 
         url = URL.build(scheme="ws", host=self.host, port=80, path="/ws")
 
@@ -82,36 +84,37 @@ class Client:
             socket.gaierror,
         ) as exception:
             msg = (
-                "Error occurred while communicating with owcare device"
+                "Error occurred while communicating with owradar device"
                 f" on WebSocket at {self.host}"
             )
-            raise OwcareConnectionError(msg) from exception
+            raise OwRadarConnectionError(msg) from exception
 
     async def listen(self, callback: Callable[[Device], None]) -> None:
-        """Listen for events on the owcare WebSocket.
+        """Listen for events on the owradar WebSocket.
 
         Args:
         ----
             callback: Method to call when a state update is received from
-                the owcare device.
+                the owradar device.
 
         Raises:
         ------
-            OwcareError: Not connected to a WebSocket.
-            OwcareConnectionError: An connection error occurred while connected
-                to the owcare device.
-            OwcareConnectionClosedError: The WebSocket connection to the remote owcare
+            OwRadarError: Not connected to a WebSocket.
+            OwRadarConnectionError: An connection error occurred while connected
+                to the owradar device.
+            OwRadarConnectionClosedError: The WebSocket connection to the remote owradar
                 has been closed.
+
         """
         if not self._client or not self.connected or not self._device:
-            msg = "Not connected to a owcare WebSocket"
-            raise OwcareError(msg)
+            msg = "Not connected to a owradar WebSocket"
+            raise OwRadarError(msg)
 
         while not self._client.closed:
             message = await self._client.receive()
 
             if message.type == aiohttp.WSMsgType.ERROR:
-                raise OwcareConnectionError(self._client.exception())
+                raise OwRadarConnectionError(self._client.exception())
 
             if message.type == aiohttp.WSMsgType.TEXT:
                 message_data = message.json()
@@ -125,18 +128,18 @@ class Client:
                 aiohttp.WSMsgType.CLOSED,
                 aiohttp.WSMsgType.CLOSING,
             ):
-                msg = f"Connection to the owcare WebSocket on {self.host} has been closed"
-                raise OwcareConnectionClosedError(msg)
+                msg = f"Connection to the owradar WebSocket on {self.host} has been closed"
+                raise OwRadarConnectionClosedError(msg)
 
     async def disconnect(self) -> None:
-        """Disconnect from the WebSocket of a owcare device."""
+        """Disconnect from the WebSocket of a owradar device."""
         if not self._client or not self.connected:
             return
 
         await self._client.close()
 
     @backoff.on_exception(
-        backoff.expo, OwcareConnectionError, max_tries=3, logger=None
+        backoff.expo, OwRadarConnectionError, max_tries=3, logger=None
     )
     async def request(
         self,
@@ -144,29 +147,30 @@ class Client:
         method: str = "GET",
         data: dict[str, Any] | None = None,
     ) -> Any:
-        """Handle a request to a owcare device.
+        """Handle a request to a owradar device.
 
         A generic method for sending/handling HTTP requests done gainst
-        the owcare device.
+        the owradar device.
 
         Args:
         ----
             uri: Request URI, for example `/api/device`.
             method: HTTP method to use for the request.E.g., "GET" or "POST".
-            data: Dictionary of data to send to the owcare device.
+            data: Dictionary of data to send to the owradar device.
 
         Returns:
         -------
             A Python dictionary (JSON decoded) with the response from the
-            owcare device.
+            owradar device.
 
         Raises:
         ------
-            OwcareConnectionError: An error occurred while communication with
-                the owcare device.
-            OwcareConnectionTimeoutError: A timeout occurred while communicating
-                with the owcare device.
-            OwcareError: Received an unexpected response from the owcare device.
+            OwRadarConnectionError: An error occurred while communication with
+                the owradar device.
+            OwRadarConnectionTimeoutError: A timeout occurred while communicating
+                with the owradar device.
+            OwRadarError: Received an unexpected response from the owradar device.
+
         """
         url = URL.build(scheme="http", host=self.host, port=80, path=uri)
 
@@ -193,11 +197,11 @@ class Client:
                 response.close()
 
                 if content_type == "application/json":
-                    raise OwcareError(  # noqa: TRY301
+                    raise OwRadarError(  # noqa: TRY301
                         response.status,
                         json.loads(contents.decode("utf8")),
                     )
-                raise OwcareError(  # noqa: TRY301
+                raise OwRadarError(  # noqa: TRY301
                     response.status,
                     {"message": contents.decode("utf8")},
                 )
@@ -208,47 +212,48 @@ class Client:
                 response_data = await response.text()
 
         except asyncio.TimeoutError as exception:
-            msg = f"Timeout occurred while connecting to owcare device at {self.host}"
-            raise OwcareConnectionTimeoutError(msg) from exception
+            msg = f"Timeout occurred while connecting to owradar device at {self.host}"
+            raise OwRadarConnectionTimeoutError(msg) from exception
         except (aiohttp.ClientError, socket.gaierror) as exception:
             msg = (
-                f"Error occurred while communicating with owcare device at {self.host}"
+                f"Error occurred while communicating with owradar device at {self.host}"
             )
-            raise OwcareConnectionError(msg) from exception
+            raise OwRadarConnectionError(msg) from exception
 
         return response_data
 
     @backoff.on_exception(
         backoff.expo,
-        OwcareEmptyResponseError,
+        OwRadarEmptyResponseError,
         max_tries=3,
         logger=None,
     )
     async def update(self, *, full_update: bool = False) -> Device:  # noqa: PLR0912
         """Get all information about the device in a single call.
 
-        This method updates all owcare information available with a single API
+        This method updates all owradar information available with a single API
         call.
 
         Args:
         ----
-            full_update: Force a full update from the owcare Device.
+            full_update: Force a full update from the owradar Device.
 
         Returns:
         -------
-            owcare Device data.
+            owradar Device data.
 
         Raises:
         ------
-            OwcareEmptyResponseError: The owcare device returned an empty response.
+            OwRadarEmptyResponseError: The owradar device returned an empty response.
+
         """
         if self._device is None or full_update:
             if not (data := await self.request("/api/device")):
                 msg = (
-                    f"owcare device at {self.host} returned an empty API"
+                    f"owradar device at {self.host} returned an empty API"
                     " response on full update",
                 )
-                raise OwcareEmptyResponseError(msg)
+                raise OwRadarEmptyResponseError(msg)
             self._device = Device.from_dict(data)
             return self._device
 
@@ -268,7 +273,7 @@ class Client:
         struggle: int | None = None,
         stop_duration: int | None = None,
     ) -> Device:
-        """Set the setting of the owcare device.
+        """Set the setting of the owradar device.
 
         Args:
         ----
@@ -282,6 +287,7 @@ class Client:
             nobody_duration: Nobody duration setting.
             struggle: Struggle monioring switch.
             stop_duration: Sleep stop duration setting.
+
         """
         setting = {
             "realtime_ws": realtime_ws,
@@ -312,7 +318,8 @@ class Client:
 
         Returns
         -------
-            The owcare object.
+            The owradar object.
+
         """
         return self
 
@@ -322,5 +329,6 @@ class Client:
         Args:
         ----
             _exc_info: Exec type.
+
         """
         await self.close()

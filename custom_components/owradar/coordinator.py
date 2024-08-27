@@ -1,11 +1,11 @@
-"""DataUpdateCoordinator for owcare."""
+"""DataUpdateCoordinator for owradar."""
 from __future__ import annotations
 
 from .core import (
     Client,
-    Device as OwcareDevice,
-    OwcareConnectionClosedError,
-    OwcareError,
+    Device as OwRadarDevice,
+    OwRadarConnectionClosedError,
+    OwRadarError,
 )
 
 from homeassistant.config_entries import ConfigEntry
@@ -18,8 +18,8 @@ from .const import DOMAIN, LOGGER, SCAN_INTERVAL
 
 
 # https://developers.home-assistant.io/docs/integration_fetching_data#coordinated-single-api-poll-for-data-for-all-entities
-class OwcareDataUpdateCoordinator(DataUpdateCoordinator):
-    """Class to manage fetching Owcare data from single endpoint."""
+class OwRadarDataUpdateCoordinator(DataUpdateCoordinator):
+    """Class to manage fetching OwRadar data from single endpoint."""
 
     config_entry: ConfigEntry
 
@@ -50,7 +50,7 @@ class OwcareDataUpdateCoordinator(DataUpdateCoordinator):
             """Listen for state changes via WebSocket."""
             try:
                 await self.client.connect()
-            except OwcareError as err:
+            except OwRadarError as err:
                 self.logger.info(err)
                 if self.unsub:
                     self.unsub()
@@ -59,10 +59,10 @@ class OwcareDataUpdateCoordinator(DataUpdateCoordinator):
 
             try:
                 await self.client.listen(callback=self.async_set_updated_data)
-            except OwcareConnectionClosedError as err:
+            except OwRadarConnectionClosedError as err:
                 self.last_update_success = False
                 self.logger.info(err)
-            except OwcareError as err:
+            except OwRadarError as err:
                 self.last_update_success = False
                 self.async_update_listeners()
                 self.logger.error(err)
@@ -85,15 +85,15 @@ class OwcareDataUpdateCoordinator(DataUpdateCoordinator):
 
         # Start listening
         self.config_entry.async_create_background_task(
-            self.hass, listen(), "owcare-listen"
+            self.hass, listen(), "owradar-listen"
         )
 
-    async def _async_update_data(self) -> OwcareDevice:
-        """Fetch data from Owcare."""
+    async def _async_update_data(self) -> OwRadarDevice:
+        """Fetch data from OwRadar."""
         # If the device supports a WebSocket, try activating it.
         try:
             device = await self.client.update(full_update=not self.last_update_success)
-        except OwcareError as error:
+        except OwRadarError as error:
             raise UpdateFailed(f"Invalid response from API: {error}") from error
 
         # If the device supports a WebSocket, try activating it.

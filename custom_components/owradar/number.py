@@ -4,7 +4,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass
 
-from .core import Device as OwcareDevice
+from .core import Device as OwRadarDevice
 
 from homeassistant.components.number import NumberEntity, NumberEntityDescription
 from homeassistant.config_entries import ConfigEntry
@@ -13,32 +13,32 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN
-from .coordinator import OwcareDataUpdateCoordinator
-from .helpers import owcare_exception_handler
-from .models import OwcareEntity
+from .coordinator import OwRadarDataUpdateCoordinator
+from .helpers import owradar_exception_handler
+from .models import OwRadarEntity
 
 PARALLEL_UPDATES = 1
 
 
 @dataclass
-class OwcareNumberDescriptionMixin:
-    """Mixin for Owcare number."""
+class OwRadarNumberDescriptionMixin:
+    """Mixin for OwRadar number."""
 
-    value_fn: Callable[[OwcareDevice], int | None]
-    update_fn: Callable[[OwcareDataUpdateCoordinator], None]
+    value_fn: Callable[[OwRadarDevice], int | None]
+    update_fn: Callable[[OwRadarDataUpdateCoordinator], None]
 
 
 @dataclass
-class OwcareNumberEntityDescription(
-    NumberEntityDescription, OwcareNumberDescriptionMixin
+class OwRadarNumberEntityDescription(
+    NumberEntityDescription, OwRadarNumberDescriptionMixin
 ):
-    """Describes Owcare number entity."""
+    """Describes OwRadar number entity."""
 
-    exists_fn: Callable[[OwcareDevice], bool] = lambda _: True
+    exists_fn: Callable[[OwRadarDevice], bool] = lambda _: True
 
 
 NUMBERS = [
-    OwcareNumberEntityDescription(
+    OwRadarNumberEntityDescription(
         key="setting_nobody_duration",
         translation_key="setting_nobody_duration",
         name="Speed",
@@ -52,7 +52,7 @@ NUMBERS = [
             nobody_duration=value
         ),
     ),
-    OwcareNumberEntityDescription(
+    OwRadarNumberEntityDescription(
         key="setting_stop_duration",
         translation_key="setting_stop_duration",
         entity_category=EntityCategory.CONFIG,
@@ -73,37 +73,37 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up Owcare number based on a config entry."""
-    coordinator: OwcareDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+    """Set up OwRadar number based on a config entry."""
+    coordinator: OwRadarDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     async_add_entities(
-        OwcareNumberEntity(coordinator, description)
+        OwRadarNumberEntity(coordinator, description)
         for description in NUMBERS
         if description.exists_fn(coordinator.data)
     )
 
 
-class OwcareNumberEntity(OwcareEntity, NumberEntity):
-    """Defines a Owcare number entity."""
+class OwRadarNumberEntity(OwRadarEntity, NumberEntity):
+    """Defines a OwRadar number entity."""
 
-    entity_description: OwcareNumberEntityDescription
+    entity_description: OwRadarNumberEntityDescription
 
     def __init__(
         self,
-        coordinator: OwcareDataUpdateCoordinator,
-        description: OwcareNumberEntityDescription,
+        coordinator: OwRadarDataUpdateCoordinator,
+        description: OwRadarNumberEntityDescription,
     ) -> None:
-        """Initialize a Owcare switch entity."""
+        """Initialize a OwRadar switch entity."""
         super().__init__(coordinator=coordinator)
         self.entity_description = description
         self._attr_unique_id = f"{coordinator.data.info.mac_addr}_{description.key}"
 
     @property
     def native_value(self) -> int | None:
-        """Return the current Owcare number value."""
+        """Return the current OwRadar number value."""
         return self.entity_description.value_fn(self.coordinator.data)
 
-    @owcare_exception_handler
+    @owradar_exception_handler
     async def async_set_native_value(self, value: int) -> None:
-        """Set the Owcare number value."""
+        """Set the OwRadar number value."""
         await self.entity_description.update_fn(self.coordinator, value)

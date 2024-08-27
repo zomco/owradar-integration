@@ -13,11 +13,11 @@
                 "data": {
                     "host": "Host"
                 },
-                "description": "Richten Sie Ihr Owcare-Gerät für die Integration in Home Assistant ein."
+                "description": "Richten Sie Ihr OwRadar-Gerät für die Integration in Home Assistant ein."
             },
             "zeroconf_confirm": {
-                "description": "Owcare-Gerät mit Namen `{name}` zu Home Assistant hinzufügen?",
-                "title": "Owcare-Gerät gefunden"
+                "description": "OwRadar-Gerät mit Namen `{name}` zu Home Assistant hinzufügen?",
+                "title": "OwRadar-Gerät gefunden"
             }
         }
     },

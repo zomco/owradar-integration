@@ -1,10 +1,10 @@
-"""Adds config flow for Owcare."""
+"""Adds config flow for OwRadar."""
 from __future__ import annotations
 
 from typing import Any
 
 import voluptuous as vol
-from .core import Client, Device as OwcareDevice, OwcareConnectionError
+from .core import Client, Device as OwRadarDevice, OwRadarConnectionError
 
 from homeassistant.components import onboarding, zeroconf
 from homeassistant.config_entries import ConfigFlow
@@ -15,12 +15,12 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from .const import DOMAIN
 
 
-class OwcareFlowHandler(ConfigFlow, domain=DOMAIN):
-    """Config flow for Owcare."""
+class OwRadarFlowHandler(ConfigFlow, domain=DOMAIN):
+    """Config flow for OwRadar."""
 
     VERSION = 1
     discovered_host: str
-    discovered_device: OwcareDevice
+    discovered_device: OwRadarDevice
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
@@ -31,7 +31,7 @@ class OwcareFlowHandler(ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             try:
                 device = await self._async_get_device(user_input[CONF_HOST])
-            except OwcareConnectionError:
+            except OwRadarConnectionError:
                 errors["base"] = "cannot_connect"
             else:
                 await self.async_set_unique_id(device.info.mac_addr)
@@ -65,7 +65,7 @@ class OwcareFlowHandler(ConfigFlow, domain=DOMAIN):
         self.discovered_host = discovery_info.host
         try:
             self.discovered_device = await self._async_get_device(discovery_info.host)
-        except OwcareConnectionError:
+        except OwRadarConnectionError:
             return self.async_abort(reason="cannot_connect")
 
         await self.async_set_unique_id(self.discovered_device.info.mac_addr)
@@ -96,8 +96,8 @@ class OwcareFlowHandler(ConfigFlow, domain=DOMAIN):
             description_placeholders={"name": self.discovered_device.info.name},
         )
 
-    async def _async_get_device(self, host: str) -> OwcareDevice:
-        """Get device information from Owcare device."""
+    async def _async_get_device(self, host: str) -> OwRadarDevice:
+        """Get device information from OwRadar device."""
         session = async_get_clientsession(self.hass)
         client = Client(host, session=session)
         return await client.update()

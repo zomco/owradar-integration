@@ -1,0 +1,17 @@
+{
+  "domain": "owradar",
+  "name": "OwRadar",
+  "codeowners": [
+    "@zomco"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/zomco/owradar-integration",
+  "integration_type": "device",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/zomco/owradar-integration/issues",
+  "requirements": [],
+  "version": "0.0.231109",
+  "zeroconf": [
+    "_owradar._tcp.local."
+  ]
+}

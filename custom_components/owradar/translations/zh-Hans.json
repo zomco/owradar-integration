@@ -13,11 +13,11 @@
                 "data": {
                     "host": "主机"
                 },
-                "description": "设置你的 Owcare 设备整合到 Home Assistant."
+                "description": "设置你的 OwRadar 设备整合到 Home Assistant."
             },
             "zeroconf_confirm": {
-                "description": "是否将名为 `{name}` 的 Owcare 设备添加至 Home Assistant?",
-                "title": "发现 Owcare 设备"
+                "description": "是否将名为 `{name}` 的 OwRadar 设备添加至 Home Assistant?",
+                "title": "发现 OwRadar 设备"
             }
         }
     },

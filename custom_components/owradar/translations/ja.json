@@ -13,11 +13,11 @@
                 "data": {
                     "host": "ホスト"
                 },
-                "description": "OwcareデバイスをHome Assistantに統合するために設定します。"
+                "description": "OwRadarデバイスをHome Assistantに統合するために設定します。"
             },
             "zeroconf_confirm": {
-                "description": "名前が`{name}`のOwcareデバイスをHome Assistantに追加しますか？",
-                "title": "Owcareデバイスが見つかりました"
+                "description": "名前が`{name}`のOwRadarデバイスをHome Assistantに追加しますか？",
+                "title": "OwRadarデバイスが見つかりました"
             }
         }
     },
