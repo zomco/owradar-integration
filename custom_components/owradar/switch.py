@@ -5,8 +5,6 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-from .core import Device as OwRadarDevice
-
 from homeassistant.components.switch import (
     SwitchEntity,
     SwitchEntityDescription,
@@ -18,6 +16,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN
 from .coordinator import OwRadarDataUpdateCoordinator
+from .core import Device as OwRadarDevice
 from .helpers import owradar_exception_handler
 from .models import OwRadarEntity
 
@@ -104,9 +103,9 @@ SWITCHES: tuple[OwRadarSwitchEntityDescription, ...] = [
 
 
 async def async_setup_entry(
-    hass: HomeAssistant,
-    entry: ConfigEntry,
-    async_add_entities: AddEntitiesCallback,
+        hass: HomeAssistant,
+        entry: ConfigEntry,
+        async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up OwRadar switch based on a config entry."""
     coordinator: OwRadarDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
@@ -124,9 +123,9 @@ class OwRadarSwitchEntity(OwRadarEntity, SwitchEntity):
     entity_description: OwRadarSwitchEntityDescription
 
     def __init__(
-        self,
-        coordinator: OwRadarDataUpdateCoordinator,
-        description: OwRadarSwitchEntityDescription,
+            self,
+            coordinator: OwRadarDataUpdateCoordinator,
+            description: OwRadarSwitchEntityDescription,
     ) -> None:
         """Initialize a OwRadar switch entity."""
         super().__init__(coordinator=coordinator)

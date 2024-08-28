@@ -7,4 +7,4 @@ SCAN_INTERVAL = timedelta(seconds=10)
 
 NAME = "OwRadar"
 DOMAIN = "owradar"
-VERSION = "0.0.231109"
+VERSION = "0.0.1-a+20240828"

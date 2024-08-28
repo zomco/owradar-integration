@@ -5,8 +5,6 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime
 
-from .core import Device as OwRadarDevice
-
 from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntity,
@@ -399,9 +397,9 @@ SENSORS: tuple[OwRadarSensorEntityDescription, ...] = (
 
 
 async def async_setup_entry(
-    hass: HomeAssistant,
-    entry: ConfigEntry,
-    async_add_entities: AddEntitiesCallback,
+        hass: HomeAssistant,
+        entry: ConfigEntry,
+        async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up OwRadar sensor based on a config entry."""
     coordinator: OwRadarDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
@@ -418,9 +416,9 @@ class OwRadarSensorEntity(OwRadarEntity, SensorEntity):
     entity_description: OwRadarSensorEntityDescription
 
     def __init__(
-        self,
-        coordinator: OwRadarDataUpdateCoordinator,
-        description: OwRadarSensorEntityDescription,
+            self,
+            coordinator: OwRadarDataUpdateCoordinator,
+            description: OwRadarSensorEntityDescription,
     ) -> None:
         """Initialize a OwRadar sensor entity."""
         super().__init__(coordinator=coordinator)

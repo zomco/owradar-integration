@@ -4,8 +4,6 @@ from __future__ import annotations
 from typing import Any
 
 import voluptuous as vol
-from .core import Client, Device as OwRadarDevice, OwRadarConnectionError
-
 from homeassistant.components import onboarding, zeroconf
 from homeassistant.config_entries import ConfigFlow
 from homeassistant.const import CONF_HOST, CONF_MAC
@@ -13,6 +11,7 @@ from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN
+from .core import Client, Device as OwRadarDevice, OwRadarConnectionError
 
 
 class OwRadarFlowHandler(ConfigFlow, domain=DOMAIN):
@@ -23,7 +22,7 @@ class OwRadarFlowHandler(ConfigFlow, domain=DOMAIN):
     discovered_device: OwRadarDevice
 
     async def async_step_user(
-        self, user_input: dict[str, Any] | None = None
+            self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         """Handle a flow initiated by the user."""
         errors = {}
@@ -52,7 +51,7 @@ class OwRadarFlowHandler(ConfigFlow, domain=DOMAIN):
         )
 
     async def async_step_zeroconf(
-        self, discovery_info: zeroconf.ZeroconfServiceInfo
+            self, discovery_info: zeroconf.ZeroconfServiceInfo
     ) -> FlowResult:
         """Handle zeroconf discovery."""
         # Abort quick if the mac address is provided by discovery info
@@ -80,7 +79,7 @@ class OwRadarFlowHandler(ConfigFlow, domain=DOMAIN):
         return await self.async_step_zeroconf_confirm()
 
     async def async_step_zeroconf_confirm(
-        self, user_input: dict[str, Any] | None = None
+            self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         """Handle a flow initiated by zeroconf."""
         if user_input is not None or not onboarding.async_is_onboarded(self.hass):

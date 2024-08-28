@@ -4,10 +4,9 @@ from __future__ import annotations
 from collections.abc import Callable, Coroutine
 from typing import Any, Concatenate, ParamSpec, TypeVar
 
-from .core import OwRadarConnectionError, OwRadarError
-
 from homeassistant.exceptions import HomeAssistantError
 
+from .core import OwRadarConnectionError, OwRadarError
 from .models import OwRadarEntity
 
 _OwRadarEntityT = TypeVar("_OwRadarEntityT", bound=OwRadarEntity)
@@ -15,7 +14,7 @@ _P = ParamSpec("_P")
 
 
 def owradar_exception_handler(
-    func: Callable[Concatenate[_OwRadarEntityT, _P], Coroutine[Any, Any, Any]]
+        func: Callable[Concatenate[_OwRadarEntityT, _P], Coroutine[Any, Any, Any]]
 ) -> Callable[Concatenate[_OwRadarEntityT, _P], Coroutine[Any, Any, None]]:
     """Decorate OwRadar calls to handle OwRadar exceptions.
 
@@ -24,7 +23,7 @@ def owradar_exception_handler(
     """
 
     async def handler(
-        self: _OwRadarEntityT, *args: _P.args, **kwargs: _P.kwargs
+            self: _OwRadarEntityT, *args: _P.args, **kwargs: _P.kwargs
     ) -> None:
         try:
             await func(self, *args, **kwargs)

@@ -1,12 +1,8 @@
 """DataUpdateCoordinator for owradar."""
 from __future__ import annotations
 
-from .core import (
-    Client,
-    Device as OwRadarDevice,
-    OwRadarConnectionClosedError,
-    OwRadarError,
-)
+import asyncio
+from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, EVENT_HOMEASSISTANT_STOP
@@ -15,6 +11,11 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN, LOGGER, SCAN_INTERVAL
+from .core import (
+    Client,
+    OwRadarConnectionClosedError,
+    OwRadarError,
+)
 
 
 # https://developers.home-assistant.io/docs/integration_fetching_data#coordinated-single-api-poll-for-data-for-all-entities
@@ -24,10 +25,10 @@ class OwRadarDataUpdateCoordinator(DataUpdateCoordinator):
     config_entry: ConfigEntry
 
     def __init__(
-        self,
-        hass: HomeAssistant,
-        *,
-        entry: ConfigEntry,
+            self,
+            hass: HomeAssistant,
+            *,
+            entry: ConfigEntry,
     ) -> None:
         """Initialize."""
         self.client = Client(
@@ -49,7 +50,7 @@ class OwRadarDataUpdateCoordinator(DataUpdateCoordinator):
         async def listen() -> None:
             """Listen for state changes via WebSocket."""
             try:
-                await self.client.connect()
+                await self.client.open()
             except OwRadarError as err:
                 self.logger.info(err)
                 if self.unsub:
@@ -58,7 +59,7 @@ class OwRadarDataUpdateCoordinator(DataUpdateCoordinator):
                 return
 
             try:
-                await self.client.listen(callback=self.async_set_updated_data)
+                asyncio.run(self.client.listen(callback=self.async_set_updated_data))
             except OwRadarConnectionClosedError as err:
                 self.last_update_success = False
                 self.logger.info(err)
@@ -68,7 +69,7 @@ class OwRadarDataUpdateCoordinator(DataUpdateCoordinator):
                 self.logger.error(err)
 
             # Ensure we are disconnected
-            await self.client.disconnect()
+            await self.client.close()
             if self.unsub:
                 self.unsub()
                 self.unsub = None
@@ -76,7 +77,7 @@ class OwRadarDataUpdateCoordinator(DataUpdateCoordinator):
         async def close_websocket(_: Event) -> None:
             """Close WebSocket connection."""
             self.unsub = None
-            await self.client.disconnect()
+            await self.client.close()
 
         # Clean disconnect WebSocket on Home Assistant shutdown
         self.unsub = self.hass.bus.async_listen_once(
@@ -88,7 +89,7 @@ class OwRadarDataUpdateCoordinator(DataUpdateCoordinator):
             self.hass, listen(), "owradar-listen"
         )
 
-    async def _async_update_data(self) -> OwRadarDevice:
+    async def _async_update_data(self) -> Any:
         """Fetch data from OwRadar."""
         # If the device supports a WebSocket, try activating it.
         try:

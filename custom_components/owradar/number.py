@@ -3,8 +3,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-
-from .core import Device as OwRadarDevice
+from typing import Any
 
 from homeassistant.components.number import NumberEntity, NumberEntityDescription
 from homeassistant.config_entries import ConfigEntry
@@ -24,7 +23,7 @@ PARALLEL_UPDATES = 1
 class OwRadarNumberDescriptionMixin:
     """Mixin for OwRadar number."""
 
-    value_fn: Callable[[OwRadarDevice], int | None]
+    value_fn: Callable[[Any], int | None]
     update_fn: Callable[[OwRadarDataUpdateCoordinator], None]
 
 
@@ -34,7 +33,7 @@ class OwRadarNumberEntityDescription(
 ):
     """Describes OwRadar number entity."""
 
-    exists_fn: Callable[[OwRadarDevice], bool] = lambda _: True
+    exists_fn: Callable[[Any], bool] = lambda _: True
 
 
 NUMBERS = [
@@ -69,9 +68,9 @@ NUMBERS = [
 
 
 async def async_setup_entry(
-    hass: HomeAssistant,
-    entry: ConfigEntry,
-    async_add_entities: AddEntitiesCallback,
+        hass: HomeAssistant,
+        entry: ConfigEntry,
+        async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up OwRadar number based on a config entry."""
     coordinator: OwRadarDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
@@ -89,9 +88,9 @@ class OwRadarNumberEntity(OwRadarEntity, NumberEntity):
     entity_description: OwRadarNumberEntityDescription
 
     def __init__(
-        self,
-        coordinator: OwRadarDataUpdateCoordinator,
-        description: OwRadarNumberEntityDescription,
+            self,
+            coordinator: OwRadarDataUpdateCoordinator,
+            description: OwRadarNumberEntityDescription,
     ) -> None:
         """Initialize a OwRadar switch entity."""
         super().__init__(coordinator=coordinator)
