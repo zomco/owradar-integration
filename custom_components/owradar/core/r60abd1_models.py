@@ -5,16 +5,16 @@ from dataclasses import dataclass
 from enum import IntEnum
 from typing import Any
 
-from .common_models import CommonSetting, CommonSettingSwitch, CommonState, CommonDevice
+from .common_models import OwRadarCommonSetting, OwRadarCommonSettingSwitch, OwRadarCommonState, OwRadarCommonDevice
 
 
 @dataclass
-class R60abd1Event:
+class OwRadarR60abd1Event:
     """Object holding body location state in OwRadar."""
 
     status: int = 0
 
-    def update_from_dict(self, data: dict[str, Any]) -> R60abd1Event:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1Event:
         """Return Body Location object form OwRadar API response.
 
         Args:
@@ -31,7 +31,7 @@ class R60abd1Event:
 
 
 @dataclass
-class R60abd1Snap:
+class OwRadarR60abd1Snap:
     """Object holding body location state in OwRadar."""
 
     body_range: int = 0
@@ -45,7 +45,7 @@ class R60abd1Snap:
     breath_rate: int = 0
     sleep_away: int = 0
 
-    def update_from_dict(self, data: dict[str, Any]) -> R60abd1Snap:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1Snap:
         """Return Body Location object form OwRadar API response.
 
         Args:
@@ -71,7 +71,7 @@ class R60abd1Snap:
 
 
 @dataclass
-class R60abd1Stats:
+class OwRadarR60abd1Stats:
     """Object holding body location state in OwRadar."""
 
     status: int = 0
@@ -79,7 +79,7 @@ class R60abd1Stats:
     heart: int = 0
     turn: int = 0
 
-    def update_from_dict(self, data: dict[str, Any]) -> R60abd1Stats:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1Stats:
         """Return Body Location object form OwRadar API response.
 
         Args:
@@ -98,21 +98,21 @@ class R60abd1Stats:
         return self
 
 
-class R60abd1StateBodyRange(IntEnum):
+class OwRadarR60abd1StateBodyRange(IntEnum):
     """Enumeration representing body range from OwRadar."""
 
     OUT = 0
     IN = 1
 
 
-class R60abd1StateBodyPresence(IntEnum):
+class OwRadarR60abd1StateBodyPresence(IntEnum):
     """Enumeration representing body presence from OwRadar."""
 
     NOBODY = 0
     SOMEBODY = 1
 
 
-class R60abd1StateBodyMovement(IntEnum):
+class OwRadarR60abd1StateBodyMovement(IntEnum):
     """Enumeration representing body movement from OwRadar."""
 
     NONE = 0
@@ -121,14 +121,14 @@ class R60abd1StateBodyMovement(IntEnum):
 
 
 @dataclass
-class R60abd1StateBodyLocation:
+class OwRadarR60abd1StateBodyLocation:
     """Object holding body location state in OwRadar."""
 
     x: int = 0
     y: int = 0
     z: int = 0
 
-    def update_from_dict(self, data: dict[str, Any]) -> R60abd1StateBodyLocation:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateBodyLocation:
         """Return Body Location object form OwRadar API response.
 
         Args:
@@ -147,17 +147,17 @@ class R60abd1StateBodyLocation:
 
 
 @dataclass
-class R60abd1StateBody:
+class OwRadarR60abd1StateBody:
     """Object holding body state in OwRadar."""
 
-    range: R60abd1StateBodyRange = R60abd1StateBodyRange.OUT
-    presence: R60abd1StateBodyPresence = R60abd1StateBodyPresence.NOBODY
+    range: OwRadarR60abd1StateBodyRange = OwRadarR60abd1StateBodyRange.OUT
+    presence: OwRadarR60abd1StateBodyPresence = OwRadarR60abd1StateBodyPresence.NOBODY
     energy: int = 0
-    movement: R60abd1StateBodyMovement = R60abd1StateBodyMovement.NONE
+    movement: OwRadarR60abd1StateBodyMovement = OwRadarR60abd1StateBodyMovement.NONE
     distance: int = 0
-    location: R60abd1StateBodyLocation = R60abd1StateBodyLocation()
+    location: OwRadarR60abd1StateBodyLocation = OwRadarR60abd1StateBodyLocation()
 
-    def update_from_dict(self, data: dict[str, Any]) -> R60abd1StateBody:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateBody:
         """Update and Return Body object form OwRadar API response.
 
         Args:
@@ -169,10 +169,10 @@ class R60abd1StateBody:
             An Body object.
 
         """
-        self.range = R60abd1StateBodyRange(data.get("range", self.range.value))
-        self.presence = R60abd1StateBodyPresence(data.get("presence", self.presence.value))
+        self.range = OwRadarR60abd1StateBodyRange(data.get("range", self.range.value))
+        self.presence = OwRadarR60abd1StateBodyPresence(data.get("presence", self.presence.value))
         self.energy = data.get("energy", self.energy)
-        self.movement = R60abd1StateBodyMovement(data.get("movement", self.movement.value))
+        self.movement = OwRadarR60abd1StateBodyMovement(data.get("movement", self.movement.value))
         self.distance = data.get("distance", self.distance)
         self.location = self.location.update_from_dict(data.get("location", self.location.__dict__))
 
@@ -180,7 +180,7 @@ class R60abd1StateBody:
 
 
 @dataclass
-class R60abd1StateWaves:
+class OwRadarR60abd1StateWaves:
     """Object holding wave state in OwRadar."""
 
     w0: int = 0
@@ -189,7 +189,7 @@ class R60abd1StateWaves:
     w3: int = 0
     w4: int = 0
 
-    def update_from_dict(self, data: dict[str, Any]) -> R60abd1StateWaves:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateWaves:
         """Update and Return Heart object form OwRadar API response.
 
         Args:
@@ -211,13 +211,13 @@ class R60abd1StateWaves:
 
 
 @dataclass
-class R60abd1StateHeart:
+class OwRadarR60abd1StateHeart:
     """Object holding heart state in OwRadar."""
 
     rate: int = 0
-    waves: R60abd1StateWaves = R60abd1StateWaves()
+    waves: OwRadarR60abd1StateWaves = OwRadarR60abd1StateWaves()
 
-    def update_from_dict(self, data: dict[str, Any]) -> R60abd1StateHeart:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateHeart:
         """Update and Return Heart object form OwRadar API response.
 
         Args:
@@ -235,7 +235,7 @@ class R60abd1StateHeart:
         return self
 
 
-class R60abd1StateBreathInfo(IntEnum):
+class OwRadarR60abd1StateBreathInfo(IntEnum):
     """Enumeration representing breath info from OwRadar."""
 
     UNSET = 0
@@ -246,14 +246,14 @@ class R60abd1StateBreathInfo(IntEnum):
 
 
 @dataclass
-class R60abd1StateBreath:
+class OwRadarR60abd1StateBreath:
     """Object holding breath state in OwRadar."""
 
-    info: R60abd1StateBreathInfo = R60abd1StateBreathInfo.UNSET
+    info: OwRadarR60abd1StateBreathInfo = OwRadarR60abd1StateBreathInfo.UNSET
     rate: int = 0
-    waves: R60abd1StateWaves = R60abd1StateWaves()
+    waves: OwRadarR60abd1StateWaves = OwRadarR60abd1StateWaves()
 
-    def update_from_dict(self, data: dict[str, Any]) -> R60abd1StateBreath:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateBreath:
         """Update and Return Breath object form OwRadar API response.
 
         Args:
@@ -265,14 +265,14 @@ class R60abd1StateBreath:
             An Breath object.
 
         """
-        self.info = R60abd1StateBreathInfo(data.get("info", self.info))
+        self.info = OwRadarR60abd1StateBreathInfo(data.get("info", self.info))
         self.rate = data.get("rate", self.rate)
         self.waves = self.waves.update_from_dict(data.get("waves", self.waves.__dict__))
 
         return self
 
 
-class R60abd1StateSleepAway(IntEnum):
+class OwRadarR60abd1StateSleepAway(IntEnum):
     """Enumeration representing sleep away from OwRadar."""
 
     OUT = 0
@@ -280,7 +280,7 @@ class R60abd1StateSleepAway(IntEnum):
     ACTIVE = 2
 
 
-class R60abd1StateSleepStatus(IntEnum):
+class OwRadarR60abd1StateSleepStatus(IntEnum):
     """Enumeration representing sleep status from OwRadar."""
 
     DEEP = 0
@@ -289,7 +289,7 @@ class R60abd1StateSleepStatus(IntEnum):
     NONE = 3
 
 
-class R60abd1StateSleepException(IntEnum):
+class OwRadarR60abd1StateSleepException(IntEnum):
     """Enumeration representing sleep exception from OwRadar."""
 
     LESS_4HOUR = 0
@@ -298,7 +298,7 @@ class R60abd1StateSleepException(IntEnum):
     NONE = 3
 
 
-class R60abd1StateSleepRating(IntEnum):
+class OwRadarR60abd1StateSleepRating(IntEnum):
     """Enumeration representing sleep rating from OwRadar."""
 
     NONE = 0
@@ -307,7 +307,7 @@ class R60abd1StateSleepRating(IntEnum):
     BAD = 3
 
 
-class R60abd1StateSleepStruggle(IntEnum):
+class OwRadarR60abd1StateSleepStruggle(IntEnum):
     """Enumeration representing sleep struggle from OwRadar."""
 
     NONE = 0
@@ -315,7 +315,7 @@ class R60abd1StateSleepStruggle(IntEnum):
     ABNORMAL = 2
 
 
-class R60abd1StateSleepNobody(IntEnum):
+class OwRadarR60abd1StateSleepNobody(IntEnum):
     """Enumeration representing sleep nobody from OwRadar."""
 
     NONE = 0
@@ -324,7 +324,7 @@ class R60abd1StateSleepNobody(IntEnum):
 
 
 @dataclass
-class R60abd1StateSleepOverview:
+class OwRadarR60abd1StateSleepOverview:
     """Object holding sleep overview state in OwRadar.
 
     Args:
@@ -337,8 +337,8 @@ class R60abd1StateSleepOverview:
 
     """
 
-    presence: R60abd1StateBodyPresence = R60abd1StateBodyPresence.NOBODY
-    status: R60abd1StateSleepStatus = R60abd1StateSleepStatus.NONE
+    presence: OwRadarR60abd1StateBodyPresence = OwRadarR60abd1StateBodyPresence.NOBODY
+    status: OwRadarR60abd1StateSleepStatus = OwRadarR60abd1StateSleepStatus.NONE
     breath: int = 0
     heart: int = 0
     turn: int = 0
@@ -346,7 +346,7 @@ class R60abd1StateSleepOverview:
     seratio: int = 0
     pause: int = 0
 
-    def update_from_dict(self, data: dict[str, Any]) -> R60abd1StateSleepOverview:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateSleepOverview:
         """Return SleepOverview object form OwRadar API response.
 
         Args:
@@ -358,8 +358,8 @@ class R60abd1StateSleepOverview:
             An SleepOverview object.
 
         """
-        self.presence = R60abd1StateBodyPresence(data.get("presence", self.presence))
-        self.status = R60abd1StateSleepStatus(data.get("status", self.status))
+        self.presence = OwRadarR60abd1StateBodyPresence(data.get("presence", self.presence))
+        self.status = OwRadarR60abd1StateSleepStatus(data.get("status", self.status))
         self.heart = data.get("heart", self.heart)
         self.breath = data.get("breath", self.breath)
         self.turn = data.get("turn", self.turn)
@@ -371,7 +371,7 @@ class R60abd1StateSleepOverview:
 
 
 @dataclass
-class R60abd1StateSleepQuality:
+class OwRadarR60abd1StateSleepQuality:
     """Object holding sleep quality state in OwRadar.
 
     Args:
@@ -396,7 +396,7 @@ class R60abd1StateSleepQuality:
     heart: int = 0
     pause: int = 0
 
-    def update_from_dict(self, data: dict[str, Any]) -> R60abd1StateSleepQuality:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateSleepQuality:
         """Return SleepQuality object form OwRadar API response.
 
         Args:
@@ -424,7 +424,7 @@ class R60abd1StateSleepQuality:
 
 
 @dataclass
-class R60abd1StateSleep:
+class OwRadarR60abd1StateSleep:
     """Object holding sleep state in OwRadar.
 
     Args:
@@ -437,20 +437,20 @@ class R60abd1StateSleep:
 
     """
 
-    away: R60abd1StateSleepAway = R60abd1StateSleepAway.OUT
-    status: R60abd1StateSleepStatus = R60abd1StateSleepStatus.NONE
+    away: OwRadarR60abd1StateSleepAway = OwRadarR60abd1StateSleepAway.OUT
+    status: OwRadarR60abd1StateSleepStatus = OwRadarR60abd1StateSleepStatus.NONE
     awake: int = 0
     light: int = 0
     deep: int = 0
     score: int = 0
-    overview: R60abd1StateSleepOverview = R60abd1StateSleepOverview()
-    quality: R60abd1StateSleepQuality = R60abd1StateSleepQuality()
-    exception: R60abd1StateSleepException = R60abd1StateSleepException.NONE
-    rating: R60abd1StateSleepRating = R60abd1StateSleepRating.NONE
-    struggle: R60abd1StateSleepStruggle = R60abd1StateSleepStruggle.NONE
-    nobody: R60abd1StateSleepNobody = R60abd1StateSleepNobody.NONE
+    overview: OwRadarR60abd1StateSleepOverview = OwRadarR60abd1StateSleepOverview()
+    quality: OwRadarR60abd1StateSleepQuality = OwRadarR60abd1StateSleepQuality()
+    exception: OwRadarR60abd1StateSleepException = OwRadarR60abd1StateSleepException.NONE
+    rating: OwRadarR60abd1StateSleepRating = OwRadarR60abd1StateSleepRating.NONE
+    struggle: OwRadarR60abd1StateSleepStruggle = OwRadarR60abd1StateSleepStruggle.NONE
+    nobody: OwRadarR60abd1StateSleepNobody = OwRadarR60abd1StateSleepNobody.NONE
 
-    def update_from_dict(self, data: dict[str, Any]) -> R60abd1StateSleep:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateSleep:
         """Update and Return Sleep object form OwRadar API response.
 
         Args:
@@ -462,24 +462,24 @@ class R60abd1StateSleep:
             An Sleep object.
 
         """
-        self.away = R60abd1StateSleepAway(data.get("away", self.away))
-        self.status = R60abd1StateSleepStatus(data.get("status", self.status))
+        self.away = OwRadarR60abd1StateSleepAway(data.get("away", self.away))
+        self.status = OwRadarR60abd1StateSleepStatus(data.get("status", self.status))
         self.awake = data.get("awake", self.awake)
         self.light = data.get("light", self.light)
         self.deep = data.get("deep", self.deep)
         self.score = data.get("score", self.score)
         self.overview = self.overview.update_from_dict(data.get("overview", self.overview.__dict__))
         self.quality = self.quality.update_from_dict(data.get("quality", self.quality.__dict__))
-        self.exception = R60abd1StateSleepException(data.get("exception", self.exception))
-        self.rating = R60abd1StateSleepRating(data.get("rating", self.rating))
-        self.struggle = R60abd1StateSleepStruggle(data.get("struggle", self.struggle))
-        self.nobody = R60abd1StateSleepNobody(data.get("nobody", self.nobody))
+        self.exception = OwRadarR60abd1StateSleepException(data.get("exception", self.exception))
+        self.rating = OwRadarR60abd1StateSleepRating(data.get("rating", self.rating))
+        self.struggle = OwRadarR60abd1StateSleepStruggle(data.get("struggle", self.struggle))
+        self.nobody = OwRadarR60abd1StateSleepNobody(data.get("nobody", self.nobody))
 
         return self
 
 
 @dataclass
-class R60abd1State(CommonState):
+class OwRadarR60abd1State(OwRadarCommonState):
     """Object holding State Information from OwRadar.
 
     Args:
@@ -492,12 +492,12 @@ class R60abd1State(CommonState):
 
     """
 
-    body: R60abd1StateBody = R60abd1StateBody()
-    heart: R60abd1StateHeart = R60abd1StateHeart()
-    breath: R60abd1StateBreath = R60abd1StateBreath()
-    sleep: R60abd1StateSleep = R60abd1StateSleep()
+    body: OwRadarR60abd1StateBody = OwRadarR60abd1StateBody()
+    heart: OwRadarR60abd1StateHeart = OwRadarR60abd1StateHeart()
+    breath: OwRadarR60abd1StateBreath = OwRadarR60abd1StateBreath()
+    sleep: OwRadarR60abd1StateSleep = OwRadarR60abd1StateSleep()
 
-    def update_from_dict(self, data: dict[str, Any]) -> R60abd1State:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1State:
         """Update Return State object form OwRadar API response.
 
         Args:
@@ -519,7 +519,7 @@ class R60abd1State(CommonState):
 
 
 @dataclass
-class R60abd1Setting(CommonSetting):
+class OwRadarR60abd1Setting(OwRadarCommonSetting):
     """Object holding R60ABD1 Setting information from OwRadar.
 
     Args:
@@ -532,17 +532,17 @@ class R60abd1Setting(CommonSetting):
 
     """
 
-    body: CommonSettingSwitch = CommonSettingSwitch.OFF
-    heart: CommonSettingSwitch = CommonSettingSwitch.OFF
-    breath: CommonSettingSwitch = CommonSettingSwitch.OFF
-    sleep: CommonSettingSwitch = CommonSettingSwitch.OFF
-    mode: CommonSettingSwitch = CommonSettingSwitch.OFF
-    nobody: CommonSettingSwitch = CommonSettingSwitch.OFF
+    body: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    heart: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    breath: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    sleep: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    mode: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    nobody: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
     nobody_duration: int = 0
-    struggle: CommonSettingSwitch = CommonSettingSwitch.OFF
+    struggle: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
     stop_duration: int = 0
 
-    def update_from_dict(self, data: dict[str, Any]) -> R60abd1Setting:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1Setting:
         """Update and Return Device information object from OwRadar API response.
 
         Args:
@@ -569,7 +569,7 @@ class R60abd1Setting(CommonSetting):
 
 
 @dataclass
-class R60abd1Device(CommonDevice):
+class OwRadarR60abd1Device(OwRadarCommonDevice):
     """Object holding Device Information from OwRadar.
 
     Args:
@@ -582,9 +582,13 @@ class R60abd1Device(CommonDevice):
 
     """
 
-    setting: R60abd1Setting = R60abd1Setting()
+    setting: OwRadarR60abd1Setting = OwRadarR60abd1Setting()
+    state: OwRadarR60abd1State = OwRadarR60abd1State()
+    stats: OwRadarR60abd1Stats = OwRadarR60abd1Stats()
+    snap: OwRadarR60abd1Snap = OwRadarR60abd1Snap()
+    event: OwRadarR60abd1Event = OwRadarR60abd1Event()
 
-    def update_from_dict(self, data: dict[str, Any]) -> R60abd1Device:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1Device:
         """Update and Return Device object from OwRadar API response.
 
         Args:

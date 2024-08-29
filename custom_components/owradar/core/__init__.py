@@ -1,19 +1,19 @@
 """Asynchronous Python client for OwRadar."""
 
-from .client import Client
+from .client import OwRadarClient
 from .exceptions import (
-    OwRadarConnectionClosedError,
+    OwRadarClosedConnectionError,
     OwRadarConnectionError,
-    OwRadarConnectionTimeoutError,
+    OwRadarTimeoutConnectionError,
     OwRadarError,
     OwRadarUpgradeError,
 )
 
 __all__ = [
-    "Client",
-    "OwRadarConnectionClosedError",
+    "OwRadarClient",
+    "OwRadarClosedConnectionError",
     "OwRadarConnectionError",
-    "OwRadarConnectionTimeoutError",
+    "OwRadarTimeoutConnectionError",
     "OwRadarError",
     "OwRadarUpgradeError",
 ]

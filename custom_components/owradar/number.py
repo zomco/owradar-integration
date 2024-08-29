@@ -13,8 +13,8 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN
 from .coordinator import OwRadarDataUpdateCoordinator
+from .entities import OwRadarEntity
 from .helpers import owradar_exception_handler
-from .models import OwRadarEntity
 
 PARALLEL_UPDATES = 1
 
@@ -36,7 +36,22 @@ class OwRadarNumberEntityDescription(
     exists_fn: Callable[[Any], bool] = lambda _: True
 
 
-NUMBERS = [
+COMMON_SETTING_NUMBERS: tuple[OwRadarNumberEntityDescription, ...] = (
+    OwRadarNumberEntityDescription(
+        key="setting_interval",
+        translation_key="setting_interval",
+        name="Speed",
+        entity_category=EntityCategory.CONFIG,
+        native_step=1,
+        native_min_value=3,
+        native_max_value=60,
+        native_unit_of_measurement="MIN",
+        value_fn=lambda device: device.setting.nobody_duration,
+        update_fn=lambda coordinator, value: coordinator.client.setting(data={"interval": value}),
+    ),
+)
+
+R60ABD1_SETTING_NUMBERS: tuple[OwRadarNumberEntityDescription, ...] = (
     OwRadarNumberEntityDescription(
         key="setting_nobody_duration",
         translation_key="setting_nobody_duration",
@@ -47,9 +62,7 @@ NUMBERS = [
         native_max_value=180,
         native_unit_of_measurement="MIN",
         value_fn=lambda device: device.setting.nobody_duration,
-        update_fn=lambda coordinator, value: coordinator.client.setting(
-            nobody_duration=value
-        ),
+        update_fn=lambda coordinator, value: coordinator.client.setting(data={"nobody_duration": value}),
     ),
     OwRadarNumberEntityDescription(
         key="setting_stop_duration",
@@ -60,11 +73,9 @@ NUMBERS = [
         native_max_value=120,
         native_unit_of_measurement="MIN",
         value_fn=lambda device: device.setting.stop_duration,
-        update_fn=lambda coordinator, value: coordinator.client.setting(
-            stop_duration=value
-        ),
+        update_fn=lambda coordinator, value: coordinator.client.setting(data={"stop_duration": value}),
     ),
-]
+)
 
 
 async def async_setup_entry(
@@ -74,10 +85,10 @@ async def async_setup_entry(
 ) -> None:
     """Set up OwRadar number based on a config entry."""
     coordinator: OwRadarDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
-
+    numbers = COMMON_SETTING_NUMBERS + R60ABD1_SETTING_NUMBERS
     async_add_entities(
         OwRadarNumberEntity(coordinator, description)
-        for description in NUMBERS
+        for description in numbers
         if description.exists_fn(coordinator.data)
     )
 

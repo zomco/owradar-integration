@@ -12,15 +12,15 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 
 from .const import DOMAIN, LOGGER, SCAN_INTERVAL
 from .core import (
-    Client,
-    OwRadarConnectionClosedError,
+    OwRadarClient,
+    OwRadarClosedConnectionError,
     OwRadarError,
 )
 
 
 # https://developers.home-assistant.io/docs/integration_fetching_data#coordinated-single-api-poll-for-data-for-all-entities
 class OwRadarDataUpdateCoordinator(DataUpdateCoordinator):
-    """Class to manage fetching OwRadar data from single endpoint."""
+    """Class to manage fetching device data from single endpoint."""
 
     config_entry: ConfigEntry
 
@@ -31,7 +31,7 @@ class OwRadarDataUpdateCoordinator(DataUpdateCoordinator):
             entry: ConfigEntry,
     ) -> None:
         """Initialize."""
-        self.client = Client(
+        self.client = OwRadarClient(
             entry.data[CONF_HOST], session=async_get_clientsession(hass)
         )
         self.unsub: CALLBACK_TYPE | None = None
@@ -60,7 +60,7 @@ class OwRadarDataUpdateCoordinator(DataUpdateCoordinator):
 
             try:
                 asyncio.run(self.client.listen(callback=self.async_set_updated_data))
-            except OwRadarConnectionClosedError as err:
+            except OwRadarClosedConnectionError as err:
                 self.last_update_success = False
                 self.logger.info(err)
             except OwRadarError as err:
@@ -90,7 +90,7 @@ class OwRadarDataUpdateCoordinator(DataUpdateCoordinator):
         )
 
     async def _async_update_data(self) -> Any:
-        """Fetch data from OwRadar."""
+        """Fetch data from device."""
         # If the device supports a WebSocket, try activating it.
         try:
             device = await self.client.update(full_update=not self.last_update_success)

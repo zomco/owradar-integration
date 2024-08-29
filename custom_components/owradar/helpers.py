@@ -7,7 +7,7 @@ from typing import Any, Concatenate, ParamSpec, TypeVar
 from homeassistant.exceptions import HomeAssistantError
 
 from .core import OwRadarConnectionError, OwRadarError
-from .models import OwRadarEntity
+from .entities import OwRadarEntity
 
 _OwRadarEntityT = TypeVar("_OwRadarEntityT", bound=OwRadarEntity)
 _P = ParamSpec("_P")

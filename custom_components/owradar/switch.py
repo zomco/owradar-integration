@@ -17,8 +17,8 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .const import DOMAIN
 from .coordinator import OwRadarDataUpdateCoordinator
 from .core import Device as OwRadarDevice
+from .entities import OwRadarEntity
 from .helpers import owradar_exception_handler
-from .models import OwRadarEntity
 
 PARALLEL_UPDATES = 1
 
@@ -40,66 +40,151 @@ class OwRadarSwitchEntityDescription(
     exists_fn: Callable[[OwRadarDevice], bool] = lambda _: True
 
 
-SWITCHES: tuple[OwRadarSwitchEntityDescription, ...] = [
+COMMON_SETTING_SWITCHES: tuple[OwRadarSwitchEntityDescription, ...] = (
     OwRadarSwitchEntityDescription(
-        key="setting_realtime_ws",
-        translation_key="setting_realtime_ws",
+        key="setting_gatt_state",
+        translation_key="setting_gatt_state",
         device_class=SwitchDeviceClass.SWITCH,
-        value_fn=lambda device: bool(device.setting.realtime_ws),
-        update_fn=lambda coordinator, flag: coordinator.client.setting(
-            realtime_ws=flag
-        ),
+        value_fn=lambda device: bool(device.setting.gatt_state),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"gatt_state": flag}),
     ),
+    OwRadarSwitchEntityDescription(
+        key="setting_mqtt_state",
+        translation_key="setting_mqtt_state",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: bool(device.setting.mqtt_state),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"mqtt_state": flag}),
+    ),
+    OwRadarSwitchEntityDescription(
+        key="setting_websocket_state",
+        translation_key="setting_websocket_state",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: bool(device.setting.websocket_state),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"websocket_state": flag}),
+    ),
+    OwRadarSwitchEntityDescription(
+        key="setting_gatt_stats",
+        translation_key="setting_gatt_stats",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: bool(device.setting.gatt_stats),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"gatt_stats": flag}),
+    ),
+    OwRadarSwitchEntityDescription(
+        key="setting_mqtt_stats",
+        translation_key="setting_mqtt_stats",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: bool(device.setting.mqtt_stats),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"mqtt_stats": flag}),
+    ),
+    OwRadarSwitchEntityDescription(
+        key="setting_websocket_stats",
+        translation_key="setting_websocket_stats",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: bool(device.setting.websocket_stats),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"websocket_stats": flag}),
+    ),
+    OwRadarSwitchEntityDescription(
+        key="setting_gatt_snap",
+        translation_key="setting_gatt_snap",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: bool(device.setting.gatt_snap),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"gatt_snap": flag}),
+    ),
+    OwRadarSwitchEntityDescription(
+        key="setting_mqtt_snap",
+        translation_key="setting_mqtt_snap",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: bool(device.setting.mqtt_snap),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"mqtt_snap": flag}),
+    ),
+    OwRadarSwitchEntityDescription(
+        key="setting_websocket_snap",
+        translation_key="setting_websocket_snap",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: bool(device.setting.websocket_snap),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"websocket_snap": flag}),
+    ),
+    OwRadarSwitchEntityDescription(
+        key="setting_gatt_event",
+        translation_key="setting_gatt_event",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: bool(device.setting.gatt_event),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"gatt_event": flag}),
+    ),
+    OwRadarSwitchEntityDescription(
+        key="setting_mqtt_event",
+        translation_key="setting_mqtt_event",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: bool(device.setting.mqtt_event),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"mqtt_event": flag}),
+    ),
+    OwRadarSwitchEntityDescription(
+        key="setting_websocket_event",
+        translation_key="setting_websocket_event",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: bool(device.setting.websocket_event),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"websocket_event": flag}),
+    ),
+    OwRadarSwitchEntityDescription(
+        key="setting_indicate",
+        translation_key="setting_indicate",
+        device_class=SwitchDeviceClass.SWITCH,
+        value_fn=lambda device: bool(device.setting.indicate),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"indicate": flag}),
+    ),
+)
+
+R60ABD1_SETTING_SWITCHES: tuple[OwRadarSwitchEntityDescription, ...] = (
     OwRadarSwitchEntityDescription(
         key="setting_body",
         translation_key="setting_body",
         device_class=SwitchDeviceClass.SWITCH,
         value_fn=lambda device: bool(device.setting.body),
-        update_fn=lambda coordinator, flag: coordinator.client.setting(body=flag),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"body": flag}),
     ),
     OwRadarSwitchEntityDescription(
         key="setting_heart",
         translation_key="setting_heart",
         device_class=SwitchDeviceClass.SWITCH,
         value_fn=lambda device: bool(device.setting.heart),
-        update_fn=lambda coordinator, flag: coordinator.client.setting(heart=flag),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"heart": flag}),
     ),
     OwRadarSwitchEntityDescription(
         key="setting_breath",
         translation_key="setting_breath",
         device_class=SwitchDeviceClass.SWITCH,
         value_fn=lambda device: bool(device.setting.breath),
-        update_fn=lambda coordinator, flag: coordinator.client.setting(breath=flag),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"breath": flag}),
     ),
     OwRadarSwitchEntityDescription(
         key="setting_sleep",
         translation_key="setting_sleep",
         device_class=SwitchDeviceClass.SWITCH,
         value_fn=lambda device: bool(device.setting.sleep),
-        update_fn=lambda coordinator, flag: coordinator.client.setting(sleep=flag),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"sleep": flag}),
     ),
     OwRadarSwitchEntityDescription(
         key="setting_mode",
         translation_key="setting_mode",
         device_class=SwitchDeviceClass.SWITCH,
         value_fn=lambda device: bool(device.setting.mode),
-        update_fn=lambda coordinator, flag: coordinator.client.setting(mode=flag),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"mode": flag}),
     ),
     OwRadarSwitchEntityDescription(
         key="setting_nobody",
         translation_key="setting_nobody",
         device_class=SwitchDeviceClass.SWITCH,
         value_fn=lambda device: bool(device.setting.nobody),
-        update_fn=lambda coordinator, flag: coordinator.client.setting(nobody=flag),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"nobody": flag}),
     ),
     OwRadarSwitchEntityDescription(
         key="setting_struggle",
         translation_key="setting_struggle",
         device_class=SwitchDeviceClass.SWITCH,
         value_fn=lambda device: bool(device.setting.struggle),
-        update_fn=lambda coordinator, flag: coordinator.client.setting(struggle=flag),
+        update_fn=lambda coordinator, flag: coordinator.client.setting(data={"struggle": flag}),
     ),
-]
+)
 
 
 async def async_setup_entry(
@@ -109,10 +194,10 @@ async def async_setup_entry(
 ) -> None:
     """Set up OwRadar switch based on a config entry."""
     coordinator: OwRadarDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
-
+    switches = COMMON_SETTING_SWITCHES + R60ABD1_SETTING_SWITCHES
     async_add_entities(
         OwRadarSwitchEntity(coordinator, description)
-        for description in SWITCHES
+        for description in switches
         if description.exists_fn(coordinator.data)
     )
 

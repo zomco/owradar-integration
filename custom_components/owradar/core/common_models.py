@@ -1,4 +1,5 @@
 """Models for OwRadar."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -7,7 +8,7 @@ from typing import Any
 
 
 @dataclass
-class CommonEvent:
+class OwRadarCommonEvent:
     """Object holding State Information from OwRadar.
 
     Args:
@@ -22,7 +23,7 @@ class CommonEvent:
 
     timestamp: int = 0
 
-    def update_from_dict(self, data: dict[str, Any]) -> CommonEvent:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonEvent:
         """Update Return State object form OwRadar API response.
 
         Args:
@@ -40,7 +41,7 @@ class CommonEvent:
 
 
 @dataclass
-class CommonSnap:
+class OwRadarCommonSnap:
     """Object holding State Information from OwRadar.
 
     Args:
@@ -55,7 +56,7 @@ class CommonSnap:
 
     timestamp: int = 0
 
-    def update_from_dict(self, data: dict[str, Any]) -> CommonSnap:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonSnap:
         """Update Return State object form OwRadar API response.
 
         Args:
@@ -73,7 +74,7 @@ class CommonSnap:
 
 
 @dataclass
-class CommonStats:
+class OwRadarCommonStats:
     """Object holding State Information from OwRadar.
 
     Args:
@@ -88,7 +89,7 @@ class CommonStats:
 
     timestamp: int = 0
 
-    def update_from_dict(self, data: dict[str, Any]) -> CommonStats:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonStats:
         """Update Return State object form OwRadar API response.
 
         Args:
@@ -106,13 +107,13 @@ class CommonStats:
 
 
 @dataclass
-class CommonStateMotionAngle:
+class OwRadarCommonStateMotionAngle:
     """Object holding Motion Angle state in OwRadar."""
 
     pitch: float = 0
     roll: float = 0
 
-    def update_from_dict(self, data: dict[str, Any]) -> CommonStateMotionAngle:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonStateMotionAngle:
         """Return Motion Angle object form OwRadar API response.
 
         Args:
@@ -131,12 +132,12 @@ class CommonStateMotionAngle:
 
 
 @dataclass
-class CommonStateMotion:
+class OwRadarCommonStateMotion:
     """Object holding motion state in OwRadar."""
 
-    angle: CommonStateMotionAngle = CommonStateMotionAngle()
+    angle: OwRadarCommonStateMotionAngle = OwRadarCommonStateMotionAngle()
 
-    def update_from_dict(self, data: dict[str, Any]) -> CommonStateMotion:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonStateMotion:
         """Update and Return Motion object form OwRadar API response.
 
         Args:
@@ -154,12 +155,12 @@ class CommonStateMotion:
 
 
 @dataclass
-class CommonState:
-    """Object holding State Information from OwRadar.
+class OwRadarCommonState:
+    """Object holding State Information from device.
 
     Args:
     ----
-        data: The data from the OwRadar device API.
+        data: The data from the device API.
 
     Returns:
     -------
@@ -168,9 +169,9 @@ class CommonState:
     """
 
     timestamp: int = 0
-    motion: CommonStateMotion = CommonStateMotion()
+    motion: OwRadarCommonStateMotion = OwRadarCommonStateMotion()
 
-    def update_from_dict(self, data: dict[str, Any]) -> CommonState:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonState:
         """Update Return State object form OwRadar API response.
 
         Args:
@@ -183,13 +184,15 @@ class CommonState:
 
         """
         self.timestamp = data.get("timestamp", self.timestamp)
-        self.motion = self.motion.update_from_dict(data.get("motion", self.motion.__dict__))
+        self.motion = self.motion.update_from_dict(
+            data.get("motion", self.motion.__dict__)
+        )
 
         return self
 
 
 @dataclass
-class CommonInfo:
+class OwRadarCommonInfo:
     """Object holding device information from OwRadar."""
 
     radar_model: str = ""
@@ -197,14 +200,14 @@ class CommonInfo:
     mac_addr: str = ""
     name: str = ""
     ip: str = ""
-    free_heap: int = ""
+    free_heap: int = 0
     version: str = ""
     architecture: str = ""
     brand: str = ""
     product: str = ""
     board: str = ""
 
-    def update_from_dict(self, data: dict[str, Any]) -> CommonInfo:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonInfo:
         """Update and Return Device information object from OwRadar API response.
 
         Args:
@@ -231,7 +234,7 @@ class CommonInfo:
         return self
 
 
-class CommonSettingSwitch(IntEnum):
+class OwRadarCommonSettingSwitch(IntEnum):
     """Enumeration representing switch state from OwRadar."""
 
     OFF = 0
@@ -239,7 +242,7 @@ class CommonSettingSwitch(IntEnum):
 
 
 @dataclass
-class CommonSetting:
+class OwRadarCommonSetting:
     """Object holding Common Setting information from OwRadar.
 
     Args:
@@ -253,22 +256,22 @@ class CommonSetting:
     """
 
     broker: str = ""
-    gatt_state: CommonSettingSwitch = CommonSettingSwitch.OFF
-    mqtt_state: CommonSettingSwitch = CommonSettingSwitch.OFF
-    websocket_state: CommonSettingSwitch = CommonSettingSwitch.OFF
-    gatt_stats: CommonSettingSwitch = CommonSettingSwitch.OFF
-    mqtt_stats: CommonSettingSwitch = CommonSettingSwitch.OFF
-    websocket_stats: CommonSettingSwitch = CommonSettingSwitch.OFF
-    gatt_event: CommonSettingSwitch = CommonSettingSwitch.OFF
-    mqtt_event: CommonSettingSwitch = CommonSettingSwitch.OFF
-    websocket_event: CommonSettingSwitch = CommonSettingSwitch.OFF
-    gatt_snap: CommonSettingSwitch = CommonSettingSwitch.OFF
-    mqtt_snap: CommonSettingSwitch = CommonSettingSwitch.OFF
-    websocket_snap: CommonSettingSwitch = CommonSettingSwitch.OFF
-    indicate: CommonSettingSwitch = CommonSettingSwitch.OFF
+    gatt_state: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    mqtt_state: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    websocket_state: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    gatt_stats: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    mqtt_stats: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    websocket_stats: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    gatt_event: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    mqtt_event: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    websocket_event: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    gatt_snap: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    mqtt_snap: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    websocket_snap: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
+    indicate: OwRadarCommonSettingSwitch = OwRadarCommonSettingSwitch.OFF
     interval: int = 0
 
-    def update_from_dict(self, data: dict[str, Any]) -> CommonSetting:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonSetting:
         """Update and Return Setting object form OwRadar API response.
 
         Args:
@@ -300,12 +303,12 @@ class CommonSetting:
 
 
 @dataclass
-class CommonDevice:
+class OwRadarCommonDevice:
     """Object holding device information from OwRadar."""
 
-    info: CommonInfo = CommonInfo()
+    info: OwRadarCommonInfo = OwRadarCommonInfo()
 
-    def update_from_dict(self, data: dict[str, Any]) -> CommonDevice:
+    def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonDevice:
         """Update and Return Device information object from OwRadar API response.
 
         Args:

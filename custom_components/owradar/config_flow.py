@@ -11,15 +11,15 @@ from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN
-from .core import Client, Device as OwRadarDevice, OwRadarConnectionError
+from .core import OwRadarClient, OwRadarConnectionError
 
 
 class OwRadarFlowHandler(ConfigFlow, domain=DOMAIN):
-    """Config flow for OwRadar."""
+    """Config flow for device."""
 
     VERSION = 1
     discovered_host: str
-    discovered_device: OwRadarDevice
+    discovered_device: Any
 
     async def async_step_user(
             self, user_input: dict[str, Any] | None = None
@@ -95,8 +95,8 @@ class OwRadarFlowHandler(ConfigFlow, domain=DOMAIN):
             description_placeholders={"name": self.discovered_device.info.name},
         )
 
-    async def _async_get_device(self, host: str) -> OwRadarDevice:
-        """Get device information from OwRadar device."""
+    async def _async_get_device(self, host: str) -> Any:
+        """Get device information from device."""
         session = async_get_clientsession(self.hass)
-        client = Client(host, session=session)
+        client = OwRadarClient(host, session=session)
         return await client.update()

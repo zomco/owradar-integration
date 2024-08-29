@@ -1,4 +1,4 @@
-"""Asynchronous Python client for owradar."""
+"""Asynchronous Python client for device."""
 from __future__ import annotations
 
 import asyncio
@@ -8,21 +8,19 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
 import aiohttp
-import asyncio
 import async_timeout
 import backoff
 from cachetools import TTLCache
 from yarl import URL
 
-from .common_models import CommonDevice
 from .exceptions import (
-    OwRadarConnectionClosedError,
+    OwRadarClosedConnectionError,
     OwRadarConnectionError,
-    OwRadarConnectionTimeoutError,
+    OwRadarTimeoutConnectionError,
     OwRadarEmptyResponseError,
     OwRadarError,
 )
-from .r60abd1_models import R60abd1Device, R60abd1Setting
+from .r60abd1_models import OwRadarR60abd1Device, OwRadarR60abd1Setting
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -31,8 +29,8 @@ VERSION_CACHE: TTLCache[str, str | None] = TTLCache(maxsize=16, ttl=7200)
 
 
 @dataclass
-class Client:
-    """Main class for handling connections with owradar."""
+class OwRadarClient:
+    """Main class for handling connections with device."""
 
     host: str
     request_timeout: float = 8.0
@@ -42,10 +40,6 @@ class Client:
     _stats_client: aiohttp.ClientWebSocketResponse | None = None
     _snap_client: aiohttp.ClientWebSocketResponse | None = None
     _event_client: aiohttp.ClientWebSocketResponse | None = None
-    _state_data: any = None
-    _stats_data: any = None
-    _snap_data: any = None
-    _event_data: any = None
     _close_session: bool = False
     _device: Any = None
 
@@ -97,6 +91,20 @@ class Client:
         """
         return self._event_client is not None and not self._event_client.closed
 
+    async def connect_client(self, url: URL) -> aiohttp.ClientWebSocketResponse:
+        try:
+            return await self.session.ws_connect(url=url, heartbeat=30)
+        except (
+                aiohttp.WSServerHandshakeError,
+                aiohttp.ClientConnectionError,
+                socket.gaierror,
+        ) as exception:
+            msg = (
+                "Error occurred while communicating with device"
+                f" on WebSocket at {self.host}"
+            )
+            raise OwRadarConnectionError(msg) from exception
+
     async def state_connect(self) -> None:
         """Connect to the WebSocket of device.
 
@@ -111,18 +119,7 @@ class Client:
         if self.state_connected:
             return
         url = URL.build(scheme="ws", host=self.host, port=80, path="/ws/state")
-        try:
-            self._state_client = await self.session.ws_connect(url=url, heartbeat=30)
-        except (
-                aiohttp.WSServerHandshakeError,
-                aiohttp.ClientConnectionError,
-                socket.gaierror,
-        ) as exception:
-            msg = (
-                "Error occurred while communicating with device"
-                f" on WebSocket at {self.host}"
-            )
-            raise OwRadarConnectionError(msg) from exception
+        self._state_client = await self.connect_client(url=url)
 
     async def stats_connect(self) -> None:
         """Connect to the WebSocket of device.
@@ -138,18 +135,7 @@ class Client:
         if self.stats_connected:
             return
         url = URL.build(scheme="ws", host=self.host, port=80, path="/ws/stats")
-        try:
-            self._stats_client = await self.session.ws_connect(url=url, heartbeat=30)
-        except (
-                aiohttp.WSServerHandshakeError,
-                aiohttp.ClientConnectionError,
-                socket.gaierror,
-        ) as exception:
-            msg = (
-                "Error occurred while communicating with device"
-                f" on WebSocket at {self.host}"
-            )
-            raise OwRadarConnectionError(msg) from exception
+        self._stats_client = await self.connect_client(url=url)
 
     async def snap_connect(self) -> None:
         """Connect to the WebSocket of device.
@@ -165,18 +151,7 @@ class Client:
         if self.snap_connected:
             return
         url = URL.build(scheme="ws", host=self.host, port=80, path="/ws/snap")
-        try:
-            self._snap_client = await self.session.ws_connect(url=url, heartbeat=30)
-        except (
-                aiohttp.WSServerHandshakeError,
-                aiohttp.ClientConnectionError,
-                socket.gaierror,
-        ) as exception:
-            msg = (
-                "Error occurred while communicating with device"
-                f" on WebSocket at {self.host}"
-            )
-            raise OwRadarConnectionError(msg) from exception
+        self._snap_client = await self.connect_client(url=url)
 
     async def event_connect(self) -> None:
         """Connect to the WebSocket of device.
@@ -192,18 +167,26 @@ class Client:
         if self.event_connected:
             return
         url = URL.build(scheme="ws", host=self.host, port=80, path="/ws/event")
-        try:
-            self._state_client = await self.session.ws_connect(url=url, heartbeat=30)
-        except (
-                aiohttp.WSServerHandshakeError,
-                aiohttp.ClientConnectionError,
-                socket.gaierror,
-        ) as exception:
-            msg = (
-                "Error occurred while communicating with device"
-                f" on WebSocket at {self.host}"
-            )
-            raise OwRadarConnectionError(msg) from exception
+        self._event_client = await self.connect_client(url=url)
+
+    async def listen_client(self, client: aiohttp.ClientWebSocketResponse, callback: Callable[[Any], None]) -> None:
+        """Listen for events on the WebSocket."""
+        while not client.closed:
+            message = await client.receive()
+
+            if message.type == aiohttp.WSMsgType.ERROR:
+                raise OwRadarConnectionError(client.exception())
+
+            if message.type == aiohttp.WSMsgType.TEXT:
+                callback(message.json())
+
+            if message.type in (
+                    aiohttp.WSMsgType.CLOSE,
+                    aiohttp.WSMsgType.CLOSED,
+                    aiohttp.WSMsgType.CLOSING,
+            ):
+                msg = f"Connection to the WebSocket on {self.host} has been closed"
+                raise OwRadarClosedConnectionError(msg)
 
     async def state_listen(self, callback: Callable[[Any], None]) -> None:
         """Listen for events on the WebSocket.
@@ -226,23 +209,11 @@ class Client:
             msg = "Not connected to a WebSocket"
             raise OwRadarError(msg)
 
-        while not self._state_client.closed:
-            message = await self._state_client.receive()
+        def receive(json_data: Any) -> None:
+            self._device.state.update_from_dict(json_data)
+            callback(self._device)
 
-            if message.type == aiohttp.WSMsgType.ERROR:
-                raise OwRadarConnectionError(self._state_client.exception())
-
-            if message.type == aiohttp.WSMsgType.TEXT:
-                state_data = self._state_data.update_from_dict(message.json())
-                callback(state_data)
-
-            if message.type in (
-                    aiohttp.WSMsgType.CLOSE,
-                    aiohttp.WSMsgType.CLOSED,
-                    aiohttp.WSMsgType.CLOSING,
-            ):
-                msg = f"Connection to the WebSocket on {self.host} has been closed"
-                raise OwRadarConnectionClosedError(msg)
+        await self.listen_client(self._state_client, receive)
 
     async def stats_listen(self, callback: Callable[[Any], None]) -> None:
         """Listen for events on the WebSocket.
@@ -265,23 +236,11 @@ class Client:
             msg = "Not connected to a WebSocket"
             raise OwRadarError(msg)
 
-        while not self._stats_client.closed:
-            message = await self._stats_client.receive()
+        def receive(json_data: Any) -> None:
+            self._device.stats.update_from_dict(json_data)
+            callback(self._device)
 
-            if message.type == aiohttp.WSMsgType.ERROR:
-                raise OwRadarConnectionError(self._stats_client.exception())
-
-            if message.type == aiohttp.WSMsgType.TEXT:
-                stats_data = self._stats_data.update_from_dict(message.json())
-                callback(stats_data)
-
-            if message.type in (
-                    aiohttp.WSMsgType.CLOSE,
-                    aiohttp.WSMsgType.CLOSED,
-                    aiohttp.WSMsgType.CLOSING,
-            ):
-                msg = f"Connection to the WebSocket on {self.host} has been closed"
-                raise OwRadarConnectionClosedError(msg)
+        await self.listen_client(self._stats_client, receive)
 
     async def snap_listen(self, callback: Callable[[Any], None]) -> None:
         """Listen for events on the WebSocket.
@@ -300,27 +259,15 @@ class Client:
                 has been closed.
 
         """
-        if not self._stats_client or not self.stats_connected or not self._device:
+        if not self._snap_client or not self.snap_connected or not self._device:
             msg = "Not connected to a WebSocket"
             raise OwRadarError(msg)
 
-        while not self._stats_client.closed:
-            message = await self._stats_client.receive()
+        def receive(json_data: Any) -> None:
+            self._device.snap.update_from_dict(json_data)
+            callback(self._device)
 
-            if message.type == aiohttp.WSMsgType.ERROR:
-                raise OwRadarConnectionError(self._stats_client.exception())
-
-            if message.type == aiohttp.WSMsgType.TEXT:
-                snap_data = self._snap_data.update_from_dict(message.json())
-                callback(snap_data)
-
-            if message.type in (
-                    aiohttp.WSMsgType.CLOSE,
-                    aiohttp.WSMsgType.CLOSED,
-                    aiohttp.WSMsgType.CLOSING,
-            ):
-                msg = f"Connection to the WebSocket on {self.host} has been closed"
-                raise OwRadarConnectionClosedError(msg)
+        await self.listen_client(self._snap_client, receive)
 
     async def event_listen(self, callback: Callable[[Any], None]) -> None:
         """Listen for events on the WebSocket.
@@ -339,27 +286,15 @@ class Client:
                 has been closed.
 
         """
-        if not self._stats_client or not self.stats_connected or not self._device:
+        if not self._event_client or not self.event_connected or not self._device:
             msg = "Not connected to a WebSocket"
             raise OwRadarError(msg)
 
-        while not self._stats_client.closed:
-            message = await self._stats_client.receive()
+        def receive(json_data: Any) -> None:
+            self._device.event.update_from_dict(json_data)
+            callback(self._device)
 
-            if message.type == aiohttp.WSMsgType.ERROR:
-                raise OwRadarConnectionError(self._stats_client.exception())
-
-            if message.type == aiohttp.WSMsgType.TEXT:
-                event_data = self._event_data.update_from_dict(message.json())
-                callback(event_data)
-
-            if message.type in (
-                    aiohttp.WSMsgType.CLOSE,
-                    aiohttp.WSMsgType.CLOSED,
-                    aiohttp.WSMsgType.CLOSING,
-            ):
-                msg = f"Connection to the WebSocket on {self.host} has been closed"
-                raise OwRadarConnectionClosedError(msg)
+        await self.listen_client(self._event_client, receive)
 
     async def state_disconnect(self) -> None:
         """Disconnect from the WebSocket of device."""
@@ -464,7 +399,7 @@ class Client:
 
         except asyncio.TimeoutError as exception:
             msg = f"Timeout occurred while connecting to device at {self.host}"
-            raise OwRadarConnectionTimeoutError(msg) from exception
+            raise OwRadarTimeoutConnectionError(msg) from exception
         except (aiohttp.ClientError, socket.gaierror) as exception:
             msg = (
                 f"Error occurred while communicating with device at {self.host}"
@@ -518,7 +453,7 @@ class Client:
                 raise OwRadarEmptyResponseError(msg)
             self._device = {}
             if radar_model == "r60abd1":
-                self._device = R60abd1Device()
+                self._device = OwRadarR60abd1Device()
             self._device.update_from_dict(data)
             return self._device
 
@@ -537,7 +472,7 @@ class Client:
         """
         setting = {}
         if self._device.get("info").get("radar_model") == "r60abd1":
-            setting = R60abd1Setting()
+            setting = OwRadarR60abd1Setting()
             setting.update_from_dict(data)
         setting = {k: int(v) for k, v in setting.items() if v is not None}
         message_data = await self.request(
@@ -590,7 +525,7 @@ class Client:
         if self.session and self._close_session:
             await self.session.close()
 
-    async def __aenter__(self) -> Client:
+    async def __aenter__(self) -> OwRadarClient:
         """Async enter.
 
         Returns

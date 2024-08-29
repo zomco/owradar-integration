@@ -271,7 +271,7 @@
         "name": "Timing duration setting in unoccupied situations"
       },
       "setting_stop_duration": {
-        "name": "Enter stop-slee ping state timing setting"
+        "name": "Enter stop-sleep ping state timing setting"
       }
     }
   }

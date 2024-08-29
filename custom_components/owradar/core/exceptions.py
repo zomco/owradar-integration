@@ -13,11 +13,11 @@ class OwRadarConnectionError(OwRadarError):
     """OwRadar connection exception."""
 
 
-class OwRadarConnectionTimeoutError(OwRadarConnectionError):
+class OwRadarTimeoutConnectionError(OwRadarConnectionError):
     """OwRadar connection Timeout exception."""
 
 
-class OwRadarConnectionClosedError(OwRadarConnectionError):
+class OwRadarClosedConnectionError(OwRadarConnectionError):
     """OwRadar WebSocket connection has been closed."""
 
 

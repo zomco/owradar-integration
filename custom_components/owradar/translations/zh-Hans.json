@@ -23,21 +23,21 @@
   },
   "entity": {
     "sensor": {
-      "body_range": {
+      "state_body_range": {
         "name": "位置越界状态",
         "state": {
           "0": "范围外",
           "1": "范围内"
         }
       },
-      "body_presence": {
+      "state_body_presence": {
         "name": "存在信息",
         "state": {
           "0": "无人",
           "1": "有人"
         }
       },
-      "body_movement": {
+      "state_body_movement": {
         "name": "运动信息",
         "state": {
           "0": "无",
@@ -45,40 +45,40 @@
           "2": "活跃"
         }
       },
-      "body_energy": {
+      "state_body_energy": {
         "name": "体动参数"
       },
-      "body_distance": {
+      "state_body_distance": {
         "name": "人体距离"
       },
-      "body_location_x": {
+      "state_body_location_x": {
         "name": "人体方位 - X"
       },
-      "body_location_y": {
+      "state_body_location_y": {
         "name": "人体方位 - Y"
       },
-      "body_location_z": {
+      "state_body_location_z": {
         "name": "人体方位 - Z"
       },
-      "heart_rate": {
-        "name": "心率"
+      "state_heart_rate": {
+        "name": "心跳频率"
       },
-      "heart_waves_w0": {
+      "state_heart_waves_w0": {
         "name": "心率波形 - 1"
       },
-      "heart_waves_w1": {
+      "state_heart_waves_w1": {
         "name": "心率波形 - 2"
       },
-      "heart_waves_w2": {
+      "state_heart_waves_w2": {
         "name": "心率波形 - 3"
       },
-      "heart_waves_w3": {
+      "state_heart_waves_w3": {
         "name": "心率波形 - 4"
       },
-      "heart_waves_w4": {
+      "state_heart_waves_w4": {
         "name": "心率波形 - 5"
       },
-      "breath_info": {
+      "state_breath_info": {
         "name": "呼吸信息",
         "state": {
           "0": "无",
@@ -88,25 +88,25 @@
           "4": "无"
         }
       },
-      "breath_rate": {
+      "state_breath_rate": {
         "name": "呼吸数值"
       },
-      "breath_waves_w0": {
+      "state_breath_waves_w0": {
         "name": "呼吸波形 - 1"
       },
-      "breath_waves_w1": {
+      "state_breath_waves_w1": {
         "name": "呼吸波形 - 2"
       },
-      "breath_waves_w2": {
+      "state_breath_waves_w2": {
         "name": "呼吸波形 - 3"
       },
-      "breath_waves_w3": {
+      "state_breath_waves_w3": {
         "name": "呼吸波形 - 4"
       },
-      "breath_waves_w4": {
+      "state_breath_waves_w4": {
         "name": "呼吸波形 - 5"
       },
-      "sleep_away": {
+      "state_sleep_away": {
         "name": "入床状态",
         "state": {
           "0": "离床",
@@ -114,7 +114,7 @@
           "2": "无"
         }
       },
-      "sleep_status": {
+      "state_sleep_status": {
         "name": "睡眠状态",
         "state": {
           "0": "深睡",
@@ -123,26 +123,26 @@
           "3": "无"
         }
       },
-      "sleep_awake": {
+      "state_sleep_awake": {
         "name": "清醒时长"
       },
-      "sleep_light": {
+      "state_sleep_light": {
         "name": "浅睡时长"
       },
-      "sleep_deep": {
+      "state_sleep_deep": {
         "name": "深睡时长"
       },
-      "sleep_score": {
+      "state_sleep_score": {
         "name": "睡眠质量评分"
       },
-      "sleep_overview_presence": {
+      "state_sleep_overview_presence": {
         "name": "睡眠综合状态 - 存在",
         "state": {
           "0": "无人",
           "1": "有人"
         }
       },
-      "sleep_overview_status": {
+      "state_sleep_overview_status": {
         "name": "睡眠综合状态 - 睡眠状态",
         "state": {
           "0": "深睡",
@@ -151,58 +151,58 @@
           "3": "离床"
         }
       },
-      "sleep_overview_breath": {
+      "state_sleep_overview_breath": {
         "name": "睡眠综合状态 - 平均呼吸"
       },
-      "sleep_overview_heart": {
+      "state_sleep_overview_heart": {
         "name": "睡眠综合状态 - 平均心跳"
       },
-      "sleep_overview_turn": {
+      "state_sleep_overview_turn": {
         "name": "睡眠综合状态 - 翻身次数"
       },
-      "sleep_overview_leratio": {
+      "state_sleep_overview_leratio": {
         "name": "睡眠综合状态 - 大幅度体动占比"
       },
-      "sleep_overview_seratio": {
+      "state_sleep_overview_seratio": {
         "name": "睡眠综合状态 - 小幅度体动占比"
       },
-      "sleep_overview_pause": {
+      "state_sleep_overview_pause": {
         "name": "睡眠综合状态 - 呼吸暂停次数"
       },
-      "sleep_quality_score": {
+      "state_sleep_quality_score": {
         "name": "睡眠质量分析 - 评分"
       },
-      "sleep_quality_duration": {
+      "state_sleep_quality_duration": {
         "name": "睡眠质量分析 - 总时长"
       },
-      "sleep_quality_awake": {
+      "state_sleep_quality_awake": {
         "name": "睡眠质量分析 - 清醒时长占比"
       },
-      "sleep_quality_light": {
+      "state_sleep_quality_light": {
         "name": "睡眠质量分析 - 浅睡时长占比"
       },
-      "sleep_quality_deep": {
+      "state_sleep_quality_deep": {
         "name": "睡眠质量分析 - 深睡时长占比"
       },
-      "sleep_quality_aduration": {
+      "state_sleep_quality_aduration": {
         "name": "睡眠质量分析 - 离床时长"
       },
-      "sleep_quality_away": {
+      "state_sleep_quality_away": {
         "name": "睡眠质量分析 - 离床次数"
       },
-      "sleep_quality_turn": {
+      "state_sleep_quality_turn": {
         "name": "睡眠质量分析 - 翻身次数"
       },
-      "sleep_quality_breath": {
+      "state_sleep_quality_breath": {
         "name": "睡眠质量分析 - 平均呼吸"
       },
-      "sleep_quality_heart": {
+      "state_sleep_quality_heart": {
         "name": "睡眠质量分析 - 平均心跳"
       },
-      "sleep_quality_pause": {
+      "state_sleep_quality_pause": {
         "name": "睡眠质量分析 - 呼吸暂停次数"
       },
-      "sleep_exception": {
+      "state_sleep_exception": {
         "name": "睡眠异常",
         "state": {
           "0": "睡眠时长不足4小时",
@@ -211,7 +211,7 @@
           "3": "无"
         }
       },
-      "sleep_rating": {
+      "state_sleep_rating": {
         "name": "睡眠质量评级",
         "state": {
           "0": "无",
@@ -220,7 +220,7 @@
           "3": "睡眠质量较差"
         }
       },
-      "sleep_struggle": {
+      "state_sleep_struggle": {
         "name": "异常挣扎状态",
         "state": {
           "0": "无",
@@ -228,18 +228,120 @@
           "2": "异常挣扎"
         }
       },
-      "sleep_nobody": {
+      "state_sleep_nobody": {
         "name": "无人计时状态",
         "state": {
           "0": "无",
           "1": "正常",
           "2": "异常"
         }
+      },
+      "stats_status": {
+        "name": "睡眠状态",
+        "state": {
+          "0": "深睡",
+          "1": "浅睡",
+          "2": "清醒",
+          "3": "离床"
+        }
+      },
+      "stats_breath": {
+        "name": "呼吸频率"
+      },
+      "stats_heart": {
+        "name": "心跳频率"
+      },
+      "stats_turn": {
+        "name": "翻身次数"
+      },
+      "snap_body_range": {
+        "name": "位置越界状态",
+        "state": {
+          "0": "范围外",
+          "1": "范围内"
+        }
+      },
+      "snap_body_presence": {
+        "name": "存在信息",
+        "state": {
+          "0": "无人",
+          "1": "有人"
+        }
+      },
+      "snap_body_energy": {
+        "name": "体动参数"
+      },
+      "snap_body_movement": {
+        "name": "运动信息",
+        "state": {
+          "0": "无",
+          "1": "静止",
+          "2": "活跃"
+        }
+      },
+      "snap_body_distance": {
+        "name": "人体距离"
+      },
+      "snap_body_location_x": {
+        "name": "人体方位 - X"
+      },
+      "snap_body_location_y": {
+        "name": "人体方位 - Y"
+      },
+      "snap_heart_rate": {
+        "name": "心跳频率"
+      },
+      "snap_breath_rate": {
+        "name": "呼吸频率"
+      },
+      "snap_sleep_away": {
+        "name": "入床状态",
+        "state": {
+          "0": "离床",
+          "1": "入床",
+          "2": "无"
+        }
+      },
+      "event_status": {
+        "name": "状态"
       }
     },
     "switch": {
-      "setting_realtime_ws": {
-        "name": "传输模式选择"
+      "setting_gatt_state": {
+        "name": "状态数据 BLE 上报"
+      },
+      "setting_mqtt_state": {
+        "name": "状态数据 MQTT 上报"
+      },
+      "setting_websocket_state": {
+        "name": "状态数据 WebSocket 上报"
+      },
+      "setting_gatt_stats": {
+        "name": "统计数据 BLE 上报"
+      },
+      "setting_mqtt_stats": {
+        "name": "统计数据 MQTT 上报"
+      },
+      "setting_websocket_stats": {
+        "name": "统计数据 WebSocket 上报"
+      },
+      "setting_gatt_snap": {
+        "name": "快照数据 BLE 上报"
+      },
+      "setting_mqtt_snap": {
+        "name": "快照数据 MQTT 上报"
+      },
+      "setting_websocket_snap": {
+        "name": "快照数据 WebSocket 上报"
+      },
+      "setting_gatt_event": {
+        "name": "事件数据 BLE 上报"
+      },
+      "setting_mqtt_event": {
+        "name": "事件数据 MQTT 上报"
+      },
+      "setting_websocket_event": {
+        "name": "事件数据 WebSocket 上报"
       },
       "setting_indicate": {
         "name": "指示灯"
@@ -272,6 +374,9 @@
       },
       "setting_stop_duration": {
         "name": "睡眠截止时长设置"
+      },
+      "setting_interval": {
+        "name": "快照数据频率设置"
       }
     }
   }
