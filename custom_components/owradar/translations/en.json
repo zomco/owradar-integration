@@ -23,62 +23,62 @@
   },
   "entity": {
     "sensor": {
-      "body_range": {
-        "name": "Location out-of-bounds status",
+      "state_body_range": {
+        "name": "State - Location out of bounds",
         "state": {
-          "0": "Out of range",
-          "1": "In range"
+          "0": "Out of bounds",
+          "1": "In bounds"
         }
       },
-      "body_presence": {
-        "name": "Existence information",
+      "state_body_presence": {
+        "name": "State - Someone exists",
         "state": {
           "0": "No one",
           "1": "Some one"
         }
       },
-      "body_movement": {
-        "name": "Sports information",
+      "state_body_movement": {
+        "name": "State - Motion status",
         "state": {
           "0": "None",
           "1": "Still",
           "2": "Active"
         }
       },
-      "body_energy": {
-        "name": "Physical activity parameters"
+      "state_body_energy": {
+        "name": "State - Movement signs"
       },
-      "body_distance": {
-        "name": "Human distance"
+      "state_body_distance": {
+        "name": "State - Human distance"
       },
-      "body_location_x": {
-        "name": "Body position - x"
+      "state_body_location_x": {
+        "name": "State - Body position x"
       },
-      "body_location_y": {
-        "name": "Body position - y"
+      "state_body_location_y": {
+        "name": "State - Body position y"
       },
-      "body_location_z": {
-        "name": "Body position - z"
+      "state_body_location_z": {
+        "name": "State - Body position z"
       },
-      "heart_rate": {
-        "name": "Heart rate value"
+      "state_heart_rate": {
+        "name": "State - Heart rate value"
       },
-      "heart_waves_w0": {
-        "name": "Heart rate waveform - 1"
+      "state_heart_waves_w0": {
+        "name": "State - Heart rate waveform 1"
       },
-      "heart_waves_w1": {
-        "name": "Heart rate waveform - 2"
+      "state_heart_waves_w1": {
+        "name": "State - Heart rate waveform 2"
       },
-      "heart_waves_w2": {
-        "name": "Heart rate waveform - 3"
+      "state_heart_waves_w2": {
+        "name": "State - Heart rate waveform 3"
       },
-      "heart_waves_w3": {
-        "name": "Heart rate waveform - 4"
+      "state_heart_waves_w3": {
+        "name": "State - Heart rate waveform 4"
       },
-      "heart_waves_w4": {
-        "name": "Heart rate waveform - 5"
+      "state_heart_waves_w4": {
+        "name": "State - Heart rate waveform 5"
       },
-      "breath_info": {
+      "state_breath_info": {
         "name": "Breathing information",
         "state": {
           "0": "None",
@@ -88,34 +88,34 @@
           "4": "None"
         }
       },
-      "breath_rate": {
-        "name": "Breath value"
+      "state_breath_rate": {
+        "name": "State - Breath value"
       },
-      "breath_waves_w0": {
-        "name": "Respiratory waveform - 1"
+      "state_breath_waves_w0": {
+        "name": "State - Breath waveform 1"
       },
-      "breath_waves_w1": {
-        "name": "Respiratory waveform - 2"
+      "state_breath_waves_w1": {
+        "name": "State - Breath waveform 2"
       },
-      "breath_waves_w2": {
-        "name": "Respiratory waveform - 3"
+      "state_breath_waves_w2": {
+        "name": "State - Breath waveform 3"
       },
-      "breath_waves_w3": {
-        "name": "Respiratory waveform - 4"
+      "state_breath_waves_w3": {
+        "name": "State - Breath waveform 4"
       },
-      "breath_waves_w4": {
-        "name": "Respiratory waveform - 5"
+      "state_breath_waves_w4": {
+        "name": "State - Breath waveform 5"
       },
-      "sleep_away": {
-        "name": "Bed in",
+      "state_sleep_away": {
+        "name": "State - Get into bed",
         "state": {
           "0": "Get out of bed",
           "1": "Get into bed",
           "2": "None"
         }
       },
-      "sleep_status": {
-        "name": "Sleep state",
+      "state_sleep_status": {
+        "name": "State - Sleep status",
         "state": {
           "0": "Deep sleep",
           "1": "Light sleep",
@@ -123,27 +123,27 @@
           "3": "None"
         }
       },
-      "sleep_awake": {
-        "name": "Awake time"
+      "state_sleep_awake": {
+        "name": "State - Awake duration"
       },
-      "sleep_light": {
-        "name": "Light sleep duration"
+      "state_sleep_light": {
+        "name": "State - Light sleep duration"
       },
-      "sleep_deep": {
-        "name": "Deep sleep duration"
+      "state_sleep_deep": {
+        "name": "State - Deep sleep duration"
       },
-      "sleep_score": {
-        "name": "Sleep quality score"
+      "state_sleep_score": {
+        "name": "State - Sleep score"
       },
-      "sleep_overview_presence": {
-        "name": "Sleep status report - Existing",
+      "state_sleep_overview_presence": {
+        "name": "State - Sleep comprehensive status(Somone exists)",
         "state": {
           "0": "No one",
           "1": "Some one"
         }
       },
-      "sleep_overview_status": {
-        "name": "Sleep status report - Sleeping state",
+      "state_sleep_overview_status": {
+        "name": "State - Sleep comprehensive status(Sleep status)",
         "state": {
           "0": "Deep sleep",
           "1": "Light sleep",
@@ -151,59 +151,59 @@
           "3": "Getting out of bed"
         }
       },
-      "sleep_overview_breath": {
-        "name": "Sleep status report - Average breathing"
+      "state_sleep_overview_breath": {
+        "name": "State - Sleep comprehensive status(Average breath)"
       },
-      "sleep_overview_heart": {
-        "name": "Sleep status report - Average heartbeat"
+      "state_sleep_overview_heart": {
+        "name": "State - Sleep comprehensive status(Average heart rate)"
       },
-      "sleep_overview_turn": {
-        "name": "Sleep status report - Turnover times"
+      "state_sleep_overview_turn": {
+        "name": "State - Sleep comprehensive status(Turnover times)"
       },
-      "sleep_overview_leratio": {
-        "name": "Sleep status report - Large-scale movements"
+      "state_sleep_overview_leratio": {
+        "name": "State - Sleep comprehensive status(Large-scale movements)"
       },
-      "sleep_overview_seratio": {
-        "name": "Sleep status report - Small-scale movements"
+      "state_sleep_overview_seratio": {
+        "name": "State - Sleep comprehensive status(Small-scale movements)"
       },
-      "sleep_overview_pause": {
-        "name": "Sleep status report - Apnea times"
+      "state_sleep_overview_pause": {
+        "name": "State - Sleep comprehensive status(Apnea times)"
       },
-      "sleep_quality_score": {
-        "name": "Sleep quality analysis report - Sleep quality score"
+      "state_sleep_quality_score": {
+        "name": "State - Sleep quality analysis(Sleep quality score)"
       },
-      "sleep_quality_duration": {
-        "name": "Sleep quality analysis report - Total sleep duration"
+      "state_sleep_quality_duration": {
+        "name": "State - Sleep quality analysis(Total sleep duration)"
       },
-      "sleep_quality_awake": {
-        "name": "Sleep quality analysis report - awake duration"
+      "state_sleep_quality_awake": {
+        "name": "State - Sleep quality analysis(Awake duration)"
       },
-      "sleep_quality_light": {
-        "name": "Sleep quality analysis report - Light sleep duration"
+      "state_sleep_quality_light": {
+        "name": "State - Sleep quality analysis(Light sleep duration)"
       },
-      "sleep_quality_deep": {
-        "name": "Sleep quality analysis report - Deep sleep duration"
+      "state_sleep_quality_deep": {
+        "name": "State - Sleep quality analysis(Deep sleep duration)"
       },
-      "sleep_quality_aduration": {
-        "name": "Sleep quality analysis report - Time of getting out of bed"
+      "state_sleep_quality_aduration": {
+        "name": "State - Sleep quality analysis(Time of getting out of bed)"
       },
-      "sleep_quality_away": {
-        "name": "Sleep quality analysis report - Number of getting out of bed"
+      "state_sleep_quality_away": {
+        "name": "State - Sleep quality analysis(Count of getting out of bed)"
       },
-      "sleep_quality_turn": {
-        "name": "Sleep quality analysis report - Number of turning over"
+      "state_sleep_quality_turn": {
+        "name": "State - Sleep quality analysis(Count of turning over)"
       },
-      "sleep_quality_breath": {
-        "name": "Sleep quality analysis report - Average breathing"
+      "state_sleep_quality_breath": {
+        "name": "State - Sleep quality analysis(Average breath)"
       },
-      "sleep_quality_heart": {
-        "name": "Sleep quality analysis report - Average heartbeat"
+      "state_sleep_quality_heart": {
+        "name": "State - Sleep quality analysis(Average heart rate)"
       },
-      "sleep_quality_pause": {
-        "name": "Sleep quality analysis report - Number of apnea"
+      "state_sleep_quality_pause": {
+        "name": "State - Sleep quality analysis(Number of apnea)"
       },
-      "sleep_exception": {
-        "name": "Abnormal sleep",
+      "state_sleep_exception": {
+        "name": "State - Abnormal sleep",
         "state": {
           "0": "Sleep time is less than 4 hours",
           "1": "Sleep time is more than 12 hours",
@@ -211,8 +211,8 @@
           "3": "None"
         }
       },
-      "sleep_rating": {
-        "name": "Sleep quality rating",
+      "state_sleep_rating": {
+        "name": "State - Sleep quality rating",
         "state": {
           "0": "None",
           "1": "High sleep quality",
@@ -220,58 +220,163 @@
           "3": "Poor sleep quality"
         }
       },
-      "sleep_struggle": {
-        "name": "Abnormal struggling status",
+      "state_sleep_struggle": {
+        "name": "State - Abnormal struggling status",
         "state": {
           "0": "None",
           "1": "Normal status",
-          "2": "Abnormal strugelling status"
+          "2": "Abnormal struggling status"
         }
       },
-      "sleep_nobody": {
-        "name": "Unoccupied timing status",
+      "state_sleep_nobody": {
+        "name": "State - Unoccupied timing status",
         "state": {
           "0": "None",
           "1": "Normal",
           "2": "Abnormal"
         }
+      },
+      "stats_status": {
+        "name": "Statistics - Sleep status",
+        "state": {
+          "0": "Deep sleep",
+          "1": "Light sleep",
+          "2": "Awake",
+          "3": "Out of bed"
+        }
+      },
+      "stats_breath": {
+        "name": "Statistics - Breath"
+      },
+      "stats_heart": {
+        "name": "Statistics - Heart rate"
+      },
+      "stats_turn": {
+        "name": "Statistics - Turnover"
+      },
+      "snap_body_range": {
+        "name": "Snapshot - Out of bounds",
+        "state": {
+          "0": "Out of bounds",
+          "1": "In bounds"
+        }
+      },
+      "snap_body_presence": {
+        "name": "Snapshot - someone exists",
+        "state": {
+          "0": "No one",
+          "1": "Some one"
+        }
+      },
+      "snap_body_energy": {
+        "name": "Snapshot - Motion Signs"
+      },
+      "snap_body_movement": {
+        "name": "Snapshot - Motion Status",
+        "state": {
+          "0": "None",
+          "1": "Still",
+          "2": "Active"
+        }
+      },
+      "snap_body_distance": {
+        "name": "Snapshot - Human distance"
+      },
+      "snap_body_location_x": {
+        "name": "Snapshot - Human posistion x"
+      },
+      "snap_body_location_y": {
+        "name": "Snapshot - Human posistion y"
+      },
+      "snap_heart_rate": {
+        "name": "Snapshot - Heart rate"
+      },
+      "snap_breath_rate": {
+        "name": "Snapshot - Breath"
+      },
+      "snap_sleep_away": {
+        "name": "Snapshot - Get into bed",
+        "state": {
+          "0": "Get out of bed",
+          "1": "Get into bed",
+          "2": "None"
+        }
+      },
+      "event_status": {
+        "name": "Event - Status"
       }
     },
     "switch": {
-      "setting_realtime_ws": {
-        "name": "Transfering mode selection"
+      "setting_gatt_state": {
+        "name": "Setting - State report via BLE"
+      },
+      "setting_mqtt_state": {
+        "name": "Setting - State report via MQTT"
+      },
+      "setting_websocket_state": {
+        "name": "Setting - State report via WebSocket"
+      },
+      "setting_gatt_stats": {
+        "name": "Setting - Statistics report via via BLE"
+      },
+      "setting_mqtt_stats": {
+        "name": "Setting - Statistics report via MQTT"
+      },
+      "setting_websocket_stats": {
+        "name": "Setting - Statistics report via WebSocket"
+      },
+      "setting_gatt_snap": {
+        "name": "Setting - Snapshot report via BLE"
+      },
+      "setting_mqtt_snap": {
+        "name": "Setting - Snapshot report via MQTT"
+      },
+      "setting_websocket_snap": {
+        "name": "Setting - Snapshot report via WebSocket"
+      },
+      "setting_gatt_event": {
+        "name": "Setting - Event report via BLE"
+      },
+      "setting_mqtt_event": {
+        "name": "Setting - Event report via MQTT"
+      },
+      "setting_websocket_event": {
+        "name": "Setting - Event report via WebSocket"
       },
       "setting_indicate": {
-        "name": "Indicator Switch"
+        "name": "Setting - Indicator switch"
       },
       "setting_body": {
-        "name": "Human presence monitoring switch"
+        "name": "Setting - Human switch"
       },
       "setting_heart": {
-        "name": "Heartrate monitoring switch"
+        "name": "Setting - Heart rate switch"
       },
       "setting_breath": {
-        "name": "Breathing monitoring switch"
+        "name": "Setting - Breath switch"
       },
       "setting_sleep": {
-        "name": "Sleep monitoring switch"
+        "name": "Setting - Sleep switch"
       },
       "setting_mode": {
-        "name": "Reporting mode selection"
+        "name": "Setting - Report mode"
       },
       "setting_nobody": {
-        "name": "Unoccupied timing status report switch setting"
+        "name": "Setting - Unoccupied timing status"
       },
       "setting_struggle": {
-        "name": "Abnormal struggling state switch setting"
+        "name": "Setting - Abnormal struggling status"
       }
     },
     "number": {
       "setting_nobody_duration": {
-        "name": "Timing duration setting in unoccupied situations"
+        "name": "Setting - Timing duration setting in unoccupied situations"
       },
       "setting_stop_duration": {
-        "name": "Enter stop-sleep ping state timing setting"
+        "name": "Setting - Enter stop-sleep ping state timing "
+      },
+      "setting_interval": {
+        "name": "Setting - Snapshot report frequency"
       }
     }
   }

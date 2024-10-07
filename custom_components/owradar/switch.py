@@ -16,7 +16,6 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN
 from .coordinator import OwRadarDataUpdateCoordinator
-from .core import Device as OwRadarDevice
 from .entities import OwRadarEntity
 from .helpers import owradar_exception_handler
 
@@ -27,8 +26,8 @@ PARALLEL_UPDATES = 1
 class OwRadarSwitchEntityDescriptionMixin:
     """Mixin for required keys."""
 
-    value_fn: Callable[[OwRadarDevice], bool | None]
-    update_fn: Callable[[OwRadarDataUpdateCoordinator], OwRadarDevice]
+    value_fn: Callable[[Any], bool | None]
+    update_fn: Callable[[OwRadarDataUpdateCoordinator], Any]
 
 
 @dataclass
@@ -37,7 +36,7 @@ class OwRadarSwitchEntityDescription(
 ):
     """Describes OwRadar switch entity."""
 
-    exists_fn: Callable[[OwRadarDevice], bool] = lambda _: True
+    exists_fn: Callable[[Any], bool] = lambda _: True
 
 
 COMMON_SETTING_SWITCHES: tuple[OwRadarSwitchEntityDescription, ...] = (

@@ -2,14 +2,15 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import IntEnum
 from typing import Any
 
 
 @dataclass
 class OwRadarCommonEvent:
-    """Object holding State Information from OwRadar.
+    """
+    Object holding State Information from OwRadar.
 
     Args:
     ----
@@ -24,7 +25,8 @@ class OwRadarCommonEvent:
     timestamp: int = 0
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonEvent:
-        """Update Return State object form OwRadar API response.
+        """
+        Update Return State object form OwRadar API response.
 
         Args:
         ----
@@ -42,7 +44,8 @@ class OwRadarCommonEvent:
 
 @dataclass
 class OwRadarCommonSnap:
-    """Object holding State Information from OwRadar.
+    """
+    Object holding State Information from OwRadar.
 
     Args:
     ----
@@ -57,7 +60,8 @@ class OwRadarCommonSnap:
     timestamp: int = 0
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonSnap:
-        """Update Return State object form OwRadar API response.
+        """
+        Update Return State object form OwRadar API response.
 
         Args:
         ----
@@ -75,7 +79,8 @@ class OwRadarCommonSnap:
 
 @dataclass
 class OwRadarCommonStats:
-    """Object holding State Information from OwRadar.
+    """
+    Object holding State Information from OwRadar.
 
     Args:
     ----
@@ -90,7 +95,8 @@ class OwRadarCommonStats:
     timestamp: int = 0
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonStats:
-        """Update Return State object form OwRadar API response.
+        """
+        Update Return State object form OwRadar API response.
 
         Args:
         ----
@@ -114,7 +120,8 @@ class OwRadarCommonStateMotionAngle:
     roll: float = 0
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonStateMotionAngle:
-        """Return Motion Angle object form OwRadar API response.
+        """
+        Return Motion Angle object form OwRadar API response.
 
         Args:
         ----
@@ -135,10 +142,13 @@ class OwRadarCommonStateMotionAngle:
 class OwRadarCommonStateMotion:
     """Object holding motion state in OwRadar."""
 
-    angle: OwRadarCommonStateMotionAngle = OwRadarCommonStateMotionAngle()
+    angle: OwRadarCommonStateMotionAngle = field(
+        default_factory=OwRadarCommonStateMotionAngle
+    )
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonStateMotion:
-        """Update and Return Motion object form OwRadar API response.
+        """
+        Update and Return Motion object form OwRadar API response.
 
         Args:
         ----
@@ -156,7 +166,8 @@ class OwRadarCommonStateMotion:
 
 @dataclass
 class OwRadarCommonState:
-    """Object holding State Information from device.
+    """
+    Object holding State Information from device.
 
     Args:
     ----
@@ -169,10 +180,11 @@ class OwRadarCommonState:
     """
 
     timestamp: int = 0
-    motion: OwRadarCommonStateMotion = OwRadarCommonStateMotion()
+    motion: OwRadarCommonStateMotion = field(default_factory=OwRadarCommonStateMotion)
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonState:
-        """Update Return State object form OwRadar API response.
+        """
+        Update Return State object form OwRadar API response.
 
         Args:
         ----
@@ -208,7 +220,8 @@ class OwRadarCommonInfo:
     board: str = ""
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonInfo:
-        """Update and Return Device information object from OwRadar API response.
+        """
+        Update and Return Device information object from OwRadar API response.
 
         Args:
         ----
@@ -243,7 +256,8 @@ class OwRadarCommonSettingSwitch(IntEnum):
 
 @dataclass
 class OwRadarCommonSetting:
-    """Object holding Common Setting information from OwRadar.
+    """
+    Object holding Common Setting information from OwRadar.
 
     Args:
     ----
@@ -272,7 +286,8 @@ class OwRadarCommonSetting:
     interval: int = 0
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonSetting:
-        """Update and Return Setting object form OwRadar API response.
+        """
+        Update and Return Setting object form OwRadar API response.
 
         Args:
         ----
@@ -306,10 +321,11 @@ class OwRadarCommonSetting:
 class OwRadarCommonDevice:
     """Object holding device information from OwRadar."""
 
-    info: OwRadarCommonInfo = OwRadarCommonInfo()
+    info: OwRadarCommonInfo = field(default_factory=OwRadarCommonInfo)
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarCommonDevice:
-        """Update and Return Device information object from OwRadar API response.
+        """
+        Update and Return Device information object from OwRadar API response.
 
         Args:
         ----

@@ -98,7 +98,7 @@ class OwRadarDataUpdateCoordinator(DataUpdateCoordinator):
             raise UpdateFailed(f"Invalid response from API: {error}") from error
 
         # If the device supports a WebSocket, try activating it.
-        if not self.client.connected and not self.unsub:
-            self._use_websocket()
+        # if not self.client.connected and not self.unsub:
+        #     self._use_websocket()
 
         return device

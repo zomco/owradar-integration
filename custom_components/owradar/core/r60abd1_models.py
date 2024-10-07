@@ -1,11 +1,17 @@
 """Models for OwRadar."""
+
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import IntEnum
 from typing import Any
 
-from .common_models import OwRadarCommonSetting, OwRadarCommonSettingSwitch, OwRadarCommonState, OwRadarCommonDevice
+from .common_models import (
+    OwRadarCommonDevice,
+    OwRadarCommonSetting,
+    OwRadarCommonSettingSwitch,
+    OwRadarCommonState,
+)
 
 
 @dataclass
@@ -15,7 +21,8 @@ class OwRadarR60abd1Event:
     status: int = 0
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1Event:
-        """Return Body Location object form OwRadar API response.
+        """
+        Return Body Location object form OwRadar API response.
 
         Args:
         ----
@@ -46,7 +53,8 @@ class OwRadarR60abd1Snap:
     sleep_away: int = 0
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1Snap:
-        """Return Body Location object form OwRadar API response.
+        """
+        Return Body Location object form OwRadar API response.
 
         Args:
         ----
@@ -80,7 +88,8 @@ class OwRadarR60abd1Stats:
     turn: int = 0
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1Stats:
-        """Return Body Location object form OwRadar API response.
+        """
+        Return Body Location object form OwRadar API response.
 
         Args:
         ----
@@ -129,7 +138,8 @@ class OwRadarR60abd1StateBodyLocation:
     z: int = 0
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateBodyLocation:
-        """Return Body Location object form OwRadar API response.
+        """
+        Return Body Location object form OwRadar API response.
 
         Args:
         ----
@@ -155,10 +165,13 @@ class OwRadarR60abd1StateBody:
     energy: int = 0
     movement: OwRadarR60abd1StateBodyMovement = OwRadarR60abd1StateBodyMovement.NONE
     distance: int = 0
-    location: OwRadarR60abd1StateBodyLocation = OwRadarR60abd1StateBodyLocation()
+    location: OwRadarR60abd1StateBodyLocation = field(
+        default_factory=OwRadarR60abd1StateBodyLocation
+    )
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateBody:
-        """Update and Return Body object form OwRadar API response.
+        """
+        Update and Return Body object form OwRadar API response.
 
         Args:
         ----
@@ -170,11 +183,17 @@ class OwRadarR60abd1StateBody:
 
         """
         self.range = OwRadarR60abd1StateBodyRange(data.get("range", self.range.value))
-        self.presence = OwRadarR60abd1StateBodyPresence(data.get("presence", self.presence.value))
+        self.presence = OwRadarR60abd1StateBodyPresence(
+            data.get("presence", self.presence.value)
+        )
         self.energy = data.get("energy", self.energy)
-        self.movement = OwRadarR60abd1StateBodyMovement(data.get("movement", self.movement.value))
+        self.movement = OwRadarR60abd1StateBodyMovement(
+            data.get("movement", self.movement.value)
+        )
         self.distance = data.get("distance", self.distance)
-        self.location = self.location.update_from_dict(data.get("location", self.location.__dict__))
+        self.location = self.location.update_from_dict(
+            data.get("location", self.location.__dict__)
+        )
 
         return self
 
@@ -190,7 +209,8 @@ class OwRadarR60abd1StateWaves:
     w4: int = 0
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateWaves:
-        """Update and Return Heart object form OwRadar API response.
+        """
+        Update and Return Heart object form OwRadar API response.
 
         Args:
         ----
@@ -215,10 +235,11 @@ class OwRadarR60abd1StateHeart:
     """Object holding heart state in OwRadar."""
 
     rate: int = 0
-    waves: OwRadarR60abd1StateWaves = OwRadarR60abd1StateWaves()
+    waves: OwRadarR60abd1StateWaves = field(default_factory=OwRadarR60abd1StateWaves)
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateHeart:
-        """Update and Return Heart object form OwRadar API response.
+        """
+        Update and Return Heart object form OwRadar API response.
 
         Args:
         ----
@@ -251,10 +272,11 @@ class OwRadarR60abd1StateBreath:
 
     info: OwRadarR60abd1StateBreathInfo = OwRadarR60abd1StateBreathInfo.UNSET
     rate: int = 0
-    waves: OwRadarR60abd1StateWaves = OwRadarR60abd1StateWaves()
+    waves: OwRadarR60abd1StateWaves = field(default_factory=OwRadarR60abd1StateWaves)
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateBreath:
-        """Update and Return Breath object form OwRadar API response.
+        """
+        Update and Return Breath object form OwRadar API response.
 
         Args:
         ----
@@ -325,7 +347,8 @@ class OwRadarR60abd1StateSleepNobody(IntEnum):
 
 @dataclass
 class OwRadarR60abd1StateSleepOverview:
-    """Object holding sleep overview state in OwRadar.
+    """
+    Object holding sleep overview state in OwRadar.
 
     Args:
     ----
@@ -346,8 +369,11 @@ class OwRadarR60abd1StateSleepOverview:
     seratio: int = 0
     pause: int = 0
 
-    def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateSleepOverview:
-        """Return SleepOverview object form OwRadar API response.
+    def update_from_dict(
+        self, data: dict[str, Any]
+    ) -> OwRadarR60abd1StateSleepOverview:
+        """
+        Return SleepOverview object form OwRadar API response.
 
         Args:
         ----
@@ -358,7 +384,9 @@ class OwRadarR60abd1StateSleepOverview:
             An SleepOverview object.
 
         """
-        self.presence = OwRadarR60abd1StateBodyPresence(data.get("presence", self.presence))
+        self.presence = OwRadarR60abd1StateBodyPresence(
+            data.get("presence", self.presence)
+        )
         self.status = OwRadarR60abd1StateSleepStatus(data.get("status", self.status))
         self.heart = data.get("heart", self.heart)
         self.breath = data.get("breath", self.breath)
@@ -372,7 +400,8 @@ class OwRadarR60abd1StateSleepOverview:
 
 @dataclass
 class OwRadarR60abd1StateSleepQuality:
-    """Object holding sleep quality state in OwRadar.
+    """
+    Object holding sleep quality state in OwRadar.
 
     Args:
     ----
@@ -397,7 +426,8 @@ class OwRadarR60abd1StateSleepQuality:
     pause: int = 0
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateSleepQuality:
-        """Return SleepQuality object form OwRadar API response.
+        """
+        Return SleepQuality object form OwRadar API response.
 
         Args:
         ----
@@ -425,7 +455,8 @@ class OwRadarR60abd1StateSleepQuality:
 
 @dataclass
 class OwRadarR60abd1StateSleep:
-    """Object holding sleep state in OwRadar.
+    """
+    Object holding sleep state in OwRadar.
 
     Args:
     ----
@@ -443,15 +474,22 @@ class OwRadarR60abd1StateSleep:
     light: int = 0
     deep: int = 0
     score: int = 0
-    overview: OwRadarR60abd1StateSleepOverview = OwRadarR60abd1StateSleepOverview()
-    quality: OwRadarR60abd1StateSleepQuality = OwRadarR60abd1StateSleepQuality()
-    exception: OwRadarR60abd1StateSleepException = OwRadarR60abd1StateSleepException.NONE
+    overview: OwRadarR60abd1StateSleepOverview = field(
+        default_factory=OwRadarR60abd1StateSleepOverview
+    )
+    quality: OwRadarR60abd1StateSleepQuality = field(
+        default_factory=OwRadarR60abd1StateSleepQuality
+    )
+    exception: OwRadarR60abd1StateSleepException = (
+        OwRadarR60abd1StateSleepException.NONE
+    )
     rating: OwRadarR60abd1StateSleepRating = OwRadarR60abd1StateSleepRating.NONE
     struggle: OwRadarR60abd1StateSleepStruggle = OwRadarR60abd1StateSleepStruggle.NONE
     nobody: OwRadarR60abd1StateSleepNobody = OwRadarR60abd1StateSleepNobody.NONE
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1StateSleep:
-        """Update and Return Sleep object form OwRadar API response.
+        """
+        Update and Return Sleep object form OwRadar API response.
 
         Args:
         ----
@@ -468,11 +506,19 @@ class OwRadarR60abd1StateSleep:
         self.light = data.get("light", self.light)
         self.deep = data.get("deep", self.deep)
         self.score = data.get("score", self.score)
-        self.overview = self.overview.update_from_dict(data.get("overview", self.overview.__dict__))
-        self.quality = self.quality.update_from_dict(data.get("quality", self.quality.__dict__))
-        self.exception = OwRadarR60abd1StateSleepException(data.get("exception", self.exception))
+        self.overview = self.overview.update_from_dict(
+            data.get("overview", self.overview.__dict__)
+        )
+        self.quality = self.quality.update_from_dict(
+            data.get("quality", self.quality.__dict__)
+        )
+        self.exception = OwRadarR60abd1StateSleepException(
+            data.get("exception", self.exception)
+        )
         self.rating = OwRadarR60abd1StateSleepRating(data.get("rating", self.rating))
-        self.struggle = OwRadarR60abd1StateSleepStruggle(data.get("struggle", self.struggle))
+        self.struggle = OwRadarR60abd1StateSleepStruggle(
+            data.get("struggle", self.struggle)
+        )
         self.nobody = OwRadarR60abd1StateSleepNobody(data.get("nobody", self.nobody))
 
         return self
@@ -480,7 +526,8 @@ class OwRadarR60abd1StateSleep:
 
 @dataclass
 class OwRadarR60abd1State(OwRadarCommonState):
-    """Object holding State Information from OwRadar.
+    """
+    Object holding State Information from OwRadar.
 
     Args:
     ----
@@ -492,13 +539,14 @@ class OwRadarR60abd1State(OwRadarCommonState):
 
     """
 
-    body: OwRadarR60abd1StateBody = OwRadarR60abd1StateBody()
-    heart: OwRadarR60abd1StateHeart = OwRadarR60abd1StateHeart()
-    breath: OwRadarR60abd1StateBreath = OwRadarR60abd1StateBreath()
-    sleep: OwRadarR60abd1StateSleep = OwRadarR60abd1StateSleep()
+    body: OwRadarR60abd1StateBody = field(default_factory=OwRadarR60abd1StateBody)
+    heart: OwRadarR60abd1StateHeart = field(default_factory=OwRadarR60abd1StateHeart)
+    breath: OwRadarR60abd1StateBreath = field(default_factory=OwRadarR60abd1StateBreath)
+    sleep: OwRadarR60abd1StateSleep = field(default_factory=OwRadarR60abd1StateSleep)
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1State:
-        """Update Return State object form OwRadar API response.
+        """
+        Update Return State object form OwRadar API response.
 
         Args:
         ----
@@ -520,7 +568,8 @@ class OwRadarR60abd1State(OwRadarCommonState):
 
 @dataclass
 class OwRadarR60abd1Setting(OwRadarCommonSetting):
-    """Object holding R60ABD1 Setting information from OwRadar.
+    """
+    Object holding R60ABD1 Setting information from OwRadar.
 
     Args:
     ----
@@ -543,7 +592,8 @@ class OwRadarR60abd1Setting(OwRadarCommonSetting):
     stop_duration: int = 0
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1Setting:
-        """Update and Return Device information object from OwRadar API response.
+        """
+        Update and Return Device information object from OwRadar API response.
 
         Args:
         ----
@@ -570,7 +620,8 @@ class OwRadarR60abd1Setting(OwRadarCommonSetting):
 
 @dataclass
 class OwRadarR60abd1Device(OwRadarCommonDevice):
-    """Object holding Device Information from OwRadar.
+    """
+    Object holding Device Information from OwRadar.
 
     Args:
     ----
@@ -582,14 +633,15 @@ class OwRadarR60abd1Device(OwRadarCommonDevice):
 
     """
 
-    setting: OwRadarR60abd1Setting = OwRadarR60abd1Setting()
-    state: OwRadarR60abd1State = OwRadarR60abd1State()
-    stats: OwRadarR60abd1Stats = OwRadarR60abd1Stats()
-    snap: OwRadarR60abd1Snap = OwRadarR60abd1Snap()
-    event: OwRadarR60abd1Event = OwRadarR60abd1Event()
+    setting: OwRadarR60abd1Setting = field(default_factory=OwRadarR60abd1Setting)
+    state: OwRadarR60abd1State = field(default_factory=OwRadarR60abd1State)
+    stats: OwRadarR60abd1Stats = field(default_factory=OwRadarR60abd1Stats)
+    snap: OwRadarR60abd1Snap = field(default_factory=OwRadarR60abd1Snap)
+    event: OwRadarR60abd1Event = field(default_factory=OwRadarR60abd1Event)
 
     def update_from_dict(self, data: dict[str, Any]) -> OwRadarR60abd1Device:
-        """Update and Return Device object from OwRadar API response.
+        """
+        Update and Return Device object from OwRadar API response.
 
         Args:
         ----

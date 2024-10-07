@@ -1,4 +1,5 @@
 """Asynchronous Python client for device."""
+
 from __future__ import annotations
 
 import asyncio
@@ -16,9 +17,9 @@ from yarl import URL
 from .exceptions import (
     OwRadarClosedConnectionError,
     OwRadarConnectionError,
-    OwRadarTimeoutConnectionError,
     OwRadarEmptyResponseError,
     OwRadarError,
+    OwRadarTimeoutConnectionError,
 )
 from .r60abd1_models import OwRadarR60abd1Device, OwRadarR60abd1Setting
 
@@ -45,7 +46,8 @@ class OwRadarClient:
 
     @property
     def state_connected(self) -> bool:
-        """Return if we are connect to the WebSocket of device.
+        """
+        Return if we are connect to the WebSocket of device.
 
         Returns
         -------
@@ -57,7 +59,8 @@ class OwRadarClient:
 
     @property
     def stats_connected(self) -> bool:
-        """Return if we are connect to the WebSocket of device.
+        """
+        Return if we are connect to the WebSocket of device.
 
         Returns
         -------
@@ -69,7 +72,8 @@ class OwRadarClient:
 
     @property
     def snap_connected(self) -> bool:
-        """Return if we are connect to the WebSocket of device.
+        """
+        Return if we are connect to the WebSocket of device.
 
         Returns
         -------
@@ -81,7 +85,8 @@ class OwRadarClient:
 
     @property
     def event_connected(self) -> bool:
-        """Return if we are connect to the WebSocket of device.
+        """
+        Return if we are connect to the WebSocket of device.
 
         Returns
         -------
@@ -92,12 +97,24 @@ class OwRadarClient:
         return self._event_client is not None and not self._event_client.closed
 
     async def connect_client(self, url: URL) -> aiohttp.ClientWebSocketResponse:
+        """
+        Return if we are connect to the WebSocket of device.
+
+        Returns
+        -------
+            True if we are connected to the WebSocket of device,
+            False otherwise.
+
+        """
         try:
+            if self.session is None:
+                msg = "Error occurred for session empty"
+                raise OwRadarConnectionError(msg)
             return await self.session.ws_connect(url=url, heartbeat=30)
         except (
-                aiohttp.WSServerHandshakeError,
-                aiohttp.ClientConnectionError,
-                socket.gaierror,
+            aiohttp.WSServerHandshakeError,
+            aiohttp.ClientConnectionError,
+            socket.gaierror,
         ) as exception:
             msg = (
                 "Error occurred while communicating with device"
@@ -106,7 +123,8 @@ class OwRadarClient:
             raise OwRadarConnectionError(msg) from exception
 
     async def state_connect(self) -> None:
-        """Connect to the WebSocket of device.
+        """
+        Connect to the WebSocket of device.
 
         Raises
         ------
@@ -122,7 +140,8 @@ class OwRadarClient:
         self._state_client = await self.connect_client(url=url)
 
     async def stats_connect(self) -> None:
-        """Connect to the WebSocket of device.
+        """
+        Connect to the WebSocket of device.
 
         Raises
         ------
@@ -138,7 +157,8 @@ class OwRadarClient:
         self._stats_client = await self.connect_client(url=url)
 
     async def snap_connect(self) -> None:
-        """Connect to the WebSocket of device.
+        """
+        Connect to the WebSocket of device.
 
         Raises
         ------
@@ -154,7 +174,8 @@ class OwRadarClient:
         self._snap_client = await self.connect_client(url=url)
 
     async def event_connect(self) -> None:
-        """Connect to the WebSocket of device.
+        """
+        Connect to the WebSocket of device.
 
         Raises
         ------
@@ -169,7 +190,9 @@ class OwRadarClient:
         url = URL.build(scheme="ws", host=self.host, port=80, path="/ws/event")
         self._event_client = await self.connect_client(url=url)
 
-    async def listen_client(self, client: aiohttp.ClientWebSocketResponse, callback: Callable[[Any], None]) -> None:
+    async def listen_client(
+        self, client: aiohttp.ClientWebSocketResponse, callback: Callable[[Any], None]
+    ) -> None:
         """Listen for events on the WebSocket."""
         while not client.closed:
             message = await client.receive()
@@ -181,15 +204,16 @@ class OwRadarClient:
                 callback(message.json())
 
             if message.type in (
-                    aiohttp.WSMsgType.CLOSE,
-                    aiohttp.WSMsgType.CLOSED,
-                    aiohttp.WSMsgType.CLOSING,
+                aiohttp.WSMsgType.CLOSE,
+                aiohttp.WSMsgType.CLOSED,
+                aiohttp.WSMsgType.CLOSING,
             ):
                 msg = f"Connection to the WebSocket on {self.host} has been closed"
                 raise OwRadarClosedConnectionError(msg)
 
     async def state_listen(self, callback: Callable[[Any], None]) -> None:
-        """Listen for events on the WebSocket.
+        """
+        Listen for events on the WebSocket.
 
         Args:
         ----
@@ -216,7 +240,8 @@ class OwRadarClient:
         await self.listen_client(self._state_client, receive)
 
     async def stats_listen(self, callback: Callable[[Any], None]) -> None:
-        """Listen for events on the WebSocket.
+        """
+        Listen for events on the WebSocket.
 
         Args:
         ----
@@ -243,7 +268,8 @@ class OwRadarClient:
         await self.listen_client(self._stats_client, receive)
 
     async def snap_listen(self, callback: Callable[[Any], None]) -> None:
-        """Listen for events on the WebSocket.
+        """
+        Listen for events on the WebSocket.
 
         Args:
         ----
@@ -270,7 +296,8 @@ class OwRadarClient:
         await self.listen_client(self._snap_client, receive)
 
     async def event_listen(self, callback: Callable[[Any], None]) -> None:
-        """Listen for events on the WebSocket.
+        """
+        Listen for events on the WebSocket.
 
         Args:
         ----
@@ -328,12 +355,13 @@ class OwRadarClient:
         backoff.expo, OwRadarConnectionError, max_tries=3, logger=None
     )
     async def request(
-            self,
-            uri: str = "",
-            method: str = "GET",
-            data: dict[str, Any] | None = None,
+        self,
+        uri: str = "",
+        method: str = "GET",
+        data: dict[str, Any] | None = None,
     ) -> Any:
-        """Handle a request to device.
+        """
+        Handle a request to device.
 
         A generic method for sending/handling HTTP requests done against
         the device.
@@ -361,7 +389,7 @@ class OwRadarClient:
         url = URL.build(scheme="http", host=self.host, port=80, path=uri)
 
         headers = {
-            "Accept": "application/json, text/plain, */*",
+            "Accept": "*/*",
         }
 
         if self.session is None:
@@ -371,10 +399,7 @@ class OwRadarClient:
         try:
             async with async_timeout.timeout(self.request_timeout):
                 response = await self.session.request(
-                    method,
-                    url,
-                    json=data,
-                    headers=headers,
+                    method, url, json=data, headers=headers
                 )
 
             content_type = response.headers.get("Content-Type", "")
@@ -397,13 +422,11 @@ class OwRadarClient:
             else:
                 response_data = await response.text()
 
-        except asyncio.TimeoutError as exception:
+        except TimeoutError as exception:
             msg = f"Timeout occurred while connecting to device at {self.host}"
             raise OwRadarTimeoutConnectionError(msg) from exception
         except (aiohttp.ClientError, socket.gaierror) as exception:
-            msg = (
-                f"Error occurred while communicating with device at {self.host}"
-            )
+            msg = f"Error occurred while communicating with device at {self.host}"
             raise OwRadarConnectionError(msg) from exception
 
         return response_data
@@ -415,7 +438,8 @@ class OwRadarClient:
         logger=None,
     )
     async def update(self, *, full_update: bool = False) -> Any:  # noqa: PLR0912
-        """Get all information about the device in a single call.
+        """
+        Get all information about the device in a single call.
 
         This method updates all information available with a single API
         call.
@@ -445,7 +469,7 @@ class OwRadarClient:
                     f"device at {self.host} returned an invalid response missing field `info` on full update",
                 )
                 raise OwRadarEmptyResponseError(msg)
-            radar_model = data.get("radar_model")
+            radar_model = info.get("radar_model")
             if radar_model is None:
                 msg = (
                     f"device at {self.host} returned an invalid response missing field `info.radar_model` on full update",
@@ -459,30 +483,22 @@ class OwRadarClient:
 
         return self._device
 
-    async def setting(
-            self,
-            *,
-            data: dict[str, Any]
-    ) -> Any:
-        """Set the setting of the device.
+    async def setting(self, *, data: dict[str, Any]) -> Any:
+        """
+        Set the setting of the device.
 
         Args:
         ----
             data: setting data.
         """
-        setting = {}
-        if self._device.get("info").get("radar_model") == "r60abd1":
-            setting = OwRadarR60abd1Setting()
-            setting.update_from_dict(data)
-        setting = {k: int(v) for k, v in setting.items() if v is not None}
-        message_data = await self.request(
-            "/api/device", method="POST", data={"setting": setting}
-        )
+        setting = {k: int(v) for k, v in data.items() if v is not None}
+        message_data = await self.request("/api/device", method="POST", data=setting)
         return self._device.update_from_dict(message_data)
 
     @property
     def connected(self) -> bool:
-        """Return if we are connect to the WebSocket of device.
+        """
+        Return if we are connect to the WebSocket of device.
 
         Returns
         -------
@@ -490,10 +506,12 @@ class OwRadarClient:
             False otherwise.
 
         """
-        return ((self._state_client is not None and not self._state_client.closed)
-                and (self._stats_client is not None and not self._stats_client.closed)
-                and (self._snap_client is not None and not self._snap_client.closed)
-                and (self._event_client is not None and not self._event_client.closed))
+        return (
+            (self._state_client is not None and not self._state_client.closed)
+            and (self._stats_client is not None and not self._stats_client.closed)
+            and (self._snap_client is not None and not self._snap_client.closed)
+            and (self._event_client is not None and not self._event_client.closed)
+        )
 
     async def listen(self, callback: Callable[[Any], None]) -> None:
         """Listen for events."""
@@ -501,7 +519,7 @@ class OwRadarClient:
             self.state_listen(callback),
             self.stats_listen(callback),
             self.snap_listen(callback),
-            self.event_listen(callback)
+            self.event_listen(callback),
         )
 
     async def open(self) -> None:
@@ -526,7 +544,8 @@ class OwRadarClient:
             await self.session.close()
 
     async def __aenter__(self) -> OwRadarClient:
-        """Async enter.
+        """
+        Async enter.
 
         Returns
         -------
@@ -536,7 +555,8 @@ class OwRadarClient:
         return self
 
     async def __aexit__(self, *_exc_info: Any) -> None:
-        """Async exit.
+        """
+        Async exit.
 
         Args:
         ----

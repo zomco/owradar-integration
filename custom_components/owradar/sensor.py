@@ -20,6 +20,7 @@ from homeassistant.helpers.typing import StateType
 
 from .const import DOMAIN
 from .coordinator import OwRadarDataUpdateCoordinator
+from .core.common_models import OwRadarCommonSettingSwitch
 from .entities import OwRadarEntity
 
 
@@ -45,12 +46,14 @@ R60ABD1_STATE_SENSORS: tuple[OwRadarSensorEntityDescription, ...] = (
         translation_key="state_body_range",
         device_class=SensorDeviceClass.ENUM,
         value_fn=lambda device: device.state.body.range,
+        exists_fn=lambda device: device.setting.websocket_state == OwRadarCommonSettingSwitch.ON,
     ),
     OwRadarSensorEntityDescription(
         key="state_body_presence",
         translation_key="state_body_presence",
         device_class=SensorDeviceClass.ENUM,
         value_fn=lambda device: device.state.body.presence,
+        exists_fn=lambda device: device.setting.websocket_state == OwRadarCommonSettingSwitch.ON,
         icon="mdi:location-enter",
     ),
     OwRadarSensorEntityDescription(
@@ -58,6 +61,7 @@ R60ABD1_STATE_SENSORS: tuple[OwRadarSensorEntityDescription, ...] = (
         translation_key="state_body_movement",
         device_class=SensorDeviceClass.ENUM,
         value_fn=lambda device: device.state.body.movement,
+        exists_fn=lambda device: device.setting.websocket_state == OwRadarCommonSettingSwitch.ON,
     ),
     OwRadarSensorEntityDescription(
         key="state_body_energy",
@@ -65,6 +69,7 @@ R60ABD1_STATE_SENSORS: tuple[OwRadarSensorEntityDescription, ...] = (
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda device: device.state.body.energy,
+        exists_fn=lambda device: device.setting.websocket_state == OwRadarCommonSettingSwitch.ON,
     ),
     OwRadarSensorEntityDescription(
         key="state_body_distance",
@@ -73,6 +78,7 @@ R60ABD1_STATE_SENSORS: tuple[OwRadarSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.DISTANCE,
         value_fn=lambda device: device.state.body.distance,
+        exists_fn=lambda device: device.setting.websocket_state == OwRadarCommonSettingSwitch.ON,
     ),
     OwRadarSensorEntityDescription(
         key="state_body_location_x",
@@ -81,6 +87,7 @@ R60ABD1_STATE_SENSORS: tuple[OwRadarSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.DISTANCE,
         value_fn=lambda device: device.state.body.location.x,
+        exists_fn=lambda device: device.setting.websocket_state == OwRadarCommonSettingSwitch.ON,
     ),
     OwRadarSensorEntityDescription(
         key="state_body_location_y",
@@ -481,13 +488,6 @@ R60ABD1_SNAP_SENSORS: tuple[OwRadarSensorEntityDescription, ...] = (
         translation_key="snap_body_location_y",
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda device: device.snap.body_location_y,
-        icon="mdi:counter",
-    ),
-    OwRadarSensorEntityDescription(
-        key="snap_body_location_z",
-        translation_key="snap_body_location_z",
-        state_class=SensorStateClass.MEASUREMENT,
-        value_fn=lambda device: device.snap.body_location_z,
         icon="mdi:counter",
     ),
     OwRadarSensorEntityDescription(
