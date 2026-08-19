@@ -1,8 +1,0 @@
-{
-    "name": "owradar",
-    "filename": "owradar.zip",
-    "hide_default_branch": true,
-    "homeassistant": "2024.8.2",
-    "render_readme": true,
-    "zip_release": true
-}
