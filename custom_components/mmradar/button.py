@@ -65,7 +65,9 @@ async def async_setup_entry(
 ) -> None:
     """建立本平台的实体。"""
     coordinator = entry.runtime_data.coordinator
-    async_add_entities(MmRadarButton(coordinator, d) for d in BUTTONS)
+    async_add_entities(
+        MmRadarButton(coordinator, d) for d in BUTTONS if d.key in coordinator.capabilities
+    )
 
 
 class MmRadarButton(MmRadarEntity, ButtonEntity):
