@@ -1,0 +1,71 @@
+[project]
+name = "mmradar-integration"
+version = "0.1.0"
+description = "mmRadar 桌面助理的 Home Assistant 集成"
+# HA 2026.8 的 Requires-Python 是 >=3.14.2（它自己的源码用了 PEP 758 语法）。
+# 文档里一度写的 3.13 是错的 —— 按 3.13 建环境会装不上 HA。
+requires-python = ">=3.14"
+
+[tool.ruff]
+target-version = "py314"
+line-length = 100
+
+[tool.ruff.lint]
+# HA 官方规范的子集。不开全量 ALL —— 那会引入一堆与 HA 惯例冲突的规则
+# （比如 HA 的 async_setup_entry 签名固定，改不了）。
+select = [
+    "E", "W",      # pycodestyle
+    "F",           # pyflakes
+    "I",           # isort
+    "N",           # pep8-naming
+    "UP",          # pyupgrade
+    "B",           # bugbear
+    "SIM",         # simplify
+    "RUF",         # ruff 专有
+    "ASYNC",       # 异步陷阱
+    "TID",         # 相对导入约束
+    "PTH",         # 用 pathlib
+    "D",           # docstring
+]
+ignore = [
+    "D203",   # 与 D211 冲突，二选一
+    "D213",   # 与 D212 冲突
+    "D107",   # __init__ 不强制 docstring —— 参数说明写在类上更集中
+
+    # 全项目的注释与 docstring 都是中文（CLAUDE.md §4）。
+    # RUF001/2/3 是防 ASCII 同形字攻击的，对中文全角标点是纯误报 ——
+    # 「，」「：」被判成 ambiguous，全库 170 多条噪声，会把真问题淹掉。
+    "RUF001", "RUF002", "RUF003",
+
+    # D400/D415 要求首行以句号结尾。中文用「。」，而这两条规则只认 ASCII 的
+    # `.`；照它改会得到「取一个环境指标的值。.」这种东西。
+    "D400", "D415",
+
+    # 实体属性（native_value / is_on 等）是 HA 的固定接口，
+    # 语义由基类文档规定，逐个写 docstring 只是噪声。
+    "D102",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D103"]   # 测试函数名本身就是说明
+
+[tool.ruff.lint.isort]
+known-first-party = ["custom_components"]
+
+[tool.mypy]
+python_version = "3.14"
+strict = true
+warn_unreachable = true
+# HA 没有完整的类型存根，对第三方包放宽
+ignore_missing_imports = true
+# 只检查本集成的代码。HA 自身在 strict 下有大量告警，
+# 那不是本仓库能修的，混进来只会淹掉自己的问题。
+follow_imports = "silent"
+disallow_untyped_decorators = false
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,44 @@
+name: validate
+
+# HACS 收录要求 hassfest 与 HACS validation 两个 Action 都绿。
+on:
+  push:
+  pull_request:
+  schedule:
+    # 每周跑一次：HA 和 HACS 的校验规则会变，
+    # 只在提交时跑的话，规则收紧了要等下次改动才发现
+    - cron: "0 3 * * 1"
+
+jobs:
+  hassfest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: home-assistant/actions/hassfest@master
+
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hacs/action@main
+        with:
+          category: integration
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # 契约一致性测试要读工作区的 contracts/，
+          # 单独检出本仓库时它会自动跳过 —— 这里不检出工作区，
+          # 那条测试由工作区的 CI 负责跑
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - run: python -m pip install --upgrade pip
+      - run: pip install homeassistant ruff mypy pytest
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: mypy custom_components/mmradar
+      - run: pytest

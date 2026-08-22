@@ -1,0 +1,58 @@
+# 服务定义。字段范围与 custom_components/mmradar/services.py 的 schema 一致 ——
+# 这里是给前端画表单用的，schema 才是真正的校验。
+
+calibrate_co2:
+  target:
+    device:
+      integration: mmradar
+  fields:
+    reference_ppm:
+      required: false
+      default: 420
+      selector:
+        number:
+          min: 400
+          max: 2000
+          unit_of_measurement: ppm
+
+calibrate_zone:
+  target:
+    device:
+      integration: mmradar
+
+identify:
+  target:
+    device:
+      integration: mmradar
+
+set_zone:
+  target:
+    device:
+      integration: mmradar
+  fields:
+    min_cm:
+      required: false
+      selector:
+        number: { min: 30, max: 600, unit_of_measurement: cm }
+    max_cm:
+      required: false
+      selector:
+        number: { min: 30, max: 600, unit_of_measurement: cm }
+
+set_radar:
+  target:
+    device:
+      integration: mmradar
+  fields:
+    motion_max_cm:
+      required: false
+      selector:
+        number: { min: 30, max: 600, unit_of_measurement: cm }
+    still_max_cm:
+      required: false
+      selector:
+        number: { min: 30, max: 350, unit_of_measurement: cm }
+    absence_delay_s:
+      required: false
+      selector:
+        number: { min: 0, max: 6553, unit_of_measurement: s }

@@ -1,0 +1,102 @@
+{
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "user": {
+        "title": "Add mmRadar device",
+        "description": "Enter the device's LAN address and pairing token. You can find the token on the device screen or in the mmRadar app settings.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "pairing_token": "Pairing token"
+        }
+      },
+      "pair": {
+        "title": "Pair with mmRadar",
+        "description": "Found device {device_id}. Enter its pairing token.",
+        "data": { "pairing_token": "Pairing token" }
+      },
+      "reauth_confirm": {
+        "title": "Re-pair",
+        "description": "The device's pairing token is no longer valid. Enter the new one.",
+        "data": { "pairing_token": "Pairing token" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot reach the device. Check that it is powered on and on the same network as Home Assistant.",
+      "invalid_auth": "That pairing token is not correct.",
+      "unknown": "Something went wrong. See the logs for details."
+    },
+    "abort": {
+      "already_configured": "This device has already been added.",
+      "no_device_id": "The device did not advertise a device_id, so it cannot be identified.",
+      "reauth_successful": "Re-paired successfully."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "co2": { "name": "CO2" },
+      "temperature": { "name": "Temperature" },
+      "humidity": { "name": "Humidity" },
+      "noise": { "name": "Noise" },
+      "illuminance": { "name": "Illuminance" },
+      "distance": { "name": "Target distance" },
+      "seated_duration": { "name": "Seated duration" },
+      "risk_level": { "name": "Risk level" },
+      "rssi": { "name": "Wi-Fi signal" }
+    },
+    "binary_sensor": {
+      "presence": { "name": "Presence" },
+      "in_zone": { "name": "In target zone" },
+      "alert_active": { "name": "Alert active" }
+    },
+    "number": {
+      "zone_min": { "name": "Zone min distance" },
+      "zone_max": { "name": "Zone max distance" },
+      "brightness": { "name": "Screen brightness" }
+    },
+    "button": {
+      "identify": { "name": "Identify" },
+      "calibrate_co2": { "name": "Calibrate CO2" },
+      "calibrate_zone": { "name": "Calibrate target zone" },
+      "reboot": { "name": "Reboot" }
+    }
+  },
+  "services": {
+    "calibrate_co2": {
+      "name": "Calibrate CO2",
+      "description": "Force a recalibration of the SCD41 in fresh outdoor air.",
+      "fields": {
+        "reference_ppm": {
+          "name": "Reference concentration",
+          "description": "Fresh outdoor air is about 420 ppm."
+        }
+      }
+    },
+    "calibrate_zone": {
+      "name": "Calibrate target zone",
+      "description": "Read the current distance and set the zone automatically. Sit at your desk first."
+    },
+    "identify": {
+      "name": "Identify",
+      "description": "Flash the device screen so you can tell which one it is."
+    },
+    "set_zone": {
+      "name": "Set target zone",
+      "description": "Manually set the distance range that counts as being at the desk.",
+      "fields": {
+        "min_cm": { "name": "Near edge", "description": "In centimetres." },
+        "max_cm": { "name": "Far edge", "description": "In centimetres." }
+      }
+    },
+    "set_radar": {
+      "name": "Set radar parameters",
+      "description": "The radar module's own detection range. Different from the target zone: this decides what the module reports at all, the target zone decides what counts as being seated.",
+      "fields": {
+        "motion_max_cm": { "name": "Max motion range", "description": "In centimetres, up to 600." },
+        "still_max_cm": { "name": "Max micro-motion range", "description": "In centimetres, up to 350." },
+        "absence_delay_s": { "name": "Absence delay", "description": "In seconds." }
+      }
+    }
+  }
+}
