@@ -31,7 +31,8 @@ from .api import (
     MmRadarConnectionError,
     merge_delta,
 )
-from .const import DOMAIN, RECONNECT_BACKOFF_S, STALE_AFTER_S
+from .capability import capabilities_from_snapshot
+from .const import ALL_ENTITY_KEYS, DOMAIN, RECONNECT_BACKOFF_S, STALE_AFTER_S
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -59,6 +60,10 @@ class MmRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self.device_id = device_id
         self.fw_version: str | None = None
 
+        #: 这台设备实际支持的实体键。首次全量快照到手后才准。
+        #: 空集之前不要建实体 —— 见 async_start 里的顺序。
+        self.capabilities: frozenset[str] = ALL_ENTITY_KEYS
+
         self._task: asyncio.Task[None] | None = None
         self._connected = False
         self._last_frame: float | None = None
@@ -80,6 +85,21 @@ class MmRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             raise UpdateFailed(f"连不上设备: {err}") from err
 
         self._mark_frame()
+
+        # 能力必须在 async_forward_entry_setups 之前算好 ——
+        # 各平台的 async_setup_entry 会读 self.capabilities 来决定建哪些实体。
+        self.capabilities = capabilities_from_snapshot(snapshot)
+        missing = ALL_ENTITY_KEYS - self.capabilities
+        if missing:
+            # 用 info 而不是 debug：用户找不到某个实体时，
+            # 第一件事就是翻日志，这条要能被翻到。
+            _LOGGER.info(
+                "%s: 这台设备没有以下实体，已跳过不建：%s（若之后接上了对应传感器，"
+                "重载本集成即可出现）",
+                self.device_id,
+                ", ".join(sorted(missing)),
+            )
+
         self.async_set_updated_data(snapshot)
 
         self._task = self.entry.async_create_background_task(
@@ -153,12 +173,45 @@ class MmRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     def _mark_frame(self) -> None:
         self._last_frame = dt_util.utcnow().timestamp()
 
+    def seconds_since_last_frame(self) -> float | None:
+        """距上一帧过去了多久。从未收到过任何帧时为 None。
+
+        诊断用。实体全 unavailable 时，它能区分「连不上设备」和
+        「连上了但设备不推数据」—— 两者的排查方向完全不同。
+        """
+        if self._last_frame is None:
+            return None
+        return round(dt_util.utcnow().timestamp() - self._last_frame, 1)
+
     def _on_snapshot(self, payload: dict[str, Any]) -> None:
         self._mark_frame()
         # delta 只带变化的字段，必须合并进现有快照。
         # 直接替换的话没变化的指标会凭空消失，实体闪一下 unavailable。
         base = self.data if isinstance(self.data, dict) else {}
-        self.async_set_updated_data(merge_delta(base, payload))
+        merged = merge_delta(base, payload)
+        self.async_set_updated_data(merged)
+        self._maybe_reload_for_new_capabilities(merged)
+
+    def _maybe_reload_for_new_capabilities(self, snapshot: dict[str, Any]) -> None:
+        """传感器后来接上了就重载，把之前没建的实体补出来。
+
+        只在能力**变多**时重载，绝不因变少而重载：
+        - 变多是一次性的（用户插上了 CO2 模块），重载次数有上限；
+        - 变少往往是临时故障，按它重载会在传感器接触不良时
+          把集成反复重载，把实体历史打得七零八落。
+
+        传感器坏掉的表达方式是 `fault` + unavailable，不是删实体。
+        """
+        gained = capabilities_from_snapshot(snapshot) - self.capabilities
+        if not gained:
+            return
+        _LOGGER.info(
+            "%s: 检测到新增能力 %s，重载集成以建立对应实体",
+            self.device_id,
+            ", ".join(sorted(gained)),
+        )
+        self.capabilities |= gained
+        self.hass.config_entries.async_schedule_reload(self.entry.entry_id)
 
     def _on_alert(self, payload: dict[str, Any]) -> None:
         self._mark_frame()
