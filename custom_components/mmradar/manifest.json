@@ -1,0 +1,14 @@
+{
+  "domain": "mmradar",
+  "name": "mmRadar Desk Sentinel",
+  "version": "0.1.0",
+  "documentation": "https://github.com/zomco/mmradar-integration",
+  "issue_tracker": "https://github.com/zomco/mmradar-integration/issues",
+  "codeowners": ["@zomco"],
+  "config_flow": true,
+  "dependencies": [],
+  "integration_type": "device",
+  "iot_class": "local_push",
+  "requirements": [],
+  "zeroconf": ["_mmradar._tcp.local."]
+}
