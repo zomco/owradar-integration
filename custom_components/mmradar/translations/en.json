@@ -14,12 +14,16 @@
       "pair": {
         "title": "Pair with mmRadar",
         "description": "Found device {device_id}. Enter its pairing token.",
-        "data": { "pairing_token": "Pairing token" }
+        "data": {
+          "pairing_token": "Pairing token"
+        }
       },
       "reauth_confirm": {
         "title": "Re-pair",
         "description": "The device's pairing token is no longer valid. Enter the new one.",
-        "data": { "pairing_token": "Pairing token" }
+        "data": {
+          "pairing_token": "Pairing token"
+        }
       }
     },
     "error": {
@@ -35,31 +39,69 @@
   },
   "entity": {
     "sensor": {
-      "co2": { "name": "CO2" },
-      "temperature": { "name": "Temperature" },
-      "humidity": { "name": "Humidity" },
-      "noise": { "name": "Noise" },
-      "illuminance": { "name": "Illuminance" },
-      "distance": { "name": "Target distance" },
-      "seated_duration": { "name": "Seated duration" },
-      "risk_level": { "name": "Risk level" },
-      "rssi": { "name": "Wi-Fi signal" }
+      "co2": {
+        "name": "CO2"
+      },
+      "temperature": {
+        "name": "Temperature"
+      },
+      "humidity": {
+        "name": "Humidity"
+      },
+      "noise": {
+        "name": "Noise"
+      },
+      "illuminance": {
+        "name": "Illuminance"
+      },
+      "distance": {
+        "name": "Target distance"
+      },
+      "seated_duration": {
+        "name": "Seated duration"
+      },
+      "risk_level": {
+        "name": "Risk level"
+      },
+      "rssi": {
+        "name": "Wi-Fi signal"
+      }
     },
     "binary_sensor": {
-      "presence": { "name": "Presence" },
-      "in_zone": { "name": "In target zone" },
-      "alert_active": { "name": "Alert active" }
+      "presence": {
+        "name": "Presence"
+      },
+      "in_zone": {
+        "name": "In target zone"
+      },
+      "alert_active": {
+        "name": "Alert active"
+      }
     },
     "number": {
-      "zone_min": { "name": "Zone min distance" },
-      "zone_max": { "name": "Zone max distance" },
-      "brightness": { "name": "Screen brightness" }
+      "zone_min": {
+        "name": "Zone min distance"
+      },
+      "zone_max": {
+        "name": "Zone max distance"
+      },
+      "brightness": {
+        "name": "Screen brightness"
+      }
     },
     "button": {
-      "identify": { "name": "Identify" },
-      "calibrate_co2": { "name": "Calibrate CO2" },
-      "calibrate_zone": { "name": "Calibrate target zone" },
-      "reboot": { "name": "Reboot" }
+      "identify": {
+        "name": "Identify"
+      },
+      "calibrate_co2": {
+        "name": "Calibrate CO2"
+      },
+      "calibrate_zone": {
+        "name": "Calibrate target zone"
+      },
+      "reboot": {
+        "name": "Reboot"
+      }
     }
   },
   "services": {
@@ -85,17 +127,45 @@
       "name": "Set target zone",
       "description": "Manually set the distance range that counts as being at the desk.",
       "fields": {
-        "min_cm": { "name": "Near edge", "description": "In centimetres." },
-        "max_cm": { "name": "Far edge", "description": "In centimetres." }
+        "min_cm": {
+          "name": "Near edge",
+          "description": "In centimetres."
+        },
+        "max_cm": {
+          "name": "Far edge",
+          "description": "In centimetres."
+        }
       }
     },
     "set_radar": {
       "name": "Set radar parameters",
       "description": "The radar module's own detection range. Different from the target zone: this decides what the module reports at all, the target zone decides what counts as being seated.",
       "fields": {
-        "motion_max_cm": { "name": "Max motion range", "description": "In centimetres, up to 600." },
-        "still_max_cm": { "name": "Max micro-motion range", "description": "In centimetres, up to 350." },
-        "absence_delay_s": { "name": "Absence delay", "description": "In seconds." }
+        "motion_max_cm": {
+          "name": "Max motion range",
+          "description": "In centimetres, up to 600."
+        },
+        "still_max_cm": {
+          "name": "Max micro-motion range",
+          "description": "In centimetres, up to 350."
+        },
+        "absence_delay_s": {
+          "name": "Absence delay",
+          "description": "In seconds."
+        }
+      }
+    }
+  },
+  "issues": {
+    "stale_entities": {
+      "title": "mmRadar has {count} entities whose sensors are gone",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Delete these entities?",
+            "description": "Device {device} can no longer detect the sensors behind these entities, so they will stay unavailable:\n\n{entities}\n\n**Deleting also removes their history, and automations referencing them will break.**\n\nIf a sensor is merely loose or temporarily unplugged, reconnect it and reload the integration — this notice will clear itself."
+          }
+        }
       }
     }
   }

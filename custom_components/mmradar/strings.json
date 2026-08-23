@@ -14,12 +14,16 @@
       "pair": {
         "title": "配对 mmRadar",
         "description": "已发现设备 {device_id}。请填入它的配对 Token。",
-        "data": { "pairing_token": "配对 Token" }
+        "data": {
+          "pairing_token": "配对 Token"
+        }
       },
       "reauth_confirm": {
         "title": "重新配对",
         "description": "设备的配对 Token 已失效，请填入新的 Token。",
-        "data": { "pairing_token": "配对 Token" }
+        "data": {
+          "pairing_token": "配对 Token"
+        }
       }
     },
     "error": {
@@ -35,31 +39,69 @@
   },
   "entity": {
     "sensor": {
-      "co2": { "name": "二氧化碳" },
-      "temperature": { "name": "温度" },
-      "humidity": { "name": "湿度" },
-      "noise": { "name": "噪音" },
-      "illuminance": { "name": "光照" },
-      "distance": { "name": "目标距离" },
-      "seated_duration": { "name": "在座时长" },
-      "risk_level": { "name": "风险等级" },
-      "rssi": { "name": "Wi-Fi 信号" }
+      "co2": {
+        "name": "二氧化碳"
+      },
+      "temperature": {
+        "name": "温度"
+      },
+      "humidity": {
+        "name": "湿度"
+      },
+      "noise": {
+        "name": "噪音"
+      },
+      "illuminance": {
+        "name": "光照"
+      },
+      "distance": {
+        "name": "目标距离"
+      },
+      "seated_duration": {
+        "name": "在座时长"
+      },
+      "risk_level": {
+        "name": "风险等级"
+      },
+      "rssi": {
+        "name": "Wi-Fi 信号"
+      }
     },
     "binary_sensor": {
-      "presence": { "name": "在场" },
-      "in_zone": { "name": "在目标区域" },
-      "alert_active": { "name": "有活跃告警" }
+      "presence": {
+        "name": "在场"
+      },
+      "in_zone": {
+        "name": "在目标区域"
+      },
+      "alert_active": {
+        "name": "有活跃告警"
+      }
     },
     "number": {
-      "zone_min": { "name": "区域近端" },
-      "zone_max": { "name": "区域远端" },
-      "brightness": { "name": "屏幕亮度" }
+      "zone_min": {
+        "name": "区域近端"
+      },
+      "zone_max": {
+        "name": "区域远端"
+      },
+      "brightness": {
+        "name": "屏幕亮度"
+      }
     },
     "button": {
-      "identify": { "name": "识别本机" },
-      "calibrate_co2": { "name": "校准二氧化碳" },
-      "calibrate_zone": { "name": "标定目标区域" },
-      "reboot": { "name": "重启" }
+      "identify": {
+        "name": "识别本机"
+      },
+      "calibrate_co2": {
+        "name": "校准二氧化碳"
+      },
+      "calibrate_zone": {
+        "name": "标定目标区域"
+      },
+      "reboot": {
+        "name": "重启"
+      }
     }
   },
   "services": {
@@ -67,29 +109,63 @@
       "name": "校准二氧化碳",
       "description": "在户外新鲜空气环境下强制重校准 SCD41。",
       "fields": {
-        "reference_ppm": { "name": "参考浓度", "description": "户外新鲜空气约 420ppm。" }
+        "reference_ppm": {
+          "name": "参考浓度",
+          "description": "户外新鲜空气约 420ppm。"
+        }
       }
     },
     "calibrate_zone": {
       "name": "标定目标区域",
       "description": "读取当前距离并自动设置距离门。请先在工位上坐好。"
     },
-    "identify": { "name": "识别本机", "description": "让设备屏幕闪烁，多台设备时用来确认是哪一台。" },
+    "identify": {
+      "name": "识别本机",
+      "description": "让设备屏幕闪烁，多台设备时用来确认是哪一台。"
+    },
     "set_zone": {
       "name": "设置目标区域",
       "description": "手动设置「算作在座」的距离范围。",
       "fields": {
-        "min_cm": { "name": "近端", "description": "单位 cm。" },
-        "max_cm": { "name": "远端", "description": "单位 cm。" }
+        "min_cm": {
+          "name": "近端",
+          "description": "单位 cm。"
+        },
+        "max_cm": {
+          "name": "远端",
+          "description": "单位 cm。"
+        }
       }
     },
     "set_radar": {
       "name": "设置雷达参数",
       "description": "雷达模组内部的探测范围。与「目标区域」不同：这里决定模组上不上报，目标区域决定算不算在座。",
       "fields": {
-        "motion_max_cm": { "name": "最远运动范围", "description": "单位 cm，最大 600。" },
-        "still_max_cm": { "name": "最远微动范围", "description": "单位 cm，最大 350。" },
-        "absence_delay_s": { "name": "无人等待时间", "description": "单位秒。" }
+        "motion_max_cm": {
+          "name": "最远运动范围",
+          "description": "单位 cm，最大 600。"
+        },
+        "still_max_cm": {
+          "name": "最远微动范围",
+          "description": "单位 cm，最大 350。"
+        },
+        "absence_delay_s": {
+          "name": "无人等待时间",
+          "description": "单位秒。"
+        }
+      }
+    }
+  },
+  "issues": {
+    "stale_entities": {
+      "title": "mmRadar 有 {count} 个实体已失去对应的传感器",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "删掉这些实体？",
+            "description": "设备 {device} 已探测不到这些实体对应的传感器，它们会一直显示为不可用：\n\n{entities}\n\n**删除会一并清掉它们的历史数据，引用它们的自动化也会失效。**\n\n如果只是传感器接触不良或临时拔下，把它接回去再重载集成即可，本提示会自动消失。"
+          }
+        }
       }
     }
   }
