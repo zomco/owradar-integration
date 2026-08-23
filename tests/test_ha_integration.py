@@ -58,6 +58,23 @@ async def _sim_health(metric: str, value: str) -> None:
         await s.post(f"http://{SIM_HOST}:{SIM_PORT}/sim/set", json={"health": {metric: value}})
 
 
+def _mmradar_issues(hass: Any) -> dict[str, Any]:
+    """当前挂着的 mmradar repairs 通知。"""
+    from homeassistant.helpers import issue_registry as ir
+
+    registry = ir.async_get(hass)
+    return {
+        key[1]: {
+            "severity": str(issue.severity),
+            "is_fixable": issue.is_fixable,
+            "translation_key": issue.translation_key,
+            "placeholders": issue.translation_placeholders,
+        }
+        for key, issue in registry.issues.items()
+        if key[0] == "mmradar"
+    }
+
+
 async def _boot(config_dir: Path) -> Any:
     """在进程内起一个 HA core。
 
@@ -78,6 +95,8 @@ async def _boot(config_dir: Path) -> Any:
     await async_load_base_functionality(hass)
     await async_setup_component(hass, "homeassistant", {})
     await async_setup_component(hass, "network", {})
+    # repairs：陈旧实体的提示走它。不装的话通知发出去没人接。
+    await async_setup_component(hass, "repairs", {})
     await hass.config_entries.async_initialize()
     await hass.async_start()
     return hass
@@ -160,6 +179,13 @@ async def _collect() -> dict[str, Any]:
         out["after_absent_states"] = {
             s.entity_id: s.state for s in hass.states.async_all() if "illuminance" in s.entity_id
         }
+        out["issues_after_absent"] = _mmradar_issues(hass)
+
+        # 传感器插回去 -> 通知该自己消失，否则用户点进去发现无事可修
+        await _sim_health("lux", "ok")
+        await hass.config_entries.async_reload(entry.entry_id)
+        await hass.async_block_till_done()
+        out["issues_after_restore"] = _mmradar_issues(hass)
 
         out["unloaded"] = await hass.config_entries.async_unload(entry.entry_id)
         await hass.async_block_till_done()
@@ -269,28 +295,49 @@ class TestDiagnostics:
         }
 
 
-class TestCapabilityLimits:
-    """能力探测**做得到什么、做不到什么**。"""
+class TestStaleEntities:
+    """传感器事后没了，怎么办（工作区 OPEN-ISSUES S-17）。"""
 
     def test_existing_entity_survives_as_unavailable(self) -> None:
-        """传感器事后变 absent，已注册的实体不会消失，只会变 unavailable。
+        """已注册的实体不会自己消失，只会变 unavailable。
 
-        这条是在真 HA 里跑出来的，纯函数测试抓不到：
-        `capabilities_from_snapshot` 确实不再把 illuminance 算进能力集，
-        但**HA 的实体注册表是持久的** —— 一个实体一旦注册过，
-        平台下次不再添加它，注册表条目照样留着，状态变 unavailable。
+        这是 HA 的既定行为，不是缺陷：实体注册表是持久的，
+        平台不再添加它，条目照样留着。
 
-        也就是说能力探测只在**首次配置**时起作用；
-        「装好之后传感器坏了/被拔了」这种情况仍然会留下一个
-        unavailable 的实体 —— 正是这个功能想消灭的那种。
-
-        没有顺手加自动删除，因为删注册表条目会**连带删掉用户的历史数据
-        与自动化引用**，而 absent 也可能是上电瞬间的一次总线抖动。
-        取舍见工作区 OPEN-ISSUES S-17。
+        能力探测因此只在**首次配置**时起作用 —— 这条钉住它，
+        免得以后有人以为「不建实体」也覆盖了事后拔传感器的情况。
         """
         after = _result()["after_absent_states"]
-        assert len(after) == 1, "实体仍在注册表里，这是 HA 的既定行为"
+        assert len(after) == 1
         assert list(after.values()) == ["unavailable"]
+
+    def test_notifies_user_instead_of_deleting(self) -> None:
+        """留下 unavailable 实体时发一条 repairs 通知，而不是闷声删掉。
+
+        不直接删是因为删注册表条目会连带删掉历史数据与自动化引用，
+        而 absent 也可能只是上电瞬间的一次总线抖动。
+        """
+        issues = _result()["issues_after_absent"]
+        assert len(issues) == 1, issues
+        issue = next(iter(issues.values()))
+        assert issue["translation_key"] == "stale_entities"
+        # IssueSeverity 是 StrEnum，str() 出来就是 "warning"
+        assert issue["severity"] == "warning"
+
+    def test_notification_is_actionable(self) -> None:
+        """通知可一键修复，且写清了要删哪些、代价是什么。"""
+        # 只提示不给出路的话，用户得自己去实体列表里一个个找
+        issue = next(iter(_result()["issues_after_absent"].values()))
+        assert issue["is_fixable"] is True
+        placeholders = issue["placeholders"] or {}
+        assert "illuminance" in placeholders.get("entities", "")
+        assert placeholders.get("count") == "1"
+
+    def test_notification_clears_when_sensor_returns(self) -> None:
+        """传感器插回去之后通知自己消失。"""
+        # 不撤的话它会一直挂着，用户点进去发现无事可修 ——
+        # 那种通知第二次出现时就没人看了
+        assert _result()["issues_after_restore"] == {}
 
 
 class TestUnload:
