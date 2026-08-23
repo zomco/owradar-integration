@@ -141,7 +141,47 @@ python -m pytest
 传感器后来接上了会自动重载集成把实体补出来（只在能力**变多**时重载 ——
 按变少重载会在接触不良时把实体历史打得七零八落）。
 
+### 它做不到什么
+
+**能力探测只在首次配置时起作用。**
+
+HA 的实体注册表是持久的：一个实体注册过之后，即便平台下次不再添加它，
+注册表条目照样留着，状态变成 `unavailable`。所以「装好之后传感器坏了
+或被拔了」这种情况仍然会留下一个 unavailable 的实体 ——
+正是这个功能想消灭的那种。
+
+| 情形 | 结果 |
+|---|---|
+| 首次配置时传感器就 absent | ✅ 不建实体 |
+| 配好之后传感器变 absent | ⚠️ 实体留在注册表，显示 unavailable |
+
+没有顺手加自动删除：删注册表条目会**连带删掉用户的历史数据与自动化引用**，
+而 `absent` 也可能只是上电瞬间的一次总线抖动。取舍见工作区 OPEN-ISSUES S-17。
+
+这条限制是 `tests/test_ha_integration.py` 在真 HA 里跑出来的 ——
+纯函数测试全绿的时候它才浮出来。那条测试现在把这个行为钉住了，
+免得以后有人以为它已经被解决了。
+
 逻辑在 `capability.py`，是纯函数，`tests/test_capability.py` 直接拿快照字典测。
+
+## 9.5 在真 HA 里跑一遍
+
+`tests/test_ha_integration.py` 会在**进程内起一个真的 Home Assistant core**，
+把集成装进去：manifest 认不认、五个平台模块导不导得进、config flow
+走不走得通、19 个实体建不建得出、诊断有没有漏 Token、卸载干不干净。
+
+其余测试覆盖的是纯函数；这个文件覆盖的是**接线**，而接线的错
+纯函数测试一条都抓不住。
+
+```bash
+node scripts/device-sim/index.mjs --port 8199 --token e2e-token   # 另开一个终端
+python -m pytest tests/test_ha_integration.py
+```
+
+模拟器不在就整体跳过，单独克隆本仓库的人不会被它挡住。
+
+> Windows 上起不了完整的 `hass`（runner 依赖 POSIX 的 `fcntl`），
+> 所以在进程内跑 core —— HA 自己的测试就是这么做的。
 
 ## 10. 尚未实现
 
